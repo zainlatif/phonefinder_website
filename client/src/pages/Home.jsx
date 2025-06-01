@@ -13,6 +13,7 @@ const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  cursor: 'pointer'
 };
 
 const imageStyle = {
@@ -23,8 +24,21 @@ const imageStyle = {
   marginBottom: '8px'
 };
 
+const tableStyle = {
+  borderCollapse: 'collapse',
+  width: '100%',
+  marginTop: '24px'
+};
+
+const thtdStyle = {
+  border: '1px solid #ccc',
+  padding: '8px',
+  textAlign: 'left'
+};
+
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/products')
@@ -32,24 +46,85 @@ const Home = () => {
       .catch((err) => console.error('Error fetching products:', err));
   }, []);
 
+  const handleCardClick = (product) => {
+    setSelected(product);
+  };
+
+  const handleBack = () => {
+    setSelected(null);
+  };
+
+  // Helper to get up to 25 rows from longDescription
+  const getSpecRows = (longDescription) => {
+    if (!longDescription) return [];
+    // Split by comma, then by colon
+    const specs = longDescription.split(',').map(spec => spec.split(':'));
+    // Pad to 25 rows if needed
+    while (specs.length < 25) {
+      specs.push(['', '']);
+    }
+    return specs.slice(0, 25);
+  };
+
   return (
     <div>
       <h2>Products</h2>
-      {products.length === 0 ? (
-        <p>No products found.</p>
-      ) : (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-          {products.map((product) => (
-            <div key={product._id} style={cardStyle}>
-              {product.image && (
-                <img src={product.image} alt={product.title} style={imageStyle} />
-              )}
-              <h3>{product.title}</h3>
-              <p>{product.description}</p>
-              <p>Rs. {product.price}</p>
-            </div>
-          ))}
+      {selected ? (
+        <div>
+          <button onClick={handleBack} style={{ marginBottom: '16px' }}>Back</button>
+          <table style={tableStyle}>
+            <tbody>
+              <tr>
+                <th style={thtdStyle}>Image</th>
+                <td style={thtdStyle}>
+                  {selected.image && (
+                    <img src={selected.image} alt={selected.title} style={{ width: '120px', height: '120px', objectFit: 'contain' }} />
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <th style={thtdStyle}>Title</th>
+                <td style={thtdStyle}>{selected.title}</td>
+              </tr>
+              <tr>
+                <th style={thtdStyle}>Description</th>
+                <td style={thtdStyle}>{selected.description}</td>
+              </tr>
+              <tr>
+                <th style={thtdStyle}>Price</th>
+                <td style={thtdStyle}>Rs. {selected.price}</td>
+              </tr>
+              {/* Show up to 25 specification rows */}
+              {getSpecRows(selected.longDescription).map(([key, value], idx) => (
+                <tr key={idx}>
+                  <th style={thtdStyle}>{key ? key.trim() : ''}</th>
+                  <td style={thtdStyle}>{value ? value.trim() : ''}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+      ) : (
+        products.length === 0 ? (
+          <p>No products found.</p>
+        ) : (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+            {products.map((product) => (
+              <div
+                key={product._id}
+                style={cardStyle}
+                onClick={() => handleCardClick(product)}
+              >
+                {product.image && (
+                  <img src={product.image} alt={product.title} style={imageStyle} />
+                )}
+                <h3>{product.title}</h3>
+                <p>{product.description}</p>
+                <p>Rs. {product.price}</p>
+              </div>
+            ))}
+          </div>
+        )
       )}
     </div>
   );

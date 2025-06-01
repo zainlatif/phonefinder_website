@@ -45,6 +45,7 @@ const AdminPanel = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
+  const [longDescription, setLongDescription] = useState('');
   const [products, setProducts] = useState([]);
   const [editId, setEditId] = useState(null);
 
@@ -60,7 +61,7 @@ const AdminPanel = () => {
 
   const handleAddProduct = () => {
     if (!title || !description || !price || !image) return;
-    const newProduct = { title, description, price, image };
+    const newProduct = { title, description, price, image, longDescription };
 
     axios.post('http://localhost:5000/api/products', newProduct)
       .then(() => {
@@ -68,6 +69,7 @@ const AdminPanel = () => {
         setDescription('');
         setPrice('');
         setImage('');
+        setLongDescription('');
         fetchProducts();
       })
       .catch((err) => console.error('Error adding product:', err));
@@ -87,6 +89,7 @@ const AdminPanel = () => {
     setDescription(product.description);
     setPrice(product.price);
     setImage(product.image);
+    setLongDescription(product.longDescription || '');
   };
 
   const handleUpdateProduct = () => {
@@ -95,7 +98,8 @@ const AdminPanel = () => {
       title,
       description,
       price,
-      image
+      image,
+      longDescription
     })
       .then(() => {
         setEditId(null);
@@ -103,6 +107,7 @@ const AdminPanel = () => {
         setDescription('');
         setPrice('');
         setImage('');
+        setLongDescription('');
         fetchProducts();
       })
       .catch((err) => console.error('Error updating product:', err));
@@ -114,6 +119,7 @@ const AdminPanel = () => {
     setDescription('');
     setPrice('');
     setImage('');
+    setLongDescription('');
   };
 
   return (
@@ -123,6 +129,10 @@ const AdminPanel = () => {
       <input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} /><br />
       <input placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} /><br />
       <input placeholder="Image URL" value={image} onChange={(e) => setImage(e.target.value)} /><br />
+      <input placeholder="Long Description (e.g. camera: 50mp, battery: 5000mah, charging: 35watt)" 
+        value={longDescription} 
+        onChange={(e) => setLongDescription(e.target.value)} 
+      /><br />
       {editId ? (
         <>
           <button onClick={handleUpdateProduct} style={editBtnStyle}>Update Product</button>
