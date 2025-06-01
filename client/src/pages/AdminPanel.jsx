@@ -32,10 +32,19 @@ const editBtnStyle = {
   marginRight: '8px'
 };
 
+const imageStyle = {
+  width: '80px',
+  height: '80px',
+  objectFit: 'cover',
+  borderRadius: '6px',
+  marginRight: '16px'
+};
+
 const AdminPanel = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [image, setImage] = useState('');
   const [products, setProducts] = useState([]);
   const [editId, setEditId] = useState(null);
 
@@ -50,14 +59,15 @@ const AdminPanel = () => {
   };
 
   const handleAddProduct = () => {
-    if (!title || !description || !price) return;
-    const newProduct = { title, description, price };
+    if (!title || !description || !price || !image) return;
+    const newProduct = { title, description, price, image };
 
     axios.post('http://localhost:5000/api/products', newProduct)
       .then(() => {
         setTitle('');
         setDescription('');
         setPrice('');
+        setImage('');
         fetchProducts();
       })
       .catch((err) => console.error('Error adding product:', err));
@@ -76,20 +86,23 @@ const AdminPanel = () => {
     setTitle(product.title);
     setDescription(product.description);
     setPrice(product.price);
+    setImage(product.image);
   };
 
   const handleUpdateProduct = () => {
-    if (!title || !description || !price) return;
+    if (!title || !description || !price || !image) return;
     axios.put(`http://localhost:5000/api/products/${editId}`, {
       title,
       description,
-      price
+      price,
+      image
     })
       .then(() => {
         setEditId(null);
         setTitle('');
         setDescription('');
         setPrice('');
+        setImage('');
         fetchProducts();
       })
       .catch((err) => console.error('Error updating product:', err));
@@ -100,6 +113,7 @@ const AdminPanel = () => {
     setTitle('');
     setDescription('');
     setPrice('');
+    setImage('');
   };
 
   return (
@@ -108,6 +122,7 @@ const AdminPanel = () => {
       <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} /><br />
       <input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} /><br />
       <input placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} /><br />
+      <input placeholder="Image URL" value={image} onChange={(e) => setImage(e.target.value)} /><br />
       {editId ? (
         <>
           <button onClick={handleUpdateProduct} style={editBtnStyle}>Update Product</button>
@@ -121,10 +136,15 @@ const AdminPanel = () => {
       <div>
         {products.map((product) => (
           <div key={product._id} style={cardStyle}>
-            <div>
-              <strong>{product.title}</strong><br />
-              <span>{product.description}</span><br />
-              <span style={{ color: '#2ecc71' }}>${product.price}</span>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {product.image && (
+                <img src={product.image} alt={product.title} style={imageStyle} />
+              )}
+              <div>
+                <strong>{product.title}</strong><br />
+                <span>{product.description}</span><br />
+                <span style={{ color: '#2ecc71' }}>${product.price}</span>
+              </div>
             </div>
             <div>
               <button onClick={() => handleEditProduct(product)} style={editBtnStyle}>Edit</button>
