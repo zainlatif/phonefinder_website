@@ -22,11 +22,22 @@ const btnStyle = {
   cursor: 'pointer'
 };
 
+const editBtnStyle = {
+  background: '#2980b9',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '4px',
+  padding: '6px 12px',
+  cursor: 'pointer',
+  marginRight: '8px'
+};
+
 const AdminPanel = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [products, setProducts] = useState([]);
+  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     fetchProducts();
@@ -39,11 +50,11 @@ const AdminPanel = () => {
   };
 
   const handleAddProduct = () => {
+    if (!title || !description || !price) return;
     const newProduct = { title, description, price };
 
     axios.post('http://localhost:5000/api/products', newProduct)
       .then(() => {
-        alert('Product added');
         setTitle('');
         setDescription('');
         setPrice('');
@@ -60,13 +71,51 @@ const AdminPanel = () => {
       .catch((err) => console.error('Error deleting product:', err));
   };
 
+  const handleEditProduct = (product) => {
+    setEditId(product._id);
+    setTitle(product.title);
+    setDescription(product.description);
+    setPrice(product.price);
+  };
+
+  const handleUpdateProduct = () => {
+    if (!title || !description || !price) return;
+    axios.put(`http://localhost:5000/api/products/${editId}`, {
+      title,
+      description,
+      price
+    })
+      .then(() => {
+        setEditId(null);
+        setTitle('');
+        setDescription('');
+        setPrice('');
+        fetchProducts();
+      })
+      .catch((err) => console.error('Error updating product:', err));
+  };
+
+  const handleCancelEdit = () => {
+    setEditId(null);
+    setTitle('');
+    setDescription('');
+    setPrice('');
+  };
+
   return (
     <div>
-      <h2>Admin Panel - Add Product</h2>
+      <h2>Admin Panel - {editId ? 'Edit Product' : 'Add Product'}</h2>
       <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} /><br />
       <input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} /><br />
       <input placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} /><br />
-      <button onClick={handleAddProduct}>Add Product</button>
+      {editId ? (
+        <>
+          <button onClick={handleUpdateProduct} style={editBtnStyle}>Update Product</button>
+          <button onClick={handleCancelEdit} style={btnStyle}>Cancel</button>
+        </>
+      ) : (
+        <button onClick={handleAddProduct}>Add Product</button>
+      )}
 
       <h3>Product List</h3>
       <div>
@@ -77,7 +126,10 @@ const AdminPanel = () => {
               <span>{product.description}</span><br />
               <span style={{ color: '#2ecc71' }}>${product.price}</span>
             </div>
-            <button onClick={() => handleDeleteProduct(product._id)} style={btnStyle}>Delete</button>
+            <div>
+              <button onClick={() => handleEditProduct(product)} style={editBtnStyle}>Edit</button>
+              <button onClick={() => handleDeleteProduct(product._id)} style={btnStyle}>Delete</button>
+            </div>
           </div>
         ))}
       </div>
