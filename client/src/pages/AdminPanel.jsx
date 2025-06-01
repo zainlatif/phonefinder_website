@@ -45,7 +45,7 @@ const AdminPanel = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
-  const [longDescription, setLongDescription] = useState('');
+  const [specs, setSpecs] = useState(Array(25).fill(['', ''])); // 25 rows of [key, value]
   const [products, setProducts] = useState([]);
   const [editId, setEditId] = useState(null);
 
@@ -59,9 +59,33 @@ const AdminPanel = () => {
       .catch((err) => console.error('Error fetching products:', err));
   };
 
+  // Convert specs array to longDescription string
+  const specsToLongDescription = () =>
+    specs
+      .filter(([key, value]) => key.trim() || value.trim())
+      .map(([key, value]) => `${key.trim()}:${value.trim()}`)
+      .join(',');
+
+  // Convert longDescription string to specs array
+  const longDescriptionToSpecs = (longDescription) => {
+    if (!longDescription) return Array(25).fill(['', '']);
+    const arr = longDescription.split(',').map(spec => {
+      const [key, value] = spec.split(':');
+      return [key ? key.trim() : '', value ? value.trim() : ''];
+    });
+    while (arr.length < 25) arr.push(['', '']);
+    return arr.slice(0, 25);
+  };
+
   const handleAddProduct = () => {
     if (!title || !description || !price || !image) return;
-    const newProduct = { title, description, price, image, longDescription };
+    const newProduct = {
+      title,
+      description,
+      price,
+      image,
+      longDescription: specsToLongDescription()
+    };
 
     axios.post('http://localhost:5000/api/products', newProduct)
       .then(() => {
@@ -69,7 +93,7 @@ const AdminPanel = () => {
         setDescription('');
         setPrice('');
         setImage('');
-        setLongDescription('');
+        setSpecs(Array(25).fill(['', '']));
         fetchProducts();
       })
       .catch((err) => console.error('Error adding product:', err));
@@ -89,7 +113,7 @@ const AdminPanel = () => {
     setDescription(product.description);
     setPrice(product.price);
     setImage(product.image);
-    setLongDescription(product.longDescription || '');
+    setSpecs(longDescriptionToSpecs(product.longDescription));
   };
 
   const handleUpdateProduct = () => {
@@ -99,7 +123,7 @@ const AdminPanel = () => {
       description,
       price,
       image,
-      longDescription
+      longDescription: specsToLongDescription()
     })
       .then(() => {
         setEditId(null);
@@ -107,7 +131,7 @@ const AdminPanel = () => {
         setDescription('');
         setPrice('');
         setImage('');
-        setLongDescription('');
+        setSpecs(Array(25).fill(['', '']));
         fetchProducts();
       })
       .catch((err) => console.error('Error updating product:', err));
@@ -119,7 +143,16 @@ const AdminPanel = () => {
     setDescription('');
     setPrice('');
     setImage('');
-    setLongDescription('');
+    setSpecs(Array(25).fill(['', '']));
+  };
+
+  // Handle change in the specs table
+  const handleSpecChange = (row, col, value) => {
+    setSpecs(prev => {
+      const updated = prev.map(arr => [...arr]);
+      updated[row][col] = value;
+      return updated;
+    });
   };
 
   return (
@@ -129,10 +162,39 @@ const AdminPanel = () => {
       <input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} /><br />
       <input placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} /><br />
       <input placeholder="Image URL" value={image} onChange={(e) => setImage(e.target.value)} /><br />
-      <input placeholder="Long Description (e.g. camera: 50mp, battery: 5000mah, charging: 35watt)" 
-        value={longDescription} 
-        onChange={(e) => setLongDescription(e.target.value)} 
-      /><br />
+      <div style={{ margin: '16px 0' }}>
+        <b>Product Specifications (Long Description):</b>
+        <table style={{ borderCollapse: 'collapse', width: '100%', marginTop: '8px' }}>
+          <thead>
+            <tr>
+              <th style={{ border: '1px solid #ccc', padding: '4px' }}>Specification</th>
+              <th style={{ border: '1px solid #ccc', padding: '4px' }}>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {specs.map(([key, value], idx) => (
+              <tr key={idx}>
+                <td style={{ border: '1px solid #ccc', padding: '4px' }}>
+                  <input
+                    type="text"
+                    value={key}
+                    onChange={e => handleSpecChange(idx, 0, e.target.value)}
+                    style={{ width: '95%' }}
+                  />
+                </td>
+                <td style={{ border: '1px solid #ccc', padding: '4px' }}>
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={e => handleSpecChange(idx, 1, e.target.value)}
+                    style={{ width: '95%' }}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {editId ? (
         <>
           <button onClick={handleUpdateProduct} style={editBtnStyle}>Update Product</button>
