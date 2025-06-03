@@ -1,5 +1,6 @@
 // src/pages/Account.jsx
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Account = () => {
   const [user, setUser] = useState(null);
@@ -10,21 +11,52 @@ const Account = () => {
   useEffect(() => {
     const stored = localStorage.getItem('user');
     if (stored) {
-      setUser(JSON.parse(stored));
+      const parsed = JSON.parse(stored);
+      setUser(parsed);
+      // Fetch from backend
+      axios.get(`http://localhost:5000/api/users/${parsed.email}`)
+        .then((res) => {
+          setName(res.data.name || '');
+          setAddress(res.data.address || '');
+          setPhone(res.data.phone || '');
+        })
+        .catch(err => console.error('Error fetching user info:', err));
     }
   }, []);
 
-  const handleUpdate = () => {
-    const updatedUser = { ...user, name, address, phone };
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-    alert('Profile updated!');
+  const handleUpdate = async () => {
+    try {
+      await axios.put(`http://localhost:5000/api/users/update/${user.email}`, {
+        name,
+        address,
+        phone
+      });
+      alert('Profile updated!');
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      alert('Error updating profile.');
+    }
   };
 
-  if (!user) return <p>Login first to view your account.</p>;
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete your account?")) return;
+    try {
+      await axios.delete(`http://localhost:5000/api/users/delete/${user.email}`);
+      localStorage.removeItem("user");
+      alert("Account deleted.");
+      window.location.href = "/signup";
+    } catch (err) {
+      console.error('Error deleting account:', err);
+      alert("Error deleting account.");
+    }
+  };
+
+  if (!user) return <p>Please login to view your account.</p>;
 
   return (
     <div>
       <h2>Account Page</h2>
+      <p>Email: {user.email}</p>
       <p>Role: {user.role}</p>
       <input type="text" placeholder="Name" value={name}
              onChange={(e) => setName(e.target.value)} /><br />
@@ -33,6 +65,8 @@ const Account = () => {
       <input type="text" placeholder="Phone" value={phone}
              onChange={(e) => setPhone(e.target.value)} /><br />
       <button onClick={handleUpdate}>Update Profile</button>
+      <br />
+      <button onClick={handleDelete} style={{ marginTop: '10px', backgroundColor: 'red', color: 'white' }}>Delete Account</button>
     </div>
   );
 };

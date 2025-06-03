@@ -1,0 +1,75 @@
+🔧 What is Scrapy?
+Scrapy is a powerful Python framework used to extract data from websites. It lets you:
+
+Crawl multiple pages
+
+Parse HTML content
+
+Export data to formats like JSON, CSV, or a database
+
+
+
+
+1. Install Scrapy
+
+pip install scrapy
+
+
+2. Create a New Scrapy Project
+
+scrapy startproject whatmobile_scraper
+cd whatmobile_scraper
+
+3. Generate a Spider
+
+scrapy genspider whatmobile whatmobile.com.pk
+
+4. Inspect WhatMobile Website
+Open a product page like:
+https://www.whatmobile.com.pk/Samsung_Galaxy-S24-Ultra
+
+4. Inspect WhatMobile Website
+Open a product page like:
+
+arduino
+Copy
+Edit
+https://www.whatmobile.com.pk/Samsung_Galaxy-S24-Ultra
+Use browser dev tools (F12 or right-click → Inspect) to find elements like:
+
+Title
+
+Price
+
+Camera
+
+Memory
+
+Display
+
+Battery
+
+
+
+5. Edit Your Spider
+
+Open whatmobile_scraper/spiders/whatmobile.py and start customizing:
+
+python:
+
+import scrapy
+
+class WhatmobileSpider(scrapy.Spider):
+    name = "whatmobile"
+    start_urls = [
+        'https://www.whatmobile.com.pk/Samsung_Galaxy-S24-Ultra',
+    ]
+
+    def parse(self, response):
+        yield {
+            'title': response.css('h1::text').get(),
+            'price': response.css('span.PriceBigText::text').get(),
+            'camera': response.xpath('//td[contains(text(), "Camera")]/following-sibling::td/text()').get(),
+            'memory': response.xpath('//td[contains(text(), "Memory")]/following-sibling::td/text()').get(),
+            # Add more fields as needed
+        }

@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/userModel');
+const userController = require('../controllers/userController');
 
-router.post('/signup', async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const newUser = new User({ email, password });
-    await newUser.save();
-    res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Signup failed', error });
-  }
-});
+// Signup route
+router.post('/signup', userController.signupUser);
+
+// Get user by email
+router.get('/:email', userController.getUserByEmail);
+
+// Update user
+router.put('/update/:email', userController.updateUser);
+
+// Delete user
+router.delete('/delete/:email', userController.deleteUser);
 
 module.exports = router;
