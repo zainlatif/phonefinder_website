@@ -45,3 +45,52 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ message: 'Error deleting user', error: err.message });
   }
 };
+
+exports.addFavorite = async (req, res) => {
+  const { productId } = req.body;          // passed from the client
+  const  email        = req.params.email;  // `/favorite/:email`
+
+  try {
+    // 1) basic checks
+    const user    = await User.findOne({ email });
+    if (!user)       return res.status(404).json({ message: 'User not found' });
+    const product = await Product.findById(productId);
+    if (!product)    return res.status(404).json({ message: 'Product not found' });
+
+    // 2) avoid duplicates
+    if (!user.favorites.includes(productId)) {
+      user.favorites.push(productId);
+      await user.save();
+    }
+
+    res.json({ message: 'Added to favourites ✅' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error adding favourite', error: err.message });
+  }
+};
+
+// userController.js
+exports.addFavorite = async (req, res) => {
+  const { email } = req.params;
+  const { productId } = req.body;
+
+  if (!email || !productId) {
+    return res.status(400).json({ message: 'Missing email or productId' });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // Optionally create a favorites array if not present
+    if (!user.favorites) user.favorites = [];
+
+    user.favorites.push(productId); // simple append
+    await user.save();
+
+    res.status(200).json({ message: 'Favorite added' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error saving favorite', error: err.message });
+  }
+};

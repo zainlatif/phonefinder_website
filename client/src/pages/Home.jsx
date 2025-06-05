@@ -1,6 +1,11 @@
+// Home.jsx
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';      // adjust the path to your AuthContext file
 
+/* ──────────────────────────────────────────
+   Inline styles (kept from your original)
+────────────────────────────────────────── */
 const cardStyle = {
   border: '1px solid #ccc',
   borderRadius: '8px',
@@ -36,49 +41,78 @@ const thtdStyle = {
   textAlign: 'left'
 };
 
+/* ──────────────────────────────────────────
+   Home component
+────────────────────────────────────────── */
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [selected, setSelected] = useState(null);
+  const { user } = useAuth();               // current logged-in user (or null)
+  const [products, setProducts]   = useState([]);
+  const [selected, setSelected]   = useState(null);
 
+  /* Fetch product list once */
   useEffect(() => {
-    axios.get('http://localhost:5000/api/products')
+    axios
+      .get('http://localhost:5000/api/products')
       .then((res) => setProducts(res.data))
       .catch((err) => console.error('Error fetching products:', err));
   }, []);
 
-  const handleCardClick = (product) => {
-    setSelected(product);
+  /* Card click shows detail view */
+  const handleCardClick = (product) => setSelected(product);
+  const handleBack      = () => setSelected(null);
+
+  /* POST /api/users/favorite/:email  { productId } */
+  const addToFav = async (productId) => {
+    if (!user) {
+      alert('Please log in first');
+      return;
+    }
+
+    try {
+      await axios.post(
+        `http://localhost:5000/api/users/favorite/${user.email}`,
+        { productId }
+      );
+      alert('Added to favourites 🎉');
+    } catch (err) {
+      console.error('Add-fav error:', err);
+      alert('Could not add favourite');
+    }
   };
 
-  const handleBack = () => {
-    setSelected(null);
-  };
-
-  // Helper to get up to 25 rows from longDescription
+  /* turn comma-separated longDescription into ≤25 rows */
   const getSpecRows = (longDescription) => {
     if (!longDescription) return [];
-    // Split by comma, then by colon
-    const specs = longDescription.split(',').map(spec => spec.split(':'));
-    // Pad to 25 rows if needed
-    while (specs.length < 25) {
-      specs.push(['', '']);
-    }
+    const specs = longDescription.split(',').map((s) => s.split(':'));
+    while (specs.length < 25) specs.push(['', '']);
     return specs.slice(0, 25);
   };
 
+  /* ──────────────────────────────────────────
+     Render
+  ─────────────────────────────────────────── */
   return (
     <div>
       <h2>Products</h2>
+
       {selected ? (
+        /* ── Detail view ───────────────────── */
         <div>
-          <button onClick={handleBack} style={{ marginBottom: '16px' }}>Back</button>
+          <button onClick={handleBack} style={{ marginBottom: '16px' }}>
+            ← Back
+          </button>
+
           <table style={tableStyle}>
             <tbody>
               <tr>
                 <th style={thtdStyle}>Image</th>
                 <td style={thtdStyle}>
                   {selected.image && (
-                    <img src={selected.image} alt={selected.title} style={{ width: '120px', height: '120px', objectFit: 'contain' }} />
+                    <img
+                      src={selected.image}
+                      alt={selected.title}
+                      style={{ width: '120px', height: '120px', objectFit: 'contain' }}
+                    />
                   )}
                 </td>
               </tr>
@@ -92,19 +126,28 @@ const Home = () => {
               </tr>
               <tr>
                 <th style={thtdStyle}>Price</th>
-                <td style={thtdStyle}>Rs. {selected.price}</td>
+                <td style={thtdStyle}>Rs.&nbsp;{selected.price}</td>
               </tr>
-              {/* Show up to 25 specification rows */}
-              {getSpecRows(selected.longDescription).map(([key, value], idx) => (
+
+              {/* Extra specs (≤25) */}
+              {getSpecRows(selected.longDescription).map(([k, v], idx) => (
                 <tr key={idx}>
-                  <th style={thtdStyle}>{key ? key.trim() : ''}</th>
-                  <td style={thtdStyle}>{value ? value.trim() : ''}</td>
+                  <th style={thtdStyle}>{k?.trim() || ''}</th>
+                  <td style={thtdStyle}>{v?.trim() || ''}</td>
                 </tr>
               ))}
+
+              {/* Add-fav button inside detail */}
+              <tr>
+                <td colSpan={2} style={{ textAlign: 'center', padding: '16px' }}>
+                  <button onClick={() => addToFav(selected._id)}>❤️ Add to favourites</button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       ) : (
+        /* ── Card grid ──────────────────────── */
         products.length === 0 ? (
           <p>No products found.</p>
         ) : (
@@ -118,9 +161,21 @@ const Home = () => {
                 {product.image && (
                   <img src={product.image} alt={product.title} style={imageStyle} />
                 )}
+
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
-                <p>Rs. {product.price}</p>
+                <p>Rs.&nbsp;{product.price}</p>
+
+                {/* fav button on card (stopPropagation so click ≠ open detail) */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToFav(product._id);
+                  }}
+                  style={{ marginTop: 'auto' }}
+                >
+                  ❤️ Favourite
+                </button>
               </div>
             ))}
           </div>
