@@ -83,10 +83,12 @@ exports.addFavorite = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Optionally create a favorites array if not present
-    if (!user.favorites) user.favorites = [];
+    // Prevent duplicate favorites
+    if (user.favorites && user.favorites.includes(productId)) {
+      return res.status(200).json({ message: 'Product already in favorites' });
+    }
 
-    user.favorites.push(productId); // simple append
+    user.favorites.push(productId);
     await user.save();
 
     res.status(200).json({ message: 'Favorite added' });
