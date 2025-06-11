@@ -21,14 +21,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ...existing code...
-
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const allProducts = await Product.find();
-    res.json(allProducts);
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    res.json(product);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: 'Error fetching product', error: err.message });
   }
 });
 
@@ -41,9 +40,6 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-module.exports = router;
-
 
 // Update a product by ID
 router.put('/:id', async (req, res) => {
@@ -58,3 +54,5 @@ router.put('/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+module.exports = router;

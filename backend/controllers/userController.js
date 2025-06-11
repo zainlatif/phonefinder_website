@@ -96,3 +96,26 @@ exports.addFavorite = async (req, res) => {
     res.status(500).json({ message: 'Error saving favorite', error: err.message });
   }
 };
+
+exports.removeFavorite = async (req, res) => {
+  const { email } = req.params;
+  const { productId } = req.body;
+
+  if (!email || !productId) {
+    return res.status(400).json({ message: 'Missing email or productId' });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.favorites = user.favorites.filter(
+      (favId) => favId.toString() !== productId
+    );
+    await user.save();
+
+    res.status(200).json({ message: 'Favorite removed' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error removing favorite', error: err.message });
+  }
+};
