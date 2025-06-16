@@ -5,6 +5,9 @@ const userController = require('../controllers/userController');
 // Signup route
 router.post('/signup', userController.signupUser);
 
+// Login route
+router.post('/login', userController.loginUser);
+
 // Get user by email
 router.get('/:email', userController.getUserByEmail);
 

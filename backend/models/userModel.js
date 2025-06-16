@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   name:     String,
   address:  String,
   phone:    String,
+  role:     { type: String, default: 'user' }, // 'user' or 'admin'
 
   // NEW: store ObjectIds of products the user likes
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]

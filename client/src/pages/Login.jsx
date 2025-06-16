@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // ✅ AuthContext
+import axios from 'axios';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -9,13 +10,18 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleLogin = () => {
-    if (email === 'admin@gmail.com' && password === '123') {
-      login({ role: 'admin', email });
-    } else {
-      login({ role: 'user', email });
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post('http://localhost:5000/api/users/login', {
+        email,
+        password
+      });
+      // The backend returns { email, role, name }
+      login(res.data);
+      navigate('/');
+    } catch (err) {
+      alert('Invalid credentials');
     }
-    navigate('/');
   };
 
   return (
