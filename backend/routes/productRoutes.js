@@ -81,4 +81,21 @@ router.get('/:id/comments', async (req, res) => {
   }
 });
 
+// Delete a comment from a product
+router.delete('/:productId/comments/:commentId', async (req, res) => {
+  try {
+    const { productId, commentId } = req.params;
+    const product = await Product.findById(productId);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    product.comments = product.comments.filter(
+      (c) => c._id.toString() !== commentId
+    );
+    await product.save();
+    res.json(product.comments);
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting comment', error: err.message });
+  }
+});
+
 module.exports = router;

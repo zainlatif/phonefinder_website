@@ -189,11 +189,24 @@ const Home = () => {
             ) : (
               <ul>
                 {comments.map((c, idx) => (
-                  <li key={idx}>
-                    <b>{c.user}:</b> {c.text}{' '}
+                  <li key={c._id || idx}>
+                    <b>{c.user}:</b> {c.text}
                     <span style={{ color: '#888', fontSize: '0.9em' }}>
                       {new Date(c.date).toLocaleString()}
                     </span>
+                    {user?.role === 'admin' && (
+                      <button
+                        style={{ marginLeft: 10, color: 'red' }}
+                        onClick={async () => {
+                          await axios.delete(
+                            `http://localhost:5000/api/products/${selected._id}/comments/${c._id}`
+                          );
+                          setComments(comments.filter(com => com._id !== c._id));
+                        }}
+                      >
+                        Delete
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
