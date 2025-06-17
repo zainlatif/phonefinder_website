@@ -55,4 +55,30 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// Add a comment to a product
+router.post('/:id/comments', async (req, res) => {
+  const { user, text } = req.body;
+  if (!user || !text) return res.status(400).json({ message: 'Missing user or text' });
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    product.comments.push({ user, text });
+    await product.save();
+    res.status(201).json(product.comments);
+  } catch (err) {
+    res.status(500).json({ message: 'Error adding comment', error: err.message });
+  }
+});
+
+// Get comments for a product
+router.get('/:id/comments', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id, 'comments');
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    res.json(product.comments);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching comments', error: err.message });
+  }
+});
+
 module.exports = router;

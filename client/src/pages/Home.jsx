@@ -45,6 +45,9 @@ const Home = () => {
   const [selected, setSelected] = useState(null);
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [loadingComments, setLoadingComments] = useState(false);
 
   // Parse search query from URL
   useEffect(() => {
@@ -59,6 +62,18 @@ const Home = () => {
       .then((res) => setProducts(res.data))
       .catch((err) => console.error('Error fetching products:', err));
   }, []);
+
+  // Fetch comments when a product is selected
+  useEffect(() => {
+    if (selected) {
+      setLoadingComments(true);
+      axios
+        .get(`http://localhost:5000/api/products/${selected._id}/comments`)
+        .then((res) => setComments(res.data))
+        .catch(() => setComments([]))
+        .finally(() => setLoadingComments(false));
+    }
+  }, [selected]);
 
   const handleCardClick = (product) => setSelected(product);
   const handleBack = () => setSelected(null);
@@ -78,6 +93,24 @@ const Home = () => {
     } catch (err) {
       console.error('Add-fav error:', err);
       alert('Could not add favourite');
+    }
+  };
+
+  const handleAddComment = async () => {
+    if (!user) {
+      alert('Please login to comment');
+      return;
+    }
+    if (!newComment.trim()) return;
+    try {
+      const res = await axios.post(
+        `http://localhost:5000/api/products/${selected._id}/comments`,
+        { user: user.email, text: newComment }
+      );
+      setComments(res.data);
+      setNewComment('');
+    } catch (err) {
+      alert('Error adding comment');
     }
   };
 
@@ -146,6 +179,40 @@ const Home = () => {
               </tr>
             </tbody>
           </table>
+
+          <div style={{ marginTop: 32 }}>
+            <h3>Reviews & Comments</h3>
+            {loadingComments ? (
+              <p>Loading comments...</p>
+            ) : comments.length === 0 ? (
+              <p>No comments yet.</p>
+            ) : (
+              <ul>
+                {comments.map((c, idx) => (
+                  <li key={idx}>
+                    <b>{c.user}:</b> {c.text}{' '}
+                    <span style={{ color: '#888', fontSize: '0.9em' }}>
+                      {new Date(c.date).toLocaleString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {user && (
+              <div style={{ marginTop: 12 }}>
+                <textarea
+                  rows={2}
+                  style={{ width: '100%' }}
+                  placeholder="Write a comment..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                />
+                <button onClick={handleAddComment} style={{ marginTop: 4 }}>
+                  Add Comment
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       ) : filteredProducts.length === 0 ? (
         <p>No products found.</p>
