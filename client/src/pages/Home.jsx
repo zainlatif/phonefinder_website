@@ -1,42 +1,43 @@
 // Home.jsx
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+import { useLocation } from "react-router-dom";
+import Banner from "../components/Banner";
 
 const cardStyle = {
-  border: '1px solid #ccc',
-  borderRadius: '8px',
-  padding: '16px',
-  marginBottom: '12px',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-  maxWidth: '200px',
-  width: '200px',
-  minHeight: '300px',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  cursor: 'pointer'
+  border: "1px solid #ccc",
+  borderRadius: "8px",
+  padding: "16px",
+  marginBottom: "12px",
+  boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+  maxWidth: "200px",
+  width: "200px",
+  minHeight: "300px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  cursor: "pointer",
 };
 
 const imageStyle = {
-  width: '100%',
-  height: '180px',
-  objectFit: 'contain',
-  borderRadius: '6px 6px 0 0',
-  marginBottom: '8px'
+  width: "100%",
+  height: "180px",
+  objectFit: "contain",
+  borderRadius: "6px 6px 0 0",
+  marginBottom: "8px",
 };
 
 const tableStyle = {
-  borderCollapse: 'collapse',
-  width: '100%',
-  marginTop: '24px'
+  borderCollapse: "collapse",
+  width: "100%",
+  marginTop: "24px",
 };
 
 const thtdStyle = {
-  border: '1px solid #ccc',
-  padding: '8px',
-  textAlign: 'left'
+  border: "1px solid #ccc",
+  padding: "8px",
+  textAlign: "left",
 };
 
 const Home = () => {
@@ -44,23 +45,23 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(null);
   const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
   const [loadingComments, setLoadingComments] = useState(false);
 
   // Parse search query from URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    setSearchTerm(params.get('search') || '');
+    setSearchTerm(params.get("search") || "");
   }, [location.search]);
 
   // Fetch product list once
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/products')
+      .get("http://localhost:5000/api/products")
       .then((res) => setProducts(res.data))
-      .catch((err) => console.error('Error fetching products:', err));
+      .catch((err) => console.error("Error fetching products:", err));
   }, []);
 
   // Fetch comments when a product is selected
@@ -80,7 +81,7 @@ const Home = () => {
 
   const addToFav = async (productId) => {
     if (!user) {
-      alert('Please log in first');
+      alert("Please log in first");
       return;
     }
 
@@ -89,16 +90,16 @@ const Home = () => {
         `http://localhost:5000/api/users/favorite/${user.email}`,
         { productId }
       );
-      alert('Added to favourites 🎉');
+      alert("Added to favourites 🎉");
     } catch (err) {
-      console.error('Add-fav error:', err);
-      alert('Could not add favourite');
+      console.error("Add-fav error:", err);
+      alert("Could not add favourite");
     }
   };
 
   const handleAddComment = async () => {
     if (!user) {
-      alert('Please login to comment');
+      alert("Please login to comment");
       return;
     }
     if (!newComment.trim()) return;
@@ -108,16 +109,16 @@ const Home = () => {
         { user: user.email, text: newComment }
       );
       setComments(res.data);
-      setNewComment('');
+      setNewComment("");
     } catch (err) {
-      alert('Error adding comment');
+      alert("Error adding comment");
     }
   };
 
   const getSpecRows = (longDescription) => {
     if (!longDescription) return [];
-    const specs = longDescription.split(',').map((s) => s.split(':'));
-    while (specs.length < 25) specs.push(['', '']);
+    const specs = longDescription.split(",").map((s) => s.split(":"));
+    while (specs.length < 25) specs.push(["", ""]);
     return specs.slice(0, 25);
   };
 
@@ -132,11 +133,11 @@ const Home = () => {
 
   return (
     <div>
+      <Banner />
       <h2>Products</h2>
-
       {selected ? (
         <div>
-          <button onClick={handleBack} style={{ marginBottom: '16px' }}>
+          <button onClick={handleBack} style={{ marginBottom: "16px" }}>
             ← Back
           </button>
 
@@ -149,13 +150,14 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              {selected.specs && selected.specs.map((row, idx) => (
-                <tr key={idx}>
-                  <td style={thtdStyle}>{row.spec}</td>
-                  <td style={thtdStyle}>{row.value}</td>
-                  <td style={thtdStyle}>{row.extra}</td>
-                </tr>
-              ))}
+              {selected.specs &&
+                selected.specs.map((row, idx) => (
+                  <tr key={idx}>
+                    <td style={thtdStyle}>{row.spec}</td>
+                    <td style={thtdStyle}>{row.value}</td>
+                    <td style={thtdStyle}>{row.extra}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
 
@@ -170,17 +172,19 @@ const Home = () => {
                 {comments.map((c, idx) => (
                   <li key={c._id || idx}>
                     <b>{c.user}:</b> {c.text}
-                    <span style={{ color: '#888', fontSize: '0.9em' }}>
+                    <span style={{ color: "#888", fontSize: "0.9em" }}>
                       {new Date(c.date).toLocaleString()}
                     </span>
-                    {user?.role === 'admin' && (
+                    {user?.role === "admin" && (
                       <button
-                        style={{ marginLeft: 10, color: 'red' }}
+                        style={{ marginLeft: 10, color: "red" }}
                         onClick={async () => {
                           await axios.delete(
                             `http://localhost:5000/api/products/${selected._id}/comments/${c._id}`
                           );
-                          setComments(comments.filter(com => com._id !== c._id));
+                          setComments(
+                            comments.filter((com) => com._id !== c._id)
+                          );
                         }}
                       >
                         Delete
@@ -194,7 +198,7 @@ const Home = () => {
               <div style={{ marginTop: 12 }}>
                 <textarea
                   rows={2}
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
                   placeholder="Write a comment..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
@@ -209,7 +213,7 @@ const Home = () => {
       ) : filteredProducts.length === 0 ? (
         <p>No products found.</p>
       ) : (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
           {filteredProducts.map((product) => (
             <div
               key={product._id}
@@ -217,7 +221,11 @@ const Home = () => {
               onClick={() => handleCardClick(product)}
             >
               {product.image && (
-                <img src={product.image} alt={product.title} style={imageStyle} />
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  style={imageStyle}
+                />
               )}
 
               <h3>{product.title}</h3>
@@ -229,7 +237,7 @@ const Home = () => {
                   e.stopPropagation();
                   addToFav(product._id);
                 }}
-                style={{ marginTop: 'auto' }}
+                style={{ marginTop: "auto" }}
               >
                 ❤️ Favourite
               </button>
