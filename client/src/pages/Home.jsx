@@ -141,42 +141,21 @@ const Home = () => {
           </button>
 
           <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thtdStyle}>Specification</th>
+                <th style={thtdStyle}>Value</th>
+                <th style={thtdStyle}>Extra</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr>
-                <th style={thtdStyle}>Image</th>
-                <td style={thtdStyle}>
-                  {selected.image && (
-                    <img
-                      src={selected.image}
-                      alt={selected.title}
-                      style={{ width: '120px', height: '120px', objectFit: 'contain' }}
-                    />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <th style={thtdStyle}>Title</th>
-                <td style={thtdStyle}>{selected.title}</td>
-              </tr>
-              <tr>
-                <th style={thtdStyle}>Description</th>
-                <td style={thtdStyle}>{selected.description}</td>
-              </tr>
-              <tr>
-                <th style={thtdStyle}>Price</th>
-                <td style={thtdStyle}>Rs.&nbsp;{selected.price}</td>
-              </tr>
-              {getSpecRows(selected.longDescription).map(([k, v], idx) => (
+              {selected.specs && selected.specs.map((row, idx) => (
                 <tr key={idx}>
-                  <th style={thtdStyle}>{k?.trim() || ''}</th>
-                  <td style={thtdStyle}>{v?.trim() || ''}</td>
+                  <td style={thtdStyle}>{row.spec}</td>
+                  <td style={thtdStyle}>{row.value}</td>
+                  <td style={thtdStyle}>{row.extra}</td>
                 </tr>
               ))}
-              <tr>
-                <td colSpan={2} style={{ textAlign: 'center', padding: '16px' }}>
-                  <button onClick={() => addToFav(selected._id)}>❤️ Add to favourites</button>
-                </td>
-              </tr>
             </tbody>
           </table>
 
