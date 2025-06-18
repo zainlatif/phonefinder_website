@@ -45,7 +45,7 @@ const AdminPanel = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
-  const [specs, setSpecs] = useState(Array(25).fill({ spec: '', value: '', extra: '' }));
+  const [specs, setSpecs] = useState([{ spec: '', value: '', extra: '' }]);
   const [products, setProducts] = useState([]);
   const [editId, setEditId] = useState(null);
 
@@ -59,19 +59,31 @@ const AdminPanel = () => {
       .catch((err) => console.error('Error fetching products:', err));
   };
 
-  // Convert specs array to send to backend
+  // Add a new empty row
+  const addSpecRow = () => setSpecs([...specs, { spec: '', value: '', extra: '' }]);
+
+  // Remove a row by index
+  const removeSpecRow = (idx) => setSpecs(specs.filter((_, i) => i !== idx));
+
+  // Handle input change
+  const handleSpecChange = (idx, col, value) => {
+    setSpecs(prev => prev.map((row, i) =>
+      i === idx ? { ...row, [col]: value } : row
+    ));
+  };
+
+  // Only send filled rows to backend
   const specsToArray = () => specs.filter(row => row.spec || row.value || row.extra);
 
-  // Convert backend specs to array for editing
+  // For editing, load existing specs and add an empty row at the end
   const backendSpecsToArray = (backendSpecs) => {
-    if (!backendSpecs) return Array(25).fill({ spec: '', value: '', extra: '' });
-    const arr = backendSpecs.map(row => ({
+    const arr = (backendSpecs || []).map(row => ({
       spec: row.spec || '',
       value: row.value || '',
       extra: row.extra || ''
     }));
-    while (arr.length < 25) arr.push({ spec: '', value: '', extra: '' });
-    return arr.slice(0, 25);
+    arr.push({ spec: '', value: '', extra: '' }); // Always one empty row
+    return arr;
   };
 
   const handleAddProduct = () => {
@@ -89,7 +101,7 @@ const AdminPanel = () => {
         setDescription('');
         setPrice('');
         setImage('');
-        setSpecs(Array(25).fill({ spec: '', value: '', extra: '' }));
+        setSpecs([{ spec: '', value: '', extra: '' }]);
         fetchProducts();
       })
       .catch((err) => console.error('Error adding product:', err));
@@ -127,7 +139,7 @@ const AdminPanel = () => {
         setDescription('');
         setPrice('');
         setImage('');
-        setSpecs(Array(25).fill({ spec: '', value: '', extra: '' }));
+        setSpecs([{ spec: '', value: '', extra: '' }]);
         fetchProducts();
       })
       .catch((err) => console.error('Error updating product:', err));
@@ -139,17 +151,7 @@ const AdminPanel = () => {
     setDescription('');
     setPrice('');
     setImage('');
-    setSpecs(Array(25).fill({ spec: '', value: '', extra: '' }));
-  };
-
-  const handleSpecChange = (row, col, value) => {
-    setSpecs(prev => {
-      const updated = prev.map(obj => ({ ...obj }));
-      if (col === 0) updated[row].spec = value;
-      if (col === 1) updated[row].value = value;
-      if (col === 2) updated[row].extra = value;
-      return updated;
-    });
+    setSpecs([{ spec: '', value: '', extra: '' }]);
   };
 
   return (
@@ -167,6 +169,7 @@ const AdminPanel = () => {
               <th style={{ border: '1px solid #ccc', padding: '4px' }}>Specification</th>
               <th style={{ border: '1px solid #ccc', padding: '4px' }}>Value</th>
               <th style={{ border: '1px solid #ccc', padding: '4px' }}>Extra</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -176,7 +179,7 @@ const AdminPanel = () => {
                   <input
                     type="text"
                     value={row.spec}
-                    onChange={e => handleSpecChange(idx, 0, e.target.value)}
+                    onChange={e => handleSpecChange(idx, 'spec', e.target.value)}
                     style={{ width: '95%' }}
                   />
                 </td>
@@ -184,7 +187,7 @@ const AdminPanel = () => {
                   <input
                     type="text"
                     value={row.value}
-                    onChange={e => handleSpecChange(idx, 1, e.target.value)}
+                    onChange={e => handleSpecChange(idx, 'value', e.target.value)}
                     style={{ width: '95%' }}
                   />
                 </td>
@@ -192,9 +195,17 @@ const AdminPanel = () => {
                   <input
                     type="text"
                     value={row.extra}
-                    onChange={e => handleSpecChange(idx, 2, e.target.value)}
+                    onChange={e => handleSpecChange(idx, 'extra', e.target.value)}
                     style={{ width: '95%' }}
                   />
+                </td>
+                <td>
+                  {specs.length > 1 && idx !== specs.length - 1 && (
+                    <button type="button" onClick={() => removeSpecRow(idx)} style={{ color: 'red' }}>✕</button>
+                  )}
+                  {idx === specs.length - 1 && (
+                    <button type="button" onClick={addSpecRow} style={{ color: 'green' }}>＋</button>
+                  )}
                 </td>
               </tr>
             ))}
