@@ -14,7 +14,12 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const allProducts = await Product.find();
+    const search = req.query.search;
+    let query = {};
+    if (search) {
+      query = { title: { $regex: search, $options: 'i' } }; // case-insensitive search by title
+    }
+    const allProducts = await Product.find(query);
     res.json(allProducts);
   } catch (err) {
     res.status(500).json({ error: err.message });

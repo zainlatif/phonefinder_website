@@ -4,29 +4,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useLocation } from "react-router-dom";
 import Banner from "../components/Banner";
-
-const cardStyle = {
-  border: "1px solid #ccc",
-  borderRadius: "8px",
-  padding: "16px",
-  marginBottom: "12px",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-  maxWidth: "200px",
-  width: "200px",
-  minHeight: "300px",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  cursor: "pointer",
-};
-
-const imageStyle = {
-  width: "100%",
-  height: "180px",
-  objectFit: "contain",
-  borderRadius: "6px 6px 0 0",
-  marginBottom: "8px",
-};
+import Card from "../components/Card";
 
 const tableStyle = {
   borderCollapse: "collapse",
@@ -39,6 +17,9 @@ const thtdStyle = {
   padding: "8px",
   textAlign: "left",
 };
+
+const getSectionProducts = (products, min, max = Infinity) =>
+  products.filter((p) => p.price > min && p.price <= max);
 
 const Home = () => {
   const { user } = useAuth();
@@ -56,13 +37,21 @@ const Home = () => {
     setSearchTerm(params.get("search") || "");
   }, [location.search]);
 
-  // Fetch product list once
+  // Fetch products from backend, filtered by searchTerm
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/products")
-      .then((res) => setProducts(res.data))
-      .catch((err) => console.error("Error fetching products:", err));
-  }, []);
+    const fetchProducts = async () => {
+      try {
+        const url = searchTerm
+          ? `http://localhost:5000/api/products?search=${encodeURIComponent(searchTerm)}`
+          : "http://localhost:5000/api/products";
+        const res = await axios.get(url);
+        setProducts(res.data);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      }
+    };
+    fetchProducts();
+  }, [searchTerm]);
 
   // Fetch comments when a product is selected
   useEffect(() => {
@@ -130,6 +119,37 @@ const Home = () => {
           p.description?.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : products;
+
+  // Sort products by creation (assuming _id is incremental)
+  const sortedProducts = [...products].sort((a, b) => (a._id < b._id ? 1 : -1));
+
+  // Section products
+  const latestProducts = sortedProducts.slice(0, 8);
+  const above70 = getSectionProducts(products, 70000);
+  const between50and70 = getSectionProducts(products, 50000, 70000);
+  const between35and50 = getSectionProducts(products, 35000, 50000);
+  const between25and35 = getSectionProducts(products, 25000, 35000);
+
+  // Helper to render a section
+  const renderSection = (title, prods) => (
+    <div style={{ marginBottom: 32 }}>
+      <h3 style={{ color: "#e74c3c", marginBottom: 8 }}>{title}</h3>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+        {prods.length === 0 ? (
+          <p>No products found.</p>
+        ) : (
+          prods.map((product) => (
+            <Card
+              key={product._id}
+              product={product}
+              onClick={() => handleCardClick(product)}
+              onFav={addToFav}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div>
@@ -210,40 +230,29 @@ const Home = () => {
             )}
           </div>
         </div>
-      ) : filteredProducts.length === 0 ? (
-        <p>No products found.</p>
       ) : (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
-          {filteredProducts.map((product) => (
-            <div
-              key={product._id}
-              style={cardStyle}
-              onClick={() => handleCardClick(product)}
-            >
-              {product.image && (
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  style={imageStyle}
-                />
-              )}
-
-              <h3>{product.title}</h3>
-              <p>{product.description}</p>
-              <p>Rs.&nbsp;{product.price}</p>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  addToFav(product._id);
-                }}
-                style={{ marginTop: "auto" }}
-              >
-                ❤️ Favourite
-              </button>
-            </div>
-          ))}
-        </div>
+        <>
+          {renderSection(
+            "Latest Mobile Phones & Prices in Pakistan",
+            latestProducts
+          )}
+          {renderSection(
+            "Mobile phones Price in Pakistan > 70,000 Rs.",
+            above70
+          )}
+          {renderSection(
+            "Mobile phones Price in Pakistan 50,000 - 70,000 Rs.",
+            between50and70
+          )}
+          {renderSection(
+            "Mobile Prices Between 35,000 and 50,000 Rs.",
+            between35and50
+          )}
+          {renderSection(
+            "Mobile Prices Between 25,000 and 35,000 Rs.",
+            between25and35
+          )}
+        </>
       )}
     </div>
   );
