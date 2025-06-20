@@ -129,6 +129,7 @@ const Home = () => {
   const between50and70 = getSectionProducts(products, 50000, 70000);
   const between35and50 = getSectionProducts(products, 35000, 50000);
   const between25and35 = getSectionProducts(products, 25000, 35000);
+  const below25 = filteredProducts.filter((p) => p.price <= 25000);
 
   // Helper to render a section
   const renderSection = (title, prods) => (
@@ -233,10 +234,6 @@ const Home = () => {
       ) : (
         <>
           {renderSection(
-            "Latest Mobile Phones & Prices in Pakistan",
-            latestProducts
-          )}
-          {renderSection(
             "Mobile phones Price in Pakistan > 70,000 Rs.",
             above70
           )}
@@ -251,6 +248,10 @@ const Home = () => {
           {renderSection(
             "Mobile Prices Between 25,000 and 35,000 Rs.",
             between25and35
+          )}
+          {renderSection(
+            "Mobile Prices Below 25,000 Rs.",
+            below25
           )}
         </>
       )}
