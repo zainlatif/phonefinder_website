@@ -6,6 +6,7 @@ import Signup from './pages/Signup';
 import Account from './pages/Account';
 import Header from './components/Header';
 import AdminPanel from './pages/AdminPanel';
+import SectionProducts from "./pages/SectionProducts";
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/account" element={<Account />} />
         <Route path="/admin" element={<AdminPanel />} />
-
+        <Route path="/section/:sectionKey" element={<SectionProducts />} />
       </Routes>
     </Router>
   );

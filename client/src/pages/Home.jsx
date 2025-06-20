@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import Card from "../components/Card";
+import ProductDetails from "../components/ProductDetails";
 
 const tableStyle = {
   borderCollapse: "collapse",
@@ -30,6 +31,7 @@ const Home = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loadingComments, setLoadingComments] = useState(false);
+  const navigate = useNavigate();
 
   // Parse search query from URL
   useEffect(() => {
@@ -123,31 +125,36 @@ const Home = () => {
   // Sort products by creation (assuming _id is incremental)
   const sortedProducts = [...products].sort((a, b) => (a._id < b._id ? 1 : -1));
 
-  // Section products
-  const latestProducts = sortedProducts.slice(0, 8);
+  // Section logic (use filteredProducts if you have search, else products)
   const above70 = getSectionProducts(products, 70000);
   const between50and70 = getSectionProducts(products, 50000, 70000);
   const between35and50 = getSectionProducts(products, 35000, 50000);
   const between25and35 = getSectionProducts(products, 25000, 35000);
-  const below25 = filteredProducts.filter((p) => p.price <= 25000);
+  const below25 = products.filter((p) => p.price <= 25000);
 
-  // Helper to render a section
-  const renderSection = (title, prods) => (
+  // Helper to render a section with "More" button
+  const renderSection = (title, prods, sectionKey) => (
     <div style={{ marginBottom: 32 }}>
-      <h3 style={{ color: "#e74c3c", marginBottom: 8 }}>{title}</h3>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
-        {prods.length === 0 ? (
-          <p>No products found.</p>
-        ) : (
-          prods.map((product) => (
-            <Card
-              key={product._id}
-              product={product}
-              onClick={() => handleCardClick(product)}
-              onFav={addToFav}
-            />
-          ))
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h3 style={{ color: "#222", marginBottom: 8 }}>{title}</h3>
+        {prods.length > 7 && (
+          <button
+            style={{ color: "red", background: "none", border: "none", fontWeight: "bold", cursor: "pointer" }}
+            onClick={() => navigate(`/section/${sectionKey}`)}
+          >
+            More&gt;&gt;
+          </button>
         )}
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+        {prods.slice(0, 7).map((product) => (
+          <Card
+            key={product._id}
+            product={product}
+            onClick={() => handleCardClick(product)}
+            onFav={addToFav}
+          />
+        ))}
       </div>
     </div>
   );
@@ -157,102 +164,14 @@ const Home = () => {
       <Banner />
       <h2>Products</h2>
       {selected ? (
-        <div>
-          <button onClick={handleBack} style={{ marginBottom: "16px" }}>
-            ← Back
-          </button>
-
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                <th style={thtdStyle}>Specification</th>
-                <th style={thtdStyle}>Value</th>
-                <th style={thtdStyle}>Extra</th>
-              </tr>
-            </thead>
-            <tbody>
-              {selected.specs &&
-                selected.specs.map((row, idx) => (
-                  <tr key={idx}>
-                    <td style={thtdStyle}>{row.spec}</td>
-                    <td style={thtdStyle}>{row.value}</td>
-                    <td style={thtdStyle}>{row.extra}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-
-          <div style={{ marginTop: 32 }}>
-            <h3>Reviews & Comments</h3>
-            {loadingComments ? (
-              <p>Loading comments...</p>
-            ) : comments.length === 0 ? (
-              <p>No comments yet.</p>
-            ) : (
-              <ul>
-                {comments.map((c, idx) => (
-                  <li key={c._id || idx}>
-                    <b>{c.user}:</b> {c.text}
-                    <span style={{ color: "#888", fontSize: "0.9em" }}>
-                      {new Date(c.date).toLocaleString()}
-                    </span>
-                    {user?.role === "admin" && (
-                      <button
-                        style={{ marginLeft: 10, color: "red" }}
-                        onClick={async () => {
-                          await axios.delete(
-                            `http://localhost:5000/api/products/${selected._id}/comments/${c._id}`
-                          );
-                          setComments(
-                            comments.filter((com) => com._id !== c._id)
-                          );
-                        }}
-                      >
-                        Delete
-                      </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
-            {user && (
-              <div style={{ marginTop: 12 }}>
-                <textarea
-                  rows={2}
-                  style={{ width: "100%" }}
-                  placeholder="Write a comment..."
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                />
-                <button onClick={handleAddComment} style={{ marginTop: 4 }}>
-                  Add Comment
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+        <ProductDetails product={selected} onBack={handleBack} />
       ) : (
         <>
-          {renderSection(
-            "Mobile phones Price in Pakistan > 70,000 Rs.",
-            above70
-          )}
-          {renderSection(
-            "Mobile phones Price in Pakistan 50,000 - 70,000 Rs.",
-            between50and70
-          )}
-          {renderSection(
-            "Mobile Prices Between 35,000 and 50,000 Rs.",
-            between35and50
-          )}
-          {renderSection(
-            "Mobile Prices Between 25,000 and 35,000 Rs.",
-            between25and35
-          )}
-          {renderSection(
-            "Mobile Prices Below 25,000 Rs.",
-            below25
-          )}
+          {renderSection("Mobile phones Price in Pakistan > 70,000 Rs.", above70, "above70")}
+          {renderSection("Mobile phones Price in Pakistan 50,000 - 70,000 Rs.", between50and70, "50to70")}
+          {renderSection("Mobile Prices Between 35,000 and 50,000 Rs.", between35and50, "35to50")}
+          {renderSection("Mobile Prices Between 25,000 and 35,000 Rs.", between25and35, "25to35")}
+          {renderSection("Mobile Prices Below 25,000 Rs.", below25, "below25")}
         </>
       )}
     </div>
