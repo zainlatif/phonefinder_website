@@ -50,13 +50,46 @@ const ProductDetails = ({ product, onBack }) => {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: 700, margin: "0 auto", padding: 24 }}>
       {onBack && (
         <button onClick={onBack} style={{ marginBottom: "16px" }}>
           ← Back
         </button>
       )}
 
+      {/* Product Image */}
+      {product.image && (
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <img
+            src={product.image}
+            alt={product.title}
+            style={{
+              width: "220px",
+              height: "220px",
+              objectFit: "contain",
+              borderRadius: 12,
+              boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+              background: "#fff",
+            }}
+          />
+        </div>
+      )}
+
+      {/* Title and Description */}
+      <h2 style={{ margin: "0 0 8px 0", textAlign: "center" }}>
+        {product.title}
+      </h2>
+      <p
+        style={{
+          margin: "0 0 18px 0",
+          textAlign: "center",
+          color: "#444",
+        }}
+      >
+        {product.description}
+      </p>
+
+      {/* Specs Table */}
       <table style={tableStyle}>
         <thead>
           <tr>
@@ -77,6 +110,7 @@ const ProductDetails = ({ product, onBack }) => {
         </tbody>
       </table>
 
+      {/* Comments Section */}
       <div style={{ marginTop: 32 }}>
         <h3>Reviews & Comments</h3>
         {loadingComments ? (
