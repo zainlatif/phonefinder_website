@@ -45,6 +45,7 @@ const AdminPanel = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
+  const [image2, setImage2] = useState('');
   const [specs, setSpecs] = useState([{ spec: '', value: '', extra: '' }]);
   const [products, setProducts] = useState([]);
   const [editId, setEditId] = useState(null);
@@ -93,6 +94,7 @@ const AdminPanel = () => {
       description,
       price,
       image,
+      image2,
       specs: specsToArray()
     };
     axios.post('http://localhost:5000/api/products', newProduct)
@@ -101,6 +103,7 @@ const AdminPanel = () => {
         setDescription('');
         setPrice('');
         setImage('');
+        setImage2('');
         setSpecs([{ spec: '', value: '', extra: '' }]);
         fetchProducts();
       })
@@ -121,6 +124,7 @@ const AdminPanel = () => {
     setDescription(product.description);
     setPrice(product.price);
     setImage(product.image);
+    setImage2(product.image2 || '');
     setSpecs(backendSpecsToArray(product.specs));
   };
 
@@ -139,6 +143,7 @@ const AdminPanel = () => {
         setDescription('');
         setPrice('');
         setImage('');
+        setImage2('');
         setSpecs([{ spec: '', value: '', extra: '' }]);
         fetchProducts();
       })
@@ -151,6 +156,7 @@ const AdminPanel = () => {
     setDescription('');
     setPrice('');
     setImage('');
+    setImage2('');
     setSpecs([{ spec: '', value: '', extra: '' }]);
   };
 
@@ -161,6 +167,7 @@ const AdminPanel = () => {
       <input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} /><br />
       <input placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} /><br />
       <input placeholder="Image URL" value={image} onChange={(e) => setImage(e.target.value)} /><br />
+      <input placeholder="Second Image URL (optional)" value={image2} onChange={(e) => setImage2(e.target.value)} /><br />
       <div style={{ margin: '16px 0' }}>
         <b>Product Specifications:</b>
         <table style={{ borderCollapse: 'collapse', width: '100%', marginTop: '8px' }}>

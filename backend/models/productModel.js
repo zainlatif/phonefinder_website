@@ -16,8 +16,9 @@ const productSchema = new mongoose.Schema({
   title: String,
   description: String,
   price: Number,
-  image: String,
-  specs: [specSchema], // <-- use this instead of longDescription
+  image: String,         // main image
+  image2: String,        // second image (optional)
+  specs: [specSchema],
   comments: [commentSchema]
 });
 

@@ -58,8 +58,16 @@ const ProductDetails = ({ product, onBack }) => {
       )}
 
       {/* Product Image */}
-      {product.image && (
-        <div style={{ textAlign: "center", marginBottom: 24 }}>
+      <div
+        style={{
+          textAlign: "center",
+          marginBottom: 24,
+          display: "flex",
+          justifyContent: "center",
+          gap: 24,
+        }}
+      >
+        {product.image && (
           <img
             src={product.image}
             alt={product.title}
@@ -72,8 +80,22 @@ const ProductDetails = ({ product, onBack }) => {
               background: "#fff",
             }}
           />
-        </div>
-      )}
+        )}
+        {product.image2 && (
+          <img
+            src={product.image2}
+            alt={product.title + " 2"}
+            style={{
+              width: "220px",
+              height: "220px",
+              objectFit: "contain",
+              borderRadius: 12,
+              boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+              background: "#fff",
+            }}
+          />
+        )}
+      </div>
 
       {/* Title and Description */}
       <h2 style={{ margin: "0 0 8px 0", textAlign: "center" }}>
