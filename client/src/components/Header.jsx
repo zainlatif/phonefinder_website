@@ -29,6 +29,7 @@ const Header = () => {
     }}>
       <div>
         <Link to="/">Home</Link>{" | "}
+        <Link to="/compare">Compare</Link>{" | "}
         {!user && <><Link to="/login">Login</Link>{" | "}<Link to="/signup">Signup</Link></>}
         {user && <Link to="/account">Account</Link>}
         {user?.role === 'admin' && <>{" | "}<Link to="/admin">Admin Panel</Link></>}

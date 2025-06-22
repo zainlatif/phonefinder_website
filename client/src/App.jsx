@@ -7,6 +7,7 @@ import Account from './pages/Account';
 import Header from './components/Header';
 import AdminPanel from './pages/AdminPanel';
 import SectionProducts from "./pages/SectionProducts";
+import ComparePage from "./pages/ComparePage";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/section/:sectionKey" element={<SectionProducts />} />
+        <Route path="/compare" element={<ComparePage />} />
       </Routes>
     </Router>
   );
