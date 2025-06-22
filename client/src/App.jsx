@@ -8,6 +8,7 @@ import Header from './components/Header';
 import AdminPanel from './pages/AdminPanel';
 import SectionProducts from "./pages/SectionProducts";
 import ComparePage from "./pages/ComparePage";
+import News from './pages/News';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/section/:sectionKey" element={<SectionProducts />} />
         <Route path="/compare" element={<ComparePage />} />
+        <Route path="/news" element={<News />} />
       </Routes>
     </Router>
   );

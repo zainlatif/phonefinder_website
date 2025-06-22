@@ -12,6 +12,14 @@ app.use(express.json());
 const productRoutes = require("./routes/productRoutes");
 app.use("/api/products", productRoutes);
 
+// Import user routes
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/users", userRoutes);
+
+// Import news routes
+const newsRoutes = require('./routes/newsRoutes');
+app.use('/api/news', newsRoutes);
+
 // Connect to MongoDB and start server
 mongoose
   .connect(process.env.MONGO_URI)
@@ -22,7 +30,3 @@ mongoose
     );
   })
   .catch((err) => console.error("❌ MongoDB connection error:", err));
-
-//
-const userRoutes = require("./routes/userRoutes");
-app.use("/api/users", userRoutes);

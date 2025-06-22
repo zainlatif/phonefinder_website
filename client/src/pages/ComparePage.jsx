@@ -79,7 +79,7 @@ const ComparePage = () => {
                     <img
                       src={product.image}
                       alt={product.title}
-                      style={{ width: 40, height: 40, objectFit: "contain", marginRight: 10 }}
+                      style={{ width: 50, height: 50, objectFit: "contain", marginRight: 10 }}
                     />
                     <span>{product.title}</span>
                   </div>
@@ -95,7 +95,7 @@ const ComparePage = () => {
               fontSize: 16
             }}>
               <div>
-                <img src="/compare-phone-placeholder.png" alt="placeholder" style={{ width: 60, opacity: 0.3 }} />
+                <img src="/placeholder/compareplaceholder.png" alt="placeholder" style={{ width: 60, opacity: 0.3 }} />
               </div>
               Add a device to compare
             </div>
