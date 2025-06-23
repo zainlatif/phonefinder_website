@@ -62,6 +62,7 @@ const Header = () => {
         <Link to="/" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Home</Link>
         <Link to="/compare" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Compare</Link>
         <Link to="/news" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>News</Link>
+        <Link to="/reviews" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Reviews</Link>
       </div>
 
       {/* Center: Search */}

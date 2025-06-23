@@ -9,6 +9,7 @@ import AdminPanel from './pages/AdminPanel';
 import SectionProducts from "./pages/SectionProducts";
 import ComparePage from "./pages/ComparePage";
 import News from './pages/News';
+import Review from './pages/Review';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/section/:sectionKey" element={<SectionProducts />} />
         <Route path="/compare" element={<ComparePage />} />
         <Route path="/news" element={<News />} />
+        <Route path="/reviews" element={<Review />} />
       </Routes>
     </Router>
   );

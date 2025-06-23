@@ -20,6 +20,10 @@ app.use("/api/users", userRoutes);
 const newsRoutes = require('./routes/newsRoutes');
 app.use('/api/news', newsRoutes);
 
+// Import review routes
+const reviewRoutes = require('./routes/reviewRoutes');
+app.use('/api/reviews', reviewRoutes);
+
 // Connect to MongoDB and start server
 mongoose
   .connect(process.env.MONGO_URI)
