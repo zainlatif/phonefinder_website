@@ -1,0 +1,87 @@
+/* Main compare container */
+.compare-container {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Each column */
+.compare-col {
+  flex: 1;
+  min-width: 320px;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+/* Suggestions dropdown */
+.compare-suggestions {
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: relative;
+  z-index: 2;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+/* Suggestion item */
+.compare-suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background 0.15s;
+}
+.compare-suggestion-item:last-child {
+  border-bottom: none;
+}
+.compare-suggestion-item:hover {
+  background: #f7f7f7;
+}
+.compare-suggestion-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+/* Responsive: Tablet (stack columns vertically) */
+@media (max-width: 900px) {
+  .compare-container {
+    flex-direction: column;
+    gap: 16px;
+    padding: 12px;
+    align-items: stretch;
+  }
+  .compare-col {
+    max-width: 100%;
+    margin: 0 auto 16px auto;
+  }
+}
+
+/* Responsive: Mobile (smaller padding, full width) */
+@media (max-width: 600px) {
+  .compare-container {
+    padding: 4px;
+    gap: 8px;
+  }
+  .compare-col {
+    padding: 8px;
+    min-width: 0;
+    width: 100%;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  .compare-suggestion-item img {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+  }
+}

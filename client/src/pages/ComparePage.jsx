@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import "./ComparePage.css";
 
 const ComparePage = () => {
   const [query1, setQuery1] = useState("");
@@ -22,9 +23,9 @@ const ComparePage = () => {
   };
 
   return (
-    <div style={{ display: "flex", gap: 24, padding: 24 }}>
+    <div className="compare-container">
       {[1, 2].map((col) => (
-        <div key={col} style={{ flex: 1, minWidth: 320 }}>
+        <div key={col} className="compare-col">
           <div style={{ marginBottom: 8, fontWeight: "bold" }}>
             COMPARE WITH
           </div>
@@ -44,26 +45,14 @@ const ComparePage = () => {
             style={{ width: "100%", padding: 8, marginBottom: 4 }}
           />
           {(col === 1 ? query1 : query2) && (
-            <div style={{
-              background: "#fff",
-              border: "1px solid #ddd",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-              position: "relative",
-              zIndex: 2
-            }}>
+            <div className="compare-suggestions">
               {(col === 1 ? results1 : results2).length === 0 ? (
                 <div style={{ padding: 8, color: "#888" }}>No results</div>
               ) : (
                 (col === 1 ? results1 : results2).map(product => (
                   <div
                     key={product._id}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: 8,
-                      cursor: "pointer",
-                      borderBottom: "1px solid #eee"
-                    }}
+                    className="compare-suggestion-item"
                     onClick={() => {
                       if (col === 1) {
                         setSelected1(product);
