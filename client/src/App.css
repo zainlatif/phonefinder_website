@@ -1,0 +1,289 @@
+/* ====== GLOBAL RESETS ====== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7f7f7;
+  color: #222;
+  min-height: 100vh;
+}
+
+/* ====== FLEX LAYOUT HELPERS ====== */
+.flex {
+  display: flex;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+.flex-between {
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+/* ====== CONTAINER & SECTION ====== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.section {
+  margin-bottom: 32px;
+  padding: 16px 0;
+}
+
+/* ====== BUTTONS ====== */
+button,
+input[type="submit"] {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover,
+input[type="submit"]:hover {
+  background: #c0392b;
+}
+
+/* ====== FORMS ====== */
+input,
+textarea {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+input:focus,
+textarea:focus {
+  border-color: #e74c3c;
+  outline: none;
+}
+
+/* ====== TABLES ====== */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 24px;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+/* ====== HEADER ====== */
+.header {
+  width: 100%;
+  background: linear-gradient(90deg, #e74c3c 0%, #f39c12 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.header .nav {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding-left: 5px;
+}
+.header .nav a {
+  color: #fff;
+  font-weight: 500;
+  margin-right: 16px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.header .nav a:hover {
+  color: #222;
+}
+.header .search {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+.header .auth {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
+  padding-right: 5px;
+}
+
+/* ====== PAGINATION ====== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin: 24px 0;
+}
+.pagination button,
+.pagination span {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #e74c3c;
+  background: #fff;
+  color: #e74c3c;
+  cursor: pointer;
+  font-weight: 500;
+}
+.pagination .active,
+.pagination button.active {
+  background: #e74c3c;
+  color: #fff;
+}
+
+/* ====== RESPONSIVE BREAKPOINTS ====== */
+
+/* Large desktop */
+@media (min-width: 1200px) {
+  .container {
+    padding: 32px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .container {
+    padding: 10px;
+  }
+  .header .nav a {
+    margin-right: 10px;
+  }
+}
+
+/* Phone */
+@media (max-width: 600px) {
+  .container {
+    padding: 4px;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 0;
+  }
+  .header .nav,
+  .header .search,
+  .header .auth {
+    flex: unset;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 5px;
+    margin-bottom: 6px;
+  }
+  .header .search {
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .header .auth {
+    justify-content: flex-end;
+    margin-bottom: 0;
+  }
+}
+
+/* Hide scrollbars for card grids on mobile */
+@media (max-width: 600px) {
+  .responsive-card-grid {
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .responsive-card-grid::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Hide desktop nav and show hamburger on mobile */
+@media (max-width: 700px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .hamburger {
+    display: block !important;
+  }
+}
+
+/* Mobile nav overlay */
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Mobile nav sidebar */
+.mobile-nav {
+  background: #fff;
+  color: #e74c3c;
+  width: 220px;
+  height: 100%;
+  padding: 40px 20px 20px 20px;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.13);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+}
+.mobile-nav a {
+  color: #e74c3c;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 8px 0;
+  transition: color 0.2s;
+}
+.mobile-nav a:hover {
+  color: #f39c12;
+}
+
+.return (
+  <div className="responsive-container">
+    <Banner />
+    <h2>Products</h2>
+    <div className="products-center-box">
+      {selected ? (
+        <ProductDetails product={selected} onBack={handleBack} />
+      ) : (
+        <>
+          {renderSection("Mobile phones Price in Pakistan > 70,000 Rs.", above70, "above70")}
+          {renderSection("Mobile phones Price in Pakistan 50,000 - 70,000 Rs.", between50and70, "50to70")}
+          {renderSection("Mobile Prices Between 35,000 and 50,000 Rs.", between35and50, "35to50")}
+          {renderSection("Mobile Prices Between 25,000 and 35,000 Rs.", between25and35, "25to35")}
+          {renderSection("Mobile Prices Below 25,000 Rs.", below25, "below25")}
+        </>
+      )}
+    </div>
+  </div>
+);

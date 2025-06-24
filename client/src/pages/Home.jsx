@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import Card from "../components/Card";
 import ProductDetails from "../components/ProductDetails";
+import "./Home.css";
 
 const tableStyle = {
   borderCollapse: "collapse",
@@ -134,19 +135,25 @@ const Home = () => {
 
   // Helper to render a section with "More" button
   const renderSection = (title, prods, sectionKey) => (
-    <div style={{ marginBottom: 32 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div className="responsive-section">
+      <div className="responsive-section-header">
         <h3 style={{ color: "#222", marginBottom: 8 }}>{title}</h3>
         {prods.length > 7 && (
           <button
-            style={{ color: "red", background: "none", border: "none", fontWeight: "bold", cursor: "pointer" }}
+            style={{
+              color: "red",
+              background: "none",
+              border: "none",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
             onClick={() => navigate(`/section/${sectionKey}`)}
           >
             More&gt;&gt;
           </button>
         )}
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+      <div className="responsive-card-grid">
         {prods.slice(0, 7).map((product) => (
           <Card
             key={product._id}
@@ -160,20 +167,22 @@ const Home = () => {
   );
 
   return (
-    <div>
+    <div className="responsive-container">
       <Banner />
       <h2>Products</h2>
-      {selected ? (
-        <ProductDetails product={selected} onBack={handleBack} />
-      ) : (
-        <>
-          {renderSection("Mobile phones Price in Pakistan > 70,000 Rs.", above70, "above70")}
-          {renderSection("Mobile phones Price in Pakistan 50,000 - 70,000 Rs.", between50and70, "50to70")}
-          {renderSection("Mobile Prices Between 35,000 and 50,000 Rs.", between35and50, "35to50")}
-          {renderSection("Mobile Prices Between 25,000 and 35,000 Rs.", between25and35, "25to35")}
-          {renderSection("Mobile Prices Below 25,000 Rs.", below25, "below25")}
-        </>
-      )}
+      <div className="products-center-box">
+        {selected ? (
+          <ProductDetails product={selected} onBack={handleBack} />
+        ) : (
+          <>
+            {renderSection("Mobile phones Price in Pakistan > 70,000 Rs.", above70, "above70")}
+            {renderSection("Mobile phones Price in Pakistan 50,000 - 70,000 Rs.", between50and70, "50to70")}
+            {renderSection("Mobile Prices Between 35,000 and 50,000 Rs.", between35and50, "35to50")}
+            {renderSection("Mobile Prices Between 25,000 and 35,000 Rs.", between25and35, "25to35")}
+            {renderSection("Mobile Prices Below 25,000 Rs.", below25, "below25")}
+          </>
+        )}
+      </div>
     </div>
   );
 };

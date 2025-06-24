@@ -1,38 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { FaBars, FaTimes, FaSearch, FaUserCircle } from "react-icons/fa";
+import '../app.css';
 
-const accountIcon = (
-  <span
-    style={{
-      display: 'inline-block',
-      width: 28,
-      height: 28,
-      borderRadius: '50%',
-      background: '#e74c3c',
-      color: '#fff',
-      textAlign: 'center',
-      lineHeight: '28px',
-      fontWeight: 'bold',
-      fontSize: 18,
-      marginRight: 6,
-      verticalAlign: 'middle',
-      cursor: 'pointer',
-      userSelect: 'none'
-    }}
-  >
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="8" r="4" stroke="white" strokeWidth="2"/>
-      <path d="M4 20c0-2.2 3.6-4 8-4s8 1.8 8 4" stroke="white" strokeWidth="2"/>
-    </svg>
-  </span>
-);
-
-const Header = () => {
+const Header = ({ products = [] }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [showMenu, setShowMenu] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchRef = useRef();
 
   const handleLogout = () => {
     logout();
@@ -41,9 +21,36 @@ const Header = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate(`/?search=${encodeURIComponent(search)}`);
-    setSearch('');
+    if (search.trim()) {
+      navigate(`/?search=${encodeURIComponent(search)}`);
+      setSearch('');
+      setShowSuggestions(false);
+    }
   };
+
+  useEffect(() => {
+    if (search.trim() && products.length > 0) {
+      const filtered = products
+        .filter(p => p.title.toLowerCase().includes(search.toLowerCase()))
+        .slice(0, 6)
+        .map(p => p.title);
+      setSuggestions(filtered);
+      setShowSuggestions(filtered.length > 0);
+    } else {
+      setShowSuggestions(false);
+    }
+  }, [search, products]);
+
+  // Hide suggestions when clicking outside
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
 
   return (
     <div
@@ -57,17 +64,82 @@ const Header = () => {
         boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
       }}
     >
-      {/* Left: Home & Compare */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', minWidth: 0, paddingLeft: 5 }}>
+      {/* Hamburger for mobile */}
+      <button
+        className="hamburger"
+        onClick={() => setMobileNavOpen(true)}
+        style={{
+          display: 'none',
+          background: 'none',
+          border: 'none',
+          color: '#fff',
+          fontSize: 28,
+          marginLeft: 10,
+          cursor: 'pointer'
+        }}
+      >
+        <FaBars />
+      </button>
+
+      {/* Left: Home & Compare (desktop) */}
+      <div className="desktop-nav" style={{ flex: 1, display: 'flex', alignItems: 'center', minWidth: 0, paddingLeft: 5 }}>
         <Link to="/" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Home</Link>
         <Link to="/compare" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Compare</Link>
         <Link to="/news" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>News</Link>
         <Link to="/reviews" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Reviews</Link>
       </div>
 
+      {/* Mobile Sidebar Nav */}
+      {mobileNavOpen && (
+        <div className="mobile-nav-overlay" onClick={() => setMobileNavOpen(false)}>
+          <div className="mobile-nav" onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => setMobileNavOpen(false)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#e74c3c',
+                fontSize: 28,
+                position: 'absolute',
+                top: 12,
+                right: 16,
+                cursor: 'pointer'
+              }}
+            >
+              <FaTimes />
+            </button>
+            <Link to="/" onClick={() => setMobileNavOpen(false)}>Home</Link>
+            <Link to="/compare" onClick={() => setMobileNavOpen(false)}>Compare</Link>
+            <Link to="/news" onClick={() => setMobileNavOpen(false)}>News</Link>
+            <Link to="/reviews" onClick={() => setMobileNavOpen(false)}>Reviews</Link>
+          </div>
+        </div>
+      )}
+
       {/* Center: Search */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', minWidth: 0 }}>
-        <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: 350 }}>
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'center',
+          minWidth: 0,
+          zIndex: 2,
+          position: 'relative'
+        }}
+        ref={searchRef}
+      >
+        <form
+          onSubmit={handleSearch}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+            maxWidth: 350,
+            margin: '0 auto',
+            position: 'relative'
+          }}
+          autoComplete="off"
+        >
           <input
             type="text"
             placeholder="Search products..."
@@ -80,24 +152,68 @@ const Header = () => {
               outline: 'none',
               fontSize: 15,
               minWidth: 0,
-              flex: 1
+              width: '100%'
             }}
+            onFocus={() => setShowSuggestions(suggestions.length > 0)}
+            ref={searchRef}
           />
           <button
             type="submit"
             style={{
-              marginLeft: 0,
-              padding: '4px 12px',
-              borderRadius: '0 4px 4px 0',
               border: 'none',
               background: '#fff',
               color: '#e74c3c',
-              fontWeight: 600,
-              cursor: 'pointer'
+              borderRadius: '0 4px 4px 0',
+              padding: '4px 12px',
+              fontSize: 18,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
+            aria-label="Search"
           >
-            Search
+            <FaSearch />
           </button>
+          {showSuggestions && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '110%',
+                left: 0,
+                right: 0,
+                background: '#fff',
+                color: '#222',
+                borderRadius: 4,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.13)',
+                zIndex: 100,
+                maxHeight: 180,
+                overflowY: 'auto'
+              }}
+            >
+              {suggestions.length === 0 ? (
+                <div style={{ padding: 8, color: "#888" }}>No results</div>
+              ) : (
+                suggestions.map((title, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      padding: '8px 12px',
+                      cursor: 'pointer',
+                      borderBottom: idx !== suggestions.length - 1 ? '1px solid #eee' : 'none'
+                    }}
+                    onMouseDown={() => {
+                      setSearch(title);
+                      setShowSuggestions(false);
+                      navigate(`/?search=${encodeURIComponent(title)}`);
+                    }}
+                  >
+                    {title}
+                  </div>
+                ))
+              )}
+            </div>
+          )}
         </form>
       </div>
 
@@ -115,7 +231,7 @@ const Header = () => {
               onClick={() => setShowMenu(v => !v)}
               style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
             >
-              {accountIcon}
+              <FaUserCircle style={{ fontSize: 28, color: '#fff', marginRight: 6 }} />
               <span style={{ fontWeight: 500 }}>{user.name || 'Account'}</span>
             </span>
             {showMenu && (
