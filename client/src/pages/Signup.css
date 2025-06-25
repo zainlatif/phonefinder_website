@@ -1,0 +1,125 @@
+.signup-container {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f7f7;
+}
+
+.signup-form {
+  background: #fff;
+  padding: 32px 28px 24px 28px;
+  border-radius: 10px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  min-width: 320px;
+  max-width: 350px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.signup-form h2 {
+  margin-bottom: 8px;
+  color: #e74c3c;
+  text-align: center;
+}
+
+.signup-form label {
+  font-weight: 500;
+  margin-bottom: 2px;
+  color: #333;
+}
+
+.signup-form input[type="email"],
+.signup-form input[type="password"],
+.signup-form input[type="text"] {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border 0.2s;
+}
+
+.signup-form input:focus {
+  border-color: #e74c3c;
+  outline: none;
+}
+
+.signup-password-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.signup-password-row input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.show-pass-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  margin-left: -32px;
+  cursor: pointer;
+  color: #e74c3c;
+  outline: none;
+  padding: 0 8px;
+}
+
+.signup-policy-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0 0;
+}
+
+.signup-policy-label {
+  font-size: 0.98rem;
+  color: #444;
+  user-select: none;
+}
+
+.signup-policy-label a {
+  color: #e74c3c;
+  text-decoration: underline;
+}
+
+.signup-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.signup-btn:hover {
+  background: #c0392b;
+}
+
+.signup-error {
+  background: #ffeaea;
+  color: #c0392b;
+  border: 1px solid #e74c3c;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-size: 0.98rem;
+}
+
+@media (max-width: 500px) {
+  .signup-form {
+    min-width: 90vw;
+    padding: 18px 6vw;
+  }
+}

@@ -10,6 +10,7 @@ import SectionProducts from "./pages/SectionProducts";
 import ComparePage from "./pages/ComparePage";
 import News from './pages/News';
 import Review from './pages/Review';
+import Footer from './components/Footer';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/news" element={<News />} />
         <Route path="/reviews" element={<Review />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }

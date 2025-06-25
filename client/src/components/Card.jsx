@@ -40,7 +40,7 @@ const Card = ({ product, onClick, onFav }) => (
           e.stopPropagation();
           onFav(product._id);
         }}
-        style={{ marginTop: "6px" }}
+        style={{ marginTop: "2px" }}
       >
         ❤️ Favourite
       </button>

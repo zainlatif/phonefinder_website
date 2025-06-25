@@ -7,7 +7,7 @@
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   background: #f7f7f7;
   color: #222;
   min-height: 100vh;
@@ -42,7 +42,7 @@ body {
   padding: 16px;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
 .section {
@@ -91,7 +91,8 @@ table {
   width: 100%;
   margin-top: 24px;
 }
-th, td {
+th,
+td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
@@ -102,7 +103,7 @@ th, td {
   width: 100%;
   background: linear-gradient(90deg, #e74c3c 0%, #f39c12 100%);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   padding: 10px 0;
   display: flex;
   align-items: center;
@@ -236,8 +237,11 @@ th, td {
 /* Mobile nav overlay */
 .mobile-nav-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.3);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
   z-index: 1000;
   display: flex;
   justify-content: flex-start;
@@ -250,7 +254,7 @@ th, td {
   width: 220px;
   height: 100%;
   padding: 40px 20px 20px 20px;
-  box-shadow: 2px 0 12px rgba(0,0,0,0.13);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.13);
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -286,4 +290,4 @@ th, td {
       )}
     </div>
   </div>
-);
+);;
