@@ -11,6 +11,7 @@ import ComparePage from "./pages/ComparePage";
 import News from './pages/News';
 import Review from './pages/Review';
 import Footer from './components/Footer';
+import FavorateProduct from './pages/FavorateProduct';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/compare" element={<ComparePage />} />
         <Route path="/news" element={<News />} />
         <Route path="/reviews" element={<Review />} />
+        <Route path="/favourites" element={<FavorateProduct />} />
       </Routes>
       <Footer />
     </Router>

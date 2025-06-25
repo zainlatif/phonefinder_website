@@ -26,7 +26,7 @@ const imageStyle = {
   marginBottom: "4px" // reduced margin
 };
 
-const Card = ({ product, onClick, onFav }) => (
+const Card = ({ product, onClick, onFav, favLabel = "❤️" }) => (
   <div style={cardStyle} onClick={onClick}>
     {product.image && (
       <img src={product.image} alt={product.title} style={imageStyle} />
@@ -40,9 +40,9 @@ const Card = ({ product, onClick, onFav }) => (
           e.stopPropagation();
           onFav(product._id);
         }}
-        style={{ marginTop: "2px" }}
+        style={{ marginTop: "2px", color: "red" }}
       >
-        ❤️ Favourite
+        {favLabel}
       </button>
     )}
   </div>
