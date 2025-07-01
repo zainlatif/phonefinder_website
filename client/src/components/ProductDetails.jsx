@@ -19,6 +19,8 @@ const ProductDetails = ({ product, onBack }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loadingComments, setLoadingComments] = useState(false);
+  const [isFav, setIsFav] = useState(false);
+  const [favLoading, setFavLoading] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -28,8 +30,20 @@ const ProductDetails = ({ product, onBack }) => {
         .then((res) => setComments(res.data))
         .catch(() => setComments([]))
         .finally(() => setLoadingComments(false));
+
+      // Check if product is in user's favorites
+      if (user) {
+        axios
+          .get(`http://localhost:5000/api/users/${user.email}`)
+          .then((res) => {
+            setIsFav(res.data.favorites?.includes(product._id));
+          })
+          .catch(() => setIsFav(false));
+      } else {
+        setIsFav(false);
+      }
     }
-  }, [product]);
+  }, [product, user]);
 
   const handleAddComment = async () => {
     if (!user) {
@@ -47,6 +61,42 @@ const ProductDetails = ({ product, onBack }) => {
     } catch (err) {
       alert("Error adding comment");
     }
+  };
+
+  const handleAddFav = async () => {
+    if (!user) {
+      alert("Please log in first");
+      return;
+    }
+    setFavLoading(true);
+    try {
+      await axios.post(
+        `http://localhost:5000/api/users/favorite/${user.email}`,
+        { productId: product._id }
+      );
+      setIsFav(true);
+    } catch (err) {
+      alert("Error updating favorite status");
+    }
+    setFavLoading(false);
+  };
+
+  const handleRemoveFav = async () => {
+    if (!user) {
+      alert("Please log in first");
+      return;
+    }
+    setFavLoading(true);
+    try {
+      await axios.post(
+        `http://localhost:5000/api/users/unfavorite/${user.email}`,
+        { productId: product._id }
+      );
+      setIsFav(false);
+    } catch (err) {
+      alert("Error updating favorite status");
+    }
+    setFavLoading(false);
   };
 
   return (
@@ -110,6 +160,30 @@ const ProductDetails = ({ product, onBack }) => {
       >
         {product.description}
       </p>
+
+      {/* Favorite Button */}
+      <div style={{ textAlign: "center", marginBottom: 24 }}>
+        <button
+          onClick={isFav ? handleRemoveFav : handleAddFav}
+          disabled={favLoading}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            cursor: "pointer",
+            borderRadius: "4px",
+            border: "none",
+            backgroundColor: isFav ? "#d9534f" : "#5cb85c",
+            color: "white",
+            transition: "background-color 0.3s",
+          }}
+        >
+          {favLoading
+            ? "Loading..."
+            : isFav
+            ? "Remove from Favorites"
+            : "Add to Favorites"}
+        </button>
+      </div>
 
       {/* Specs Table */}
       <table style={tableStyle}>

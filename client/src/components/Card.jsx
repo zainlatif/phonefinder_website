@@ -7,9 +7,12 @@ const cardStyle = {
   padding: "5px",
   marginBottom: "10px",
   boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-  maxWidth: "110px",
-  width: "110px",
-  minHeight: "200px",
+  width: "120px",         // fixed width
+  minWidth: "120px",
+  maxWidth: "120px",
+  height: "240px",        // fixed height
+  minHeight: "240px",
+  maxHeight: "240px",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -20,13 +23,13 @@ const cardStyle = {
 
 const imageStyle = {
   width: "100%",
-  height: "120px", // increased image height
+  height: "100px", // adjust as needed for new card size
   objectFit: "contain",
   borderRadius: "6px 6px 0 0",
-  marginBottom: "4px" // reduced margin
+  marginBottom: "2px"
 };
 
-const Card = ({ product, onClick, onFav, favLabel = "❤️" }) => (
+const Card = ({ product, onClick }) => (
   <div style={cardStyle} onClick={onClick}>
     {product.image && (
       <img src={product.image} alt={product.title} style={imageStyle} />
@@ -34,17 +37,6 @@ const Card = ({ product, onClick, onFav, favLabel = "❤️" }) => (
     <h3 style={{ fontSize: "0.98rem", margin: "4px 0" }}>{product.title}</h3>
     <p style={{ fontSize: "0.91rem", margin: "2px 0", minHeight: "32px" }}>{product.description}</p>
     <p style={{ fontWeight: "bold", color: "#2d2d2d", margin: "2px 0" }}>Rs.&nbsp;{product.price}</p>
-    {onFav && (
-      <button
-        onClick={e => {
-          e.stopPropagation();
-          onFav(product._id);
-        }}
-        style={{ marginTop: "2px", color: "red" }}
-      >
-        {favLabel}
-      </button>
-    )}
   </div>
 );
 
