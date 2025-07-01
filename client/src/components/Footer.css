@@ -1,158 +1,142 @@
 .footer {
-  background: #e74c3c; /* Main red theme */
-  color: #fff;
-  padding: 0;
-  margin-top: 40px;
-  font-size: 1rem;
+  background: #e74c3c;
+  color: #e0e0e0;
+  padding: 40px 20px 20px;
+  margin-top: auto;
 }
 
-.footer-top {
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-section {
   display: flex;
-  justify-content: center;
-  gap: 60px;
-  padding: 40px 10px 20px 10px;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
-.footer-col {
-  min-width: 200px;
-  flex: 1 1 220px;
-  max-width: 320px;
-}
-
-.footer-logo {
+.brand {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.footer-brand {
-  font-size: 1.6rem;
+.logo {
+  height: 38px;
+  margin-right: 10px;
+}
+
+.brand-name {
+  font-size: 24px;
   font-weight: bold;
+  color:rgba(43, 42, 42, 0.73);
+}
+
+.highlight {
   color: #fff;
-  letter-spacing: 1px;
 }
 
-.footer-heading {
+.section-title {
+  font-size: 18px;
   font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  color: #fff;
 }
 
-.footer-col ul {
+.links {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.footer-col ul li {
+.links li {
   margin-bottom: 8px;
 }
 
-.footer-col ul li a {
-  color: #fff;
+.links a {
+  color:rgb(255, 255, 255);
   text-decoration: none;
-  opacity: 0.92;
-  transition: opacity 0.2s;
+  transition: color 0.3s ease;
 }
 
-.footer-col ul li a:hover {
-  opacity: 1;
-  text-decoration: underline;
+.links a:hover {
+  color:rgb(155, 155, 155);
 }
 
-.footer-payments {
+.payments {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  align-items: center;
   flex-wrap: wrap;
-}
-.footer-payments img {
-  height: 28px;
-  background: #fff;
-  border-radius: 4px;
-  padding: 2px 6px;
-  object-fit: contain;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.footer-app img {
-  height: 44px;
-  margin-top: 8px;
-  border-radius: 6px;
-  background: #fff;
-  padding: 2px 8px;
+.payment-img {
+  height: 30px;
+  background: white;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.app-download {
+  margin-top: 10px;
+}
+
+.app-badge {
+  height: 40px;
 }
 
 .footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 20px;
+  border-top: 1px solid #333;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 24px;
-  padding: 18px 10px 0 10px;
-  border-top: 1px solid #f39c12; /* Orange border */
   flex-wrap: wrap;
+  gap: 20px;
 }
 
-.footer-social {
+.copyright {
+  color: #fff;
+  font-size: 14px;
+}
+
+.social {
   display: flex;
-  gap: 18px;
-  font-size: 1.3rem;
+  gap: 15px;
 }
 
-.footer-social a {
-  color: #fff;
-  opacity: 0.85;
-  transition: opacity 0.2s;
-}
-.footer-social a:hover {
-  opacity: 1;
-  color: #f39c12; /* Orange on hover */
+.social-link {
+  color:rgb(255, 255, 255);
+  font-size: 20px;
+  transition: color 0.3s ease;
 }
 
-.footer-desc {
-  color: #fff;
-  background: #e74c3c;
-  padding: 18px 10vw 24px 10vw;
-  font-size: 1rem;
-  line-height: 1.6;
-  border-top: 1px solid #f39c12;
-}
-.footer-desc a {
-  color: #fff;
-  text-decoration: underline;
+.social-link:hover {
+  color:rgb(226, 79, 74);
 }
 
-@media (max-width: 900px) {
-  .footer-top {
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    padding: 30px 4vw 10px 4vw;
+@media (max-width: 768px) {
+  .footer {
+    padding: 30px 15px 15px;
   }
-  .footer-col {
-    max-width: 100%;
-    min-width: 0;
-    margin-bottom: 12px;
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
   }
-  .footer-desc {
-    padding: 14px 4vw 18px 4vw;
-  }
-}
-
-@media (max-width: 600px) {
-  .footer-top {
-    padding: 18px 2vw 6px 2vw;
-    gap: 12px;
-  }
+  
   .footer-bottom {
     flex-direction: column;
-    gap: 10px;
-    padding: 10px 2vw 0 2vw;
+    text-align: center;
   }
-  .footer-desc {
-    font-size: 0.97rem;
-    padding: 10px 2vw 12px 2vw;
+  
+  .payments {
+    justify-content: center;
   }
 }

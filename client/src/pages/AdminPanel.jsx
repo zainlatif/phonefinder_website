@@ -49,10 +49,26 @@ const AdminPanel = () => {
   const [specs, setSpecs] = useState([{ spec: '', value: '', extra: '' }]);
   const [products, setProducts] = useState([]);
   const [editId, setEditId] = useState(null);
+  const [search, setSearch] = useState('');
+  const [filtered, setFiltered] = useState([]);
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    // Filter products by search (case-insensitive, on title)
+    if (search.trim()) {
+      setFiltered(
+        products.filter(p =>
+          p.title.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    } else {
+      // Show only latest 10 products if no search
+      setFiltered([...products].slice(-10).reverse());
+    }
+  }, [products, search]);
 
   const fetchProducts = () => {
     axios.get('http://localhost:5000/api/products')
@@ -227,27 +243,44 @@ const AdminPanel = () => {
       ) : (
         <button onClick={handleAddProduct}>Add Product</button>
       )}
-
-      <h3>Product List</h3>
+      <input
+        type="text"
+        placeholder="Search by model name..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        style={{
+          margin: '18px 0 12px 0',
+          padding: '8px',
+          borderRadius: '4px',
+          border: '1px solid #ccc',
+          width: '100%',
+          maxWidth: 350
+        }}
+      />
+      <h3>Product List {search ? '(Search Results)' : '(Latest 10)'}</h3>
       <div>
-        {products.map((product) => (
-          <div key={product._id} style={cardStyle}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {product.image && (
-                <img src={product.image} alt={product.title} style={imageStyle} />
-              )}
+        {filtered.length === 0 ? (
+          <div style={{ color: '#e74c3c', margin: '12px 0' }}>No products found.</div>
+        ) : (
+          filtered.map((product) => (
+            <div key={product._id} style={cardStyle}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                {product.image && (
+                  <img src={product.image} alt={product.title} style={imageStyle} />
+                )}
+                <div>
+                  <strong>{product.title}</strong><br />
+                  <span>{product.description}</span><br />
+                  <span style={{ color: '#2ecc71' }}>${product.price}</span>
+                </div>
+              </div>
               <div>
-                <strong>{product.title}</strong><br />
-                <span>{product.description}</span><br />
-                <span style={{ color: '#2ecc71' }}>${product.price}</span>
+                <button onClick={() => handleEditProduct(product)} style={editBtnStyle}>Edit</button>
+                <button onClick={() => handleDeleteProduct(product._id)} style={btnStyle}>Delete</button>
               </div>
             </div>
-            <div>
-              <button onClick={() => handleEditProduct(product)} style={editBtnStyle}>Edit</button>
-              <button onClick={() => handleDeleteProduct(product._id)} style={btnStyle}>Delete</button>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
