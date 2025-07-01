@@ -23,7 +23,7 @@ const cardStyle = {
 
 const imageStyle = {
   width: "100%",
-  height: "100px", // adjust as needed for new card size
+  height: "110px", // adjust as needed for new card size
   objectFit: "contain",
   borderRadius: "6px 6px 0 0",
   marginBottom: "2px"
@@ -34,8 +34,8 @@ const Card = ({ product, onClick }) => (
     {product.image && (
       <img src={product.image} alt={product.title} style={imageStyle} />
     )}
-    <h3 style={{ fontSize: "0.98rem", margin: "4px 0" }}>{product.title}</h3>
-    <p style={{ fontSize: "0.91rem", margin: "2px 0", minHeight: "32px" }}>{product.description}</p>
+    <h3 style={{ fontSize: "0.90rem", margin: "4px 0" }}>{product.title}</h3>
+    <p style={{ fontSize: "0.80rem", margin: "2px 0", minHeight: "15px" }}>{product.description}</p>
     <p style={{ fontWeight: "bold", color: "#2d2d2d", margin: "2px 0" }}>Rs.&nbsp;{product.price}</p>
   </div>
 );
