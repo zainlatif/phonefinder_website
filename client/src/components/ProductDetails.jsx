@@ -100,50 +100,22 @@ const ProductDetails = ({ product, onBack }) => {
   };
 
   return (
-    <div style={{ maxWidth: 700, margin: "0 auto", padding: 24 }}>
-      {onBack && (
-        <button onClick={onBack} style={{ marginBottom: "16px" }}>
-          ← Back
-        </button>
-      )}
+    <div className="product-details-container">
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {onBack && (
+          <button onClick={onBack} style={{ marginBottom: "16px" }}>
+            ← Back
+          </button>
+        )}
+      </div>
 
-      {/* Product Image */}
-      <div
-        style={{
-          textAlign: "center",
-          marginBottom: 24,
-          display: "flex",
-          justifyContent: "center",
-          gap: 24,
-        }}
-      >
+      {/* Product Images */}
+      <div className="product-details-images">
         {product.image && (
-          <img
-            src={product.image}
-            alt={product.title}
-            style={{
-              width: "220px",
-              height: "220px",
-              objectFit: "contain",
-              borderRadius: 12,
-              boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              background: "#fff",
-            }}
-          />
+          <img src={product.image} alt={product.title} />
         )}
         {product.image2 && (
-          <img
-            src={product.image2}
-            alt={product.title + " 2"}
-            style={{
-              width: "220px",
-              height: "220px",
-              objectFit: "contain",
-              borderRadius: 12,
-              boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              background: "#fff",
-            }}
-          />
+          <img src={product.image2} alt={product.title + " 2"} />
         )}
       </div>
 

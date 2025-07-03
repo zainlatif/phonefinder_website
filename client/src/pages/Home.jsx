@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import Card from "../components/Card";
 import ProductDetails from "../components/ProductDetails";
+import BrandNav from "../components/BrandNav";
 import "./Home.css";
 
 const tableStyle = {
@@ -32,6 +33,7 @@ const Home = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loadingComments, setLoadingComments] = useState(false);
+  const [selectedBrand, setSelectedBrand] = useState(null);
   const navigate = useNavigate();
 
   // Parse search query from URL
@@ -126,12 +128,21 @@ const Home = () => {
   // Sort products by creation (assuming _id is incremental)
   const sortedProducts = [...products].sort((a, b) => (a._id < b._id ? 1 : -1));
 
+  // Filter by brand if selected
+  const brandFilteredProducts = selectedBrand
+    ? products.filter(
+        (p) =>
+          p.title &&
+          p.title.toLowerCase().startsWith(selectedBrand.toLowerCase())
+      )
+    : products;
+
   // Section logic (use filteredProducts if you have search, else products)
-  const above70 = getSectionProducts(products, 70000);
-  const between50and70 = getSectionProducts(products, 50000, 70000);
-  const between35and50 = getSectionProducts(products, 35000, 50000);
-  const between25and35 = getSectionProducts(products, 25000, 35000);
-  const below25 = products.filter((p) => p.price <= 25000);
+  const above70 = getSectionProducts(brandFilteredProducts, 70000);
+  const between50and70 = getSectionProducts(brandFilteredProducts, 50000, 70000);
+  const between35and50 = getSectionProducts(brandFilteredProducts, 35000, 50000);
+  const between25and35 = getSectionProducts(brandFilteredProducts, 25000, 35000);
+  const below25 = brandFilteredProducts.filter((p) => p.price <= 25000);
 
   // Helper to render a section with "More" button
   const renderSection = (title, prods, sectionKey) => (
@@ -169,7 +180,8 @@ const Home = () => {
   return (
     <div className="responsive-container">
       <Banner />
-      <h2>Products</h2>
+      <BrandNav selectedBrand={selectedBrand} onSelect={setSelectedBrand} />
+      {/* <h2>Products</h2> */}
       <div className="products-center-box">
         {selected ? (
           <ProductDetails product={selected} onBack={handleBack} />

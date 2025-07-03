@@ -53,269 +53,495 @@ const Header = ({ products = [] }) => {
   }, []);
 
   return (
-    <div
-      style={{
-        padding: '10px 0',
-        background: 'linear-gradient(90deg, #e74c3c 0%, #f39c12 100%)',
-        display: 'flex',
-        alignItems: 'center',
+    <>
+      {/* Header Container */}
+      <header style={{
+        background: 'linear-gradient(135deg, #e74c3c 0%, #f39c12 100%)',
         color: '#fff',
-        position: 'relative',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
-      }}
-    >
-      {/* Hamburger for mobile */}
-      <button
-        className="hamburger"
-        onClick={() => setMobileNavOpen(true)}
-        style={{
-          display: 'none',
-          background: 'none',
-          border: 'none',
-          color: '#fff',
-          fontSize: 28,
-          marginLeft: 10,
-          cursor: 'pointer'
-        }}
-      >
-        <FaBars />
-      </button>
+        padding: '0 20px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: '70px',
+          maxWidth: '1200px',
+          margin: '0 auto'
+        }}>
+          
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileNavOpen(true)}
+            style={{
+              display: 'none',
+              background: 'none',
+              border: 'none',
+              color: '#fff',
+              fontSize: '24px',
+              cursor: 'pointer',
+              padding: '8px'
+            }}
+            className="mobile-menu-btn"
+          >
+            <FaBars />
+          </button>
 
-      {/* Left: Home & Compare (desktop) */}
-      <div className="desktop-nav" style={{ flex: 1, display: 'flex', alignItems: 'center', minWidth: 0, paddingLeft: 5 }}>
-        <Link to="/" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Home</Link>
-        <Link to="/compare" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Compare</Link>
-        <Link to="/news" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>News</Link>
-        <Link to="/reviews" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Reviews</Link>
-      </div>
+          {/* Logo/Brand */}
+          <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#fff' }}>
+            <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>
+              MyStore
+            </Link>
+          </div>
 
-      {/* Mobile Sidebar Nav */}
-      {mobileNavOpen && (
-        <div className="mobile-nav-overlay" onClick={() => setMobileNavOpen(false)}>
-          <div className="mobile-nav" onClick={e => e.stopPropagation()}>
-            <button
-              onClick={() => setMobileNavOpen(false)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#e74c3c',
-                fontSize: 28,
+          {/* Desktop Navigation */}
+          <nav style={{
+            display: 'flex',
+            gap: '30px',
+            alignItems: 'center'
+          }} className="desktop-nav">
+            <Link to="/" style={{ 
+              color: '#fff', 
+              textDecoration: 'none', 
+              fontWeight: '500',
+              transition: 'opacity 0.3s'
+            }}>
+              Home
+            </Link>
+            <Link to="/compare" style={{ 
+              color: '#fff', 
+              textDecoration: 'none', 
+              fontWeight: '500',
+              transition: 'opacity 0.3s'
+            }}>
+              Compare
+            </Link>
+            <Link to="/news" style={{ 
+              color: '#fff', 
+              textDecoration: 'none', 
+              fontWeight: '500',
+              transition: 'opacity 0.3s'
+            }}>
+              News
+            </Link>
+            <Link to="/reviews" style={{ 
+              color: '#fff', 
+              textDecoration: 'none', 
+              fontWeight: '500',
+              transition: 'opacity 0.3s'
+            }}>
+              Reviews
+            </Link>
+          </nav>
+
+          {/* Search Bar */}
+          <div style={{ 
+            position: 'relative',
+            width: '100%',
+            maxWidth: '400px',
+            margin: '0 20px'
+          }} ref={searchRef}>
+            <form onSubmit={handleSearch} style={{
+              display: 'flex',
+              alignItems: 'center',
+              background: '#fff',
+              borderRadius: '25px',
+              overflow: 'hidden',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            }}>
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                onFocus={() => setShowSuggestions(suggestions.length > 0)}
+                style={{
+                  flex: 1,
+                  padding: '12px 20px',
+                  border: 'none',
+                  outline: 'none',
+                  fontSize: '16px',
+                  color: '#333',
+                  background: 'transparent'
+                }}
+              />
+              <button
+                type="submit"
+                style={{
+                  background: '#e74c3c',
+                  border: 'none',
+                  color: '#fff',
+                  padding: '12px 18px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'background 0.3s'
+                }}
+                onMouseOver={e => e.target.style.background = '#c0392b'}
+                onMouseOut={e => e.target.style.background = '#e74c3c'}
+              >
+                <FaSearch size={16} />
+              </button>
+            </form>
+
+            {/* Search Suggestions */}
+            {showSuggestions && (
+              <div style={{
                 position: 'absolute',
-                top: 12,
-                right: 16,
-                cursor: 'pointer'
-              }}
-            >
-              <FaTimes />
-            </button>
-            <Link to="/" onClick={() => setMobileNavOpen(false)}>Home</Link>
-            <Link to="/compare" onClick={() => setMobileNavOpen(false)}>Compare</Link>
-            <Link to="/news" onClick={() => setMobileNavOpen(false)}>News</Link>
-            <Link to="/reviews" onClick={() => setMobileNavOpen(false)}>Reviews</Link>
+                top: '100%',
+                left: 0,
+                right: 0,
+                background: '#fff',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                marginTop: '4px',
+                zIndex: 1000,
+                overflow: 'hidden'
+              }}>
+                {suggestions.length === 0 ? (
+                  <div style={{ 
+                    padding: '12px 20px', 
+                    color: '#888',
+                    textAlign: 'center'
+                  }}>
+                    No results found
+                  </div>
+                ) : (
+                  suggestions.map((title, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        padding: '12px 20px',
+                        cursor: 'pointer',
+                        color: '#333',
+                        borderBottom: idx !== suggestions.length - 1 ? '1px solid #eee' : 'none',
+                        transition: 'background 0.2s'
+                      }}
+                      onMouseOver={e => e.target.style.background = '#f8f9fa'}
+                      onMouseOut={e => e.target.style.background = 'transparent'}
+                      onMouseDown={() => {
+                        setSearch(title);
+                        setShowSuggestions(false);
+                        navigate(`/?search=${encodeURIComponent(title)}`);
+                      }}
+                    >
+                      {title}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* User Account Section */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            {!user ? (
+              <>
+                <Link to="/login" style={{ 
+                  color: '#fff', 
+                  textDecoration: 'none', 
+                  fontWeight: '500',
+                  transition: 'opacity 0.3s'
+                }}>
+                  Login
+                </Link>
+                <Link to="/signup" style={{ 
+                  background: 'rgba(255,255,255,0.2)',
+                  color: '#fff',
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  textDecoration: 'none',
+                  fontWeight: '500',
+                  transition: 'background 0.3s'
+                }}>
+                  Signup
+                </Link>
+              </>
+            ) : (
+              <div style={{ position: 'relative' }}>
+                <button
+                  onClick={() => setShowMenu(!showMenu)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 12px',
+                    borderRadius: '20px',
+                    transition: 'background 0.3s'
+                  }}
+                  onMouseOver={e => e.target.style.background = 'rgba(255,255,255,0.1)'}
+                  onMouseOut={e => e.target.style.background = 'none'}
+                >
+                  <FaUserCircle size={24} />
+                  <span style={{ fontWeight: '500' }}>
+                    {user.name || 'Account'}
+                  </span>
+                </button>
+
+                {/* User Dropdown Menu */}
+                {showMenu && (
+                  <div style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: '100%',
+                    background: '#fff',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    minWidth: '200px',
+                    marginTop: '8px',
+                    overflow: 'hidden',
+                    zIndex: 1000
+                  }}>
+                    <div style={{ 
+                      padding: '12px 20px', 
+                      borderBottom: '1px solid #eee',
+                      fontWeight: '500',
+                      color: '#333',
+                      fontSize: '14px'
+                    }}>
+                      {user.email}
+                    </div>
+                    
+                    <Link
+                      to="/account"
+                      style={{
+                        display: 'block',
+                        padding: '12px 20px',
+                        color: '#333',
+                        textDecoration: 'none',
+                        transition: 'background 0.2s'
+                      }}
+                      onClick={() => setShowMenu(false)}
+                      onMouseOver={e => e.target.style.background = '#f8f9fa'}
+                      onMouseOut={e => e.target.style.background = 'transparent'}
+                    >
+                      User Info
+                    </Link>
+                    
+                    <Link
+                      to="/favourites"
+                      style={{
+                        display: 'block',
+                        padding: '12px 20px',
+                        color: '#333',
+                        textDecoration: 'none',
+                        transition: 'background 0.2s'
+                      }}
+                      onClick={() => setShowMenu(false)}
+                      onMouseOver={e => e.target.style.background = '#f8f9fa'}
+                      onMouseOut={e => e.target.style.background = 'transparent'}
+                    >
+                      Fav Products
+                    </Link>
+                    
+                    {user.role === 'admin' && (
+                      <Link
+                        to="/admin"
+                        style={{
+                          display: 'block',
+                          padding: '12px 20px',
+                          color: '#333',
+                          textDecoration: 'none',
+                          transition: 'background 0.2s'
+                        }}
+                        onClick={() => setShowMenu(false)}
+                        onMouseOver={e => e.target.style.background = '#f8f9fa'}
+                        onMouseOut={e => e.target.style.background = 'transparent'}
+                      >
+                        Admin Panel
+                      </Link>
+                    )}
+                    
+                    <button
+                      onClick={handleLogout}
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        padding: '12px 20px',
+                        background: 'none',
+                        border: 'none',
+                        color: '#e74c3c',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        fontWeight: '500',
+                        transition: 'background 0.2s'
+                      }}
+                      onMouseOver={e => e.target.style.background = '#f8f9fa'}
+                      onMouseOut={e => e.target.style.background = 'transparent'}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Navigation Sidebar */}
+      {mobileNavOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 2000
+        }} onClick={() => setMobileNavOpen(false)}>
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '280px',
+            height: '100vh',
+            background: '#fff',
+            padding: '20px',
+            boxShadow: '2px 0 10px rgba(0,0,0,0.1)'
+          }} onClick={e => e.stopPropagation()}>
+            
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '30px'
+            }}>
+              <h3 style={{ margin: 0, color: '#333' }}>Menu</h3>
+              <button
+                onClick={() => setMobileNavOpen(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#666',
+                  fontSize: '24px',
+                  cursor: 'pointer',
+                  padding: '4px'
+                }}
+              >
+                <FaTimes />
+              </button>
+            </div>
+
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <Link 
+                to="/" 
+                onClick={() => setMobileNavOpen(false)}
+                style={{
+                  color: '#333',
+                  textDecoration: 'none',
+                  fontSize: '18px',
+                  fontWeight: '500',
+                  padding: '10px 0',
+                  borderBottom: '1px solid #eee'
+                }}
+              >
+                Home
+              </Link>
+              <Link 
+                to="/compare" 
+                onClick={() => setMobileNavOpen(false)}
+                style={{
+                  color: '#333',
+                  textDecoration: 'none',
+                  fontSize: '18px',
+                  fontWeight: '500',
+                  padding: '10px 0',
+                  borderBottom: '1px solid #eee'
+                }}
+              >
+                Compare
+              </Link>
+              <Link 
+                to="/news" 
+                onClick={() => setMobileNavOpen(false)}
+                style={{
+                  color: '#333',
+                  textDecoration: 'none',
+                  fontSize: '18px',
+                  fontWeight: '500',
+                  padding: '10px 0',
+                  borderBottom: '1px solid #eee'
+                }}
+              >
+                News
+              </Link>
+              <Link 
+                to="/reviews" 
+                onClick={() => setMobileNavOpen(false)}
+                style={{
+                  color: '#333',
+                  textDecoration: 'none',
+                  fontSize: '18px',
+                  fontWeight: '500',
+                  padding: '10px 0',
+                  borderBottom: '1px solid #eee'
+                }}
+              >
+                Reviews
+              </Link>
+            </nav>
           </div>
         </div>
       )}
 
-      {/* Center: Search */}
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          minWidth: 0,
-          zIndex: 2,
-          position: 'relative'
-        }}
-        ref={searchRef}
-      >
-        <form
-          onSubmit={handleSearch}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
-            maxWidth: 350,
-            margin: '0 auto',
-            position: 'relative'
-          }}
-          autoComplete="off"
-        >
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={{
-              padding: '4px 8px',
-              borderRadius: '4px 0 0 4px',
-              border: 'none',
-              outline: 'none',
-              fontSize: 15,
-              minWidth: 0,
-              width: '100%'
-            }}
-            onFocus={() => setShowSuggestions(suggestions.length > 0)}
-            ref={searchRef}
-          />
-          <button
-            type="submit"
-            style={{
-              border: 'none',
-              background: '#fff',
-              color: '#e74c3c',
-              borderRadius: '0 4px 4px 0',
-              padding: '4px 12px',
-              fontSize: 18,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-            aria-label="Search"
-          >
-            <FaSearch />
-          </button>
-          {showSuggestions && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '110%',
-                left: 0,
-                right: 0,
-                background: '#fff',
-                color: '#222',
-                borderRadius: 4,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.13)',
-                zIndex: 100,
-                maxHeight: 180,
-                overflowY: 'auto'
-              }}
-            >
-              {suggestions.length === 0 ? (
-                <div style={{ padding: 8, color: "#888" }}>No results</div>
-              ) : (
-                suggestions.map((title, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      padding: '8px 12px',
-                      cursor: 'pointer',
-                      borderBottom: idx !== suggestions.length - 1 ? '1px solid #eee' : 'none'
-                    }}
-                    onMouseDown={() => {
-                      setSearch(title);
-                      setShowSuggestions(false);
-                      navigate(`/?search=${encodeURIComponent(title)}`);
-                    }}
-                  >
-                    {title}
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-        </form>
-      </div>
-
-      {/* Right: Auth */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', minWidth: 0, paddingRight: 5 }}>
-        {!user && (
-          <>
-            <Link to="/login" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Login</Link>
-            <Link to="/signup" style={{ color: '#fff', fontWeight: 500, marginRight: 16, textDecoration: 'none' }}>Signup</Link>
-          </>
-        )}
-        {user && (
-          <div style={{ position: 'relative', marginRight: 8, display: 'inline-block' }}>
-            <span
-              onClick={() => setShowMenu(v => !v)}
-              style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
-            >
-              <FaUserCircle style={{ fontSize: 28, color: '#fff', marginRight: 6 }} />
-              <span style={{ fontWeight: 500 }}>{user.name || 'Account'}</span>
-            </span>
-            {showMenu && (
-              <div
-                style={{
-                  position: 'absolute',
-                  right: 0,
-                  top: 38,
-                  background: '#fff',
-                  color: '#222',
-                  borderRadius: 8,
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.13)',
-                  minWidth: 170,
-                  zIndex: 10,
-                  padding: '8px 0'
-                }}
-                onMouseLeave={() => setShowMenu(false)}
-              >
-                <div style={{ padding: '10px 18px', borderBottom: '1px solid #eee', fontWeight: 500 }}>
-                  {user.email}
-                </div>
-                <Link
-                  to="/account"
-                  style={{
-                    display: 'block',
-                    padding: '10px 18px',
-                    color: '#e74c3c',
-                    textDecoration: 'none',
-                    fontWeight: 500
-                  }}
-                  onClick={() => setShowMenu(false)}
-                >
-                  User Info
-                </Link>
-                <Link
-                  to="/favourites"
-                  style={{
-                    display: 'block',
-                    padding: '10px 18px',
-                    color: '#e74c3c',
-                    textDecoration: 'none',
-                    fontWeight: 500
-                  }}
-                  onClick={() => setShowMenu(false)}
-                >
-                  Fav Products
-                </Link>
-                {user.role === 'admin' && (
-                  <Link
-                    to="/admin"
-                    style={{
-                      display: 'block',
-                      padding: '10px 18px',
-                      color: '#e74c3c',
-                      textDecoration: 'none',
-                      fontWeight: 500
-                    }}
-                    onClick={() => setShowMenu(false)}
-                  >
-                    Admin Panel
-                  </Link>
-                )}
-                <button
-                  onClick={handleLogout}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '10px 18px',
-                    background: 'none',
-                    border: 'none',
-                    color: '#e74c3c',
-                    textAlign: 'left',
-                    fontWeight: 500,
-                    cursor: 'pointer'
-                  }}
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
+      {/* CSS for responsive design */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .mobile-menu-btn {
+            display: block !important;
+          }
+          
+          .desktop-nav {
+            display: none !important;
+          }
+          
+          header > div {
+            justify-content: space-between !important;
+          }
+          
+          header > div > div:nth-child(3) {
+            max-width: 200px !important;
+            margin: 0 10px !important;
+          }
+          
+          header > div > div:nth-child(4) > div {
+            gap: 10px !important;
+          }
+          
+          header > div > div:nth-child(4) a:first-child {
+            display: none !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          header {
+            padding: 0 10px !important;
+          }
+          
+          header > div {
+            height: 60px !important;
+          }
+          
+          header > div > div:first-child {
+            font-size: 20px !important;
+          }
+          
+          header > div > div:nth-child(3) {
+            max-width: 150px !important;
+            margin: 0 5px !important;
+          }
+        }
+      `}</style>
+    </>
   );
 };
 

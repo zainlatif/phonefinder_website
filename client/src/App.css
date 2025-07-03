@@ -164,6 +164,63 @@ td {
   color: #fff;
 }
 
+/* ====== BRAND NAVIGATION BAR STYLES ====== */
+.brand-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 18px 0 12px 0;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.brand-btn {
+  background: none;
+  border: none;
+  color: #444;
+  font-size: 1.08rem;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: color 0.2s, opacity 0.2s;
+  outline: none;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+
+.brand-btn.active,
+.brand-btn:hover {
+  color: #e74c3c;
+  opacity: 1;
+  border-bottom: 2px solid #e74c3c;
+  background: none;
+}
+
+/* Responsive: stack or scroll brands on small screens */
+@media (max-width: 700px) {
+  .brand-nav {
+    gap: 16px;
+    padding: 10px 0 6px 0;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+  .brand-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .brand-btn {
+    font-size: 0.98rem;
+    padding: 6px 8px;
+  }
+}
+
 /* ====== RESPONSIVE BREAKPOINTS ====== */
 
 /* Large desktop */
@@ -272,22 +329,74 @@ td {
   color: #f39c12;
 }
 
-.return (
-  <div className="responsive-container">
-    <Banner />
-    <h2>Products</h2>
-    <div className="products-center-box">
-      {selected ? (
-        <ProductDetails product={selected} onBack={handleBack} />
-      ) : (
-        <>
-          {renderSection("Mobile phones Price in Pakistan > 70,000 Rs.", above70, "above70")}
-          {renderSection("Mobile phones Price in Pakistan 50,000 - 70,000 Rs.", between50and70, "50to70")}
-          {renderSection("Mobile Prices Between 35,000 and 50,000 Rs.", between35and50, "35to50")}
-          {renderSection("Mobile Prices Between 25,000 and 35,000 Rs.", between25and35, "25to35")}
-          {renderSection("Mobile Prices Below 25,000 Rs.", below25, "below25")}
-        </>
-      )}
-    </div>
-  </div>
-);;
+/* ====== PRODUCT DETAILS RESPONSIVE ====== */
+.product-details-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.product-details-images {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.product-details-images img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  background: #fff;
+  max-width: 90vw;
+}
+
+@media (max-width: 900px) {
+  .product-details-container {
+    padding: 12px;
+    max-width: 98vw;
+  }
+  .product-details-images img {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media (max-width: 600px) {
+  .product-details-container {
+    padding: 4px;
+    max-width: 100vw;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .product-details-images {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .product-details-images img {
+    width: 100px;
+    height: 100px;
+    border-radius: 6px;
+  }
+  .product-details-container h2 {
+    font-size: 1.1rem;
+  }
+  .product-details-container p,
+  .product-details-container th,
+  .product-details-container td {
+    font-size: 0.95rem;
+  }
+  .product-details-container button {
+    font-size: 0.95rem;
+    padding: 7px 12px;
+  }
+  .product-details-container textarea {
+    font-size: 0.95rem;
+  }
+}
