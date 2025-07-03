@@ -104,13 +104,13 @@ const AdminPanel = () => {
   };
 
   const handleAddProduct = () => {
-    if (!title || !description || !price || !image) return;
+    if (!title || !description || !price || !image || !image2) return; // image2 now required
     const newProduct = {
       title,
       description,
       price,
       image,
-      image2,
+      image2, // always included
       specs: specsToArray()
     };
     axios.post('http://localhost:5000/api/products', newProduct)
@@ -145,12 +145,13 @@ const AdminPanel = () => {
   };
 
   const handleUpdateProduct = () => {
-    if (!title || !description || !price || !image) return;
+    if (!title || !description || !price || !image || !image2) return; // image2 now required
     axios.put(`http://localhost:5000/api/products/${editId}`, {
       title,
       description,
       price,
       image,
+      image2, // always included
       specs: specsToArray()
     })
       .then(() => {
@@ -183,7 +184,7 @@ const AdminPanel = () => {
       <input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} /><br />
       <input placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} /><br />
       <input placeholder="Image URL" value={image} onChange={(e) => setImage(e.target.value)} /><br />
-      <input placeholder="Second Image URL (optional)" value={image2} onChange={(e) => setImage2(e.target.value)} /><br />
+      <input placeholder="Second Image URL" value={image2} onChange={(e) => setImage2(e.target.value)} /><br />
       <div style={{ margin: '16px 0' }}>
         <b>Product Specifications:</b>
         <table style={{ borderCollapse: 'collapse', width: '100%', marginTop: '8px' }}>
