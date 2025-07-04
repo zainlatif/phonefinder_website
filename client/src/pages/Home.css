@@ -48,25 +48,19 @@
 
 /* Default card grid layout */
 .responsive-card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-/* Default card styling */
-.responsive-card-grid > * {
-  flex: 0 1 100%;
-  max-width: 100%;
-  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 cards per row on desktop */
+  gap: 18px;
+  justify-items: center;
+  align-items: stretch;
+  margin-bottom: 18px;
 }
 
 /* Tablet and small desktop (601px to 899px) - 3 cards */
 @media (min-width: 601px) and (max-width: 899px) {
-  .responsive-card-grid > * {
-    flex: 0 1 calc(33.33% - 12px);
-    max-width: calc(33.33% - 12px);
+  .responsive-card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
 }
 

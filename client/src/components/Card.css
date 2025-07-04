@@ -48,3 +48,52 @@
   margin: 2px 0;
   font-size: 0.95rem;
 }
+
+/* Tablet: 3 cards per row, reduce card size */
+@media (max-width: 899px) {
+  .card {
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+    height: 200px;
+    min-height: 200px;
+    max-height: 200px;
+  }
+  .card-image {
+    height: 80px;
+  }
+  .card-title {
+    font-size: 0.85rem;
+  }
+  .card-desc {
+    font-size: 0.75rem;
+  }
+  .card-price {
+    font-size: 0.9rem;
+  }
+}
+
+/* Small devices: 2 cards per row, smaller card */
+@media (max-width: 600px) {
+  .card {
+    width: 85px;
+    min-width: 85px;
+    max-width: 85px;
+    height: 150px;
+    min-height: 150px;
+    max-height: 150px;
+    padding: 3px;
+  }
+  .card-image {
+    height: 55px;
+  }
+  .card-title {
+    font-size: 0.78rem;
+  }
+  .card-desc {
+    font-size: 0.68rem;
+  }
+  .card-price {
+    font-size: 0.8rem;
+  }
+}

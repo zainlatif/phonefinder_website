@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import "../App.css";
+import "./Review.css";
+
 
 const Review = () => {
   const { user } = useAuth();
@@ -49,41 +52,44 @@ const Review = () => {
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: 24 }}>
-      <h2>Admin Reviews</h2>
+    <div className="review-container">
+      <h2 className="review-main-title">Admin Reviews</h2>
       {user?.role === "admin" && (
-        <div style={{ marginBottom: 32, background: "#fafafa", padding: 16, borderRadius: 8 }}>
+        <div className="review-admin-form">
           <h3>{editId ? "Edit Review" : "Add Review"}</h3>
           <input
+            className="review-input"
             placeholder="Title"
             value={title}
             onChange={e => setTitle(e.target.value)}
-            style={{ width: "100%", marginBottom: 8 }}
           />
           <textarea
+            className="review-textarea"
             placeholder="Paragraph"
             value={paragraph}
             onChange={e => setParagraph(e.target.value)}
             rows={4}
-            style={{ width: "100%", marginBottom: 8 }}
           />
           <input
+            className="review-input"
             placeholder="Image URL (optional)"
             value={image}
             onChange={e => setImage(e.target.value)}
-            style={{ width: "100%", marginBottom: 8 }}
           />
           <input
+            className="review-input"
             placeholder="YouTube Link (optional)"
             value={link}
             onChange={e => setLink(e.target.value)}
-            style={{ width: "100%", marginBottom: 8 }}
           />
-          <button onClick={handleAddOrUpdate} style={{ marginRight: 8 }}>
+          <button className="review-btn" onClick={handleAddOrUpdate}>
             {editId ? "Update" : "Add"}
           </button>
           {editId && (
-            <button onClick={() => { setEditId(null); setTitle(""); setParagraph(""); setImage(""); setLink(""); }}>
+            <button
+              className="review-btn review-btn-cancel"
+              onClick={() => { setEditId(null); setTitle(""); setParagraph(""); setImage(""); setLink(""); }}
+            >
               Cancel
             </button>
           )}
@@ -91,26 +97,26 @@ const Review = () => {
       )}
       <div>
         {reviews.length === 0 ? (
-          <p>No reviews yet.</p>
+          <p className="review-empty">No reviews yet.</p>
         ) : (
           reviews.map(item => (
-            <div key={item._id} style={{ border: "1px solid #ddd", borderRadius: 8, marginBottom: 24, padding: 16, background: "#fff" }}>
+            <div key={item._id} className="review-card">
               {item.image && (
-                <img src={item.image} alt={item.title} style={{ width: 220, maxHeight: 140, objectFit: "cover", borderRadius: 8, marginBottom: 8 }} />
+                <img src={item.image} alt={item.title} className="review-img" />
               )}
-              <h3 style={{ margin: "8px 0" }}>{item.title}</h3>
-              <p style={{ color: "#444" }}>{item.paragraph}</p>
+              <h3 className="review-title">{item.title}</h3>
+              <p className="review-paragraph">{item.paragraph}</p>
               {item.link && (
-                <div style={{ margin: "8px 0" }}>
-                  <a href={item.link} target="_blank" rel="noopener noreferrer" style={{ color: "#e74c3c", fontWeight: 500 }}>
+                <div className="review-link-wrap">
+                  <a href={item.link} target="_blank" rel="noopener noreferrer" className="review-link">
                     Watch on YouTube
                   </a>
                 </div>
               )}
               {user?.role === "admin" && (
-                <div>
-                  <button onClick={() => handleEdit(item)} style={{ marginRight: 8 }}>Edit</button>
-                  <button onClick={() => handleDelete(item._id)} style={{ color: "red" }}>Delete</button>
+                <div className="review-actions">
+                  <button className="review-btn" onClick={() => handleEdit(item)}>Edit</button>
+                  <button className="review-btn review-btn-delete" onClick={() => handleDelete(item._id)}>Delete</button>
                 </div>
               )}
             </div>

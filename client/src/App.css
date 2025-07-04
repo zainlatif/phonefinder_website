@@ -54,3 +54,68 @@ button {
   display: flex;
   flex-direction: column;
 }
+
+/* Common Buttons */
+.btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 6px;
+  margin-right: 8px;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(231,76,60,0.07);
+  outline: none;
+  display: inline-block;
+}
+.btn:hover, .btn:focus {
+  background: #c0392b;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #888;
+  color: #fff;
+}
+.btn-secondary:hover, .btn-secondary:focus {
+  background: #555;
+}
+
+.btn-danger {
+  background: #fff;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+}
+.btn-danger:hover, .btn-danger:focus {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.btn-success {
+  background: #27ae60;
+  color: #fff;
+}
+.btn-success:hover, .btn-success:focus {
+  background: #145a32;
+}
+
+/* Common Inputs */
+.input, .textarea {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border 0.2s;
+}
+.input:focus, .textarea:focus {
+  border-color: #e74c3c;
+  outline: none;
+}
