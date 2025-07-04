@@ -47,26 +47,30 @@ const SectionProducts = () => {
   const filtered = products.filter(config.filter);
 
   return (
-    <div className="section-products-container">
+    <div className="section-products-container1">
       <Banner />
-      <h2 className="section-products-title">{config.title}</h2>
-      {selected ? (
-        <ProductDetails product={selected} onBack={() => setSelected(null)} />
-      ) : (
-        <div className="section-products-list">
-          {filtered.length === 0 ? (
-            <p className="section-products-empty">No products found.</p>
+      <div className="section-products-container2">
+        <div className="section-products-container2">
+          <h2 className="section-products-title">{config.title}</h2>
+          {selected ? (
+            <ProductDetails product={selected} onBack={() => setSelected(null)} />
           ) : (
-            filtered.map((product) => (
-              <Card
-                key={product._id}
-                product={product}
-                onClick={() => setSelected(product)}
-              />
-            ))
+            <div className="section-products-list">
+              {filtered.length === 0 ? (
+                <p className="section-products-empty">No products found.</p>
+              ) : (
+                filtered.map((product) => (
+                  <Card
+                    key={product._id}
+                    product={product}
+                    onClick={() => setSelected(product)}
+                  />
+                ))
+              )}
+            </div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

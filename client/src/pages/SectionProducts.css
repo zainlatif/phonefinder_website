@@ -1,9 +1,16 @@
-.section-products-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+.section-products-container1 {
   box-sizing: border-box;
+}
+.section-products-container2 {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+.section-products-container3 {
+  margin: 0 0 50px 0;
 }
 
 .section-products-title {
