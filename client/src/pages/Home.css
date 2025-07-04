@@ -1,5 +1,6 @@
 /* General container padding */
-.responsive-container {
+
+.responsive-container2 {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
@@ -49,53 +50,33 @@
 /* Default card grid layout */
 .responsive-card-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7 cards per row on desktop */
-  gap: 18px;
-  justify-items: center;
-  align-items: stretch;
-  margin-bottom: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 16px;
 }
 
 /* Tablet and small desktop (601px to 899px) - 3 cards */
 @media (min-width: 601px) and (max-width: 899px) {
-  .responsive-card-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
+  
 }
 
 /* Desktop - 4 cards */
 @media (min-width: 900px) {
-  .responsive-card-grid {
-    justify-content: flex-start;
-  }
-  .responsive-card-grid > * {
-    flex: 0 1 calc(25% - 12px);
-    max-width: calc(25% - 12px);
-  }
+  
 }
 
 /* Large phones / small tablets - 2 cards */
 @media (min-width: 420px) and (max-width: 600px) {
-  .responsive-card-grid > * {
-    flex: 0 1 calc(50% - 10px);
-    max-width: calc(50% - 10px);
-  }
+  
 }
 
 /* Tiny phones - 1 card */
 @media (max-width: 419px) {
-  .responsive-card-grid > * {
-    flex: 0 1 100%;
-    max-width: 100%;
-  }
+  
 }
 
 /* Adjustments for phone layout */
 @media (max-width: 600px) {
-  .responsive-container {
-    padding: 0 2px;
-  }
+  
   .responsive-section {
     padding: 6px 2px 4px 2px;
     margin-bottom: 10px;
@@ -103,9 +84,7 @@
   .responsive-section-title {
     font-size: 0.95rem;
   }
-  .responsive-card-grid {
-    gap: 6px;
-  }
+  
 }
 
 .products-center-box {

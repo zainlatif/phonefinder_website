@@ -35,7 +35,9 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         const url = searchTerm
-          ? `http://localhost:5000/api/products?search=${encodeURIComponent(searchTerm)}`
+          ? `http://localhost:5000/api/products?search=${encodeURIComponent(
+            searchTerm
+          )}`
           : "http://localhost:5000/api/products";
         const res = await axios.get(url);
         setProducts(res.data);
@@ -100,26 +102,38 @@ const Home = () => {
   // Filter products by search term (case-insensitive, matches title or description)
   const filteredProducts = searchTerm
     ? products.filter(
-        (p) =>
-          p.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          p.description?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      (p) =>
+        p.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
     : products;
 
   // Filter by brand if selected
   const brandFilteredProducts = selectedBrand
     ? products.filter(
-        (p) =>
-          p.title &&
-          p.title.toLowerCase().startsWith(selectedBrand.toLowerCase())
-      )
+      (p) =>
+        p.title &&
+        p.title.toLowerCase().startsWith(selectedBrand.toLowerCase())
+    )
     : products;
 
   // Section logic (use filteredProducts if you have search, else products)
   const above70 = getSectionProducts(brandFilteredProducts, 70000);
-  const between50and70 = getSectionProducts(brandFilteredProducts, 50000, 70000);
-  const between35and50 = getSectionProducts(brandFilteredProducts, 35000, 50000);
-  const between25and35 = getSectionProducts(brandFilteredProducts, 25000, 35000);
+  const between50and70 = getSectionProducts(
+    brandFilteredProducts,
+    50000,
+    70000
+  );
+  const between35and50 = getSectionProducts(
+    brandFilteredProducts,
+    35000,
+    50000
+  );
+  const between25and35 = getSectionProducts(
+    brandFilteredProducts,
+    25000,
+    35000
+  );
   const below25 = brandFilteredProducts.filter((p) => p.price <= 25000);
 
   // Helper to render a section with "More" button
@@ -137,7 +151,7 @@ const Home = () => {
         )}
       </div>
       <div className="responsive-card-grid">
-        {prods.slice(0, 7).map((product) => (
+        {prods.slice(0, 9).map((product) => (
           <Card
             key={product._id}
             product={product}
@@ -150,22 +164,44 @@ const Home = () => {
   );
 
   return (
-    <div className="responsive-container">
+    <div className="responsive-container1">
       <Banner />
       <BrandNav selectedBrand={selectedBrand} onSelect={setSelectedBrand} />
-      {/* <h2>Products</h2> */}
-      <div className="products-center-box">
-        {selected ? (
-          <ProductDetails product={selected} onBack={handleBack} />
-        ) : (
-          <>
-            {renderSection("Mobile phones Price in Pakistan > 70,000 Rs.", above70, "above70")}
-            {renderSection("Mobile phones Price in Pakistan 50,000 - 70,000 Rs.", between50and70, "50to70")}
-            {renderSection("Mobile Prices Between 35,000 and 50,000 Rs.", between35and50, "35to50")}
-            {renderSection("Mobile Prices Between 25,000 and 35,000 Rs.", between25and35, "25to35")}
-            {renderSection("Mobile Prices Below 25,000 Rs.", below25, "below25")}
-          </>
-        )}
+      <div className="responsive-container2">
+        {/* <h2>Products</h2> */}
+        <div className="products-center-box">
+          {selected ? (
+            <ProductDetails product={selected} onBack={handleBack} />
+          ) : (
+            <>
+              {renderSection(
+                "Mobile phones Price in Pakistan > 70,000 Rs.",
+                above70,
+                "above70"
+              )}
+              {renderSection(
+                "Mobile phones Price in Pakistan 50,000 - 70,000 Rs.",
+                between50and70,
+                "50to70"
+              )}
+              {renderSection(
+                "Mobile Prices Between 35,000 and 50,000 Rs.",
+                between35and50,
+                "35to50"
+              )}
+              {renderSection(
+                "Mobile Prices Between 25,000 and 35,000 Rs.",
+                between25and35,
+                "25to35"
+              )}
+              {renderSection(
+                "Mobile Prices Below 25,000 Rs.",
+                below25,
+                "below25"
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

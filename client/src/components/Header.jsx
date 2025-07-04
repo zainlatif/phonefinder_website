@@ -66,7 +66,7 @@ const Header = ({ products = [] }) => {
           {/* Logo/Brand */}
           <div className="logo">
             <Link to="/" className="logo-link">
-              PhoneFinder
+              <div>Phone </div> <div>Finder</div>
             </Link>
           </div>
 
