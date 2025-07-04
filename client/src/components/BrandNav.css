@@ -1,0 +1,80 @@
+.brand-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 18px 0 12px 0;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.brand-btn {
+  background: none;
+  border: none;
+  color: #444;
+  font-size: 1.08rem;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: color 0.2s, opacity 0.2s;
+  outline: none;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+
+.brand-btn.active,
+.brand-btn:hover {
+  color: #e74c3c;
+  opacity: 1;
+  border-bottom: 2px solid #e74c3c;
+  background: none;
+}
+
+/* Responsive: stack or scroll brands on small screens */
+@media (max-width: 900px) {
+  .brand-nav {
+    gap: 24px;
+    padding: 12px 0 8px 0;
+    max-width: 100vw;
+  }
+  .brand-btn {
+    font-size: 1rem;
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 700px) {
+  .brand-nav {
+    gap: 12px;
+    padding: 8px 0 4px 0;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    max-width: 100vw;
+  }
+  .brand-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .brand-btn {
+    font-size: 0.95rem;
+    padding: 5px 7px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-nav {
+    gap: 8px;
+    padding: 6px 0 2px 0;
+    margin-bottom: 4px;
+  }
+  .brand-btn {
+    font-size: 0.9rem;
+    padding: 4px 6px;
+  }
+}

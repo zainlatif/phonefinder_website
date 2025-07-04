@@ -1,6 +1,7 @@
 // src/pages/Account.jsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Account.css';
 
 const Account = () => {
   const [user, setUser] = useState(null);
@@ -53,19 +54,39 @@ const Account = () => {
   if (!user) return <p>Please login to view your account.</p>;
 
   return (
-    <div>
-      <h2>Account Page</h2>
-      <p>Email: {user.email}</p>
-      <p>Role: {user.role}</p>
-      <input type="text" placeholder="Name" value={name}
-             onChange={(e) => setName(e.target.value)} /><br />
-      <input type="text" placeholder="Address" value={address}
-             onChange={(e) => setAddress(e.target.value)} /><br />
-      <input type="text" placeholder="Phone" value={phone}
-             onChange={(e) => setPhone(e.target.value)} /><br />
-      <button onClick={handleUpdate}>Update Profile</button>
-      <br />
-      <button onClick={handleDelete} style={{ marginTop: '10px', backgroundColor: 'red', color: 'white' }}>Delete Account</button>
+    <div className="account-container">
+      <h2 className="account-title">Account Page</h2>
+      <div className="account-info"><b>Email:</b> {user.email}</div>
+      <div className="account-info"><b>Role:</b> {user.role}</div>
+      <label className="account-label" htmlFor="name">Name</label>
+      <input
+        id="name"
+        type="text"
+        className="account-input"
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <label className="account-label" htmlFor="address">Address</label>
+      <input
+        id="address"
+        type="text"
+        className="account-input"
+        placeholder="Address"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+      />
+      <label className="account-label" htmlFor="phone">Phone</label>
+      <input
+        id="phone"
+        type="text"
+        className="account-input"
+        placeholder="Phone"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+      />
+      <button className="account-btn" onClick={handleUpdate}>Update Profile</button>
+      <button className="account-btn account-btn-delete" onClick={handleDelete}>Delete Account</button>
     </div>
   );
 };

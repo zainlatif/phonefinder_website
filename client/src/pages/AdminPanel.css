@@ -1,0 +1,223 @@
+.admin-panel {
+  max-width: 900px;
+  margin: 32px auto 0 auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 32px 28px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #e74c3c;
+  text-align: center;
+}
+
+.admin-input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fafafa;
+  transition: border 0.2s;
+}
+.admin-input:focus {
+  border-color: #e74c3c;
+  outline: none;
+}
+
+.admin-specs-section {
+  margin: 16px 0;
+}
+.admin-specs-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 8px;
+  background: #fff;
+}
+.admin-specs-table th,
+.admin-specs-table td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  font-size: 1rem;
+}
+.admin-specs-input {
+  width: 95%;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1rem;
+  background: #fafafa;
+}
+.admin-specs-remove-btn,
+.admin-specs-add-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  transition: color 0.2s;
+}
+.admin-specs-remove-btn {
+  color: #e74c3c;
+}
+.admin-specs-remove-btn:hover {
+  color: #b71c1c;
+}
+.admin-specs-add-btn {
+  color: #27ae60;
+}
+.admin-specs-add-btn:hover {
+  color: #145a32;
+}
+
+.admin-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 6px;
+  margin-right: 8px;
+  transition: background 0.2s;
+}
+.admin-btn:hover {
+  background: #c0392b;
+}
+.admin-btn-edit {
+  background: #2980b9;
+}
+.admin-btn-edit:hover {
+  background: #1c5a86;
+}
+.admin-btn-delete {
+  background: #e74c3c;
+}
+.admin-btn-delete:hover {
+  background: #b71c1c;
+}
+.admin-btn-cancel {
+  background: #888;
+}
+.admin-btn-cancel:hover {
+  background: #555;
+}
+.admin-btn-add {
+  background: #27ae60;
+}
+.admin-btn-add:hover {
+  background: #145a32;
+}
+
+.admin-search {
+  margin: 18px 0 12px 0;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 350px;
+  font-size: 1rem;
+  background: #fafafa;
+}
+
+.admin-list-title {
+  font-size: 1.1rem;
+  margin: 10px 0 6px 0;
+  color: #e74c3c;
+}
+
+.admin-no-products {
+  color: #e74c3c;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.admin-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.admin-card-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.admin-card-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 8px;
+}
+.admin-card-price {
+  color: #2ecc71;
+  font-weight: 600;
+}
+.admin-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+  .admin-panel {
+    padding: 16px 8px 12px 8px;
+    max-width: 98vw;
+  }
+  .admin-title {
+    font-size: 1.2rem;
+  }
+  .admin-card-img {
+    width: 60px;
+    height: 60px;
+  }
+  .admin-btn, .admin-specs-input {
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-panel {
+    padding: 8px 2px 6px 2px;
+    max-width: 100vw;
+  }
+  .admin-title {
+    font-size: 1rem;
+  }
+  .admin-input, .admin-btn, .admin-specs-input {
+    font-size: 0.95rem;
+    padding: 6px 0;
+  }
+  .admin-card-img {
+    width: 40px;
+    height: 40px;
+  }
+  .admin-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 8px;
+  }
+  .admin-card-info {
+    gap: 8px;
+  }
+}

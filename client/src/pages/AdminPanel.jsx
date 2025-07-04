@@ -1,44 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-const cardStyle = {
-  border: '1px solid #ccc',
-  borderRadius: '8px',
-  padding: '16px',
-  marginBottom: '12px',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  background: '#fafafa'
-};
-
-const btnStyle = {
-  background: '#e74c3c',
-  color: '#fff',
-  border: 'none',
-  borderRadius: '4px',
-  padding: '6px 12px',
-  cursor: 'pointer'
-};
-
-const editBtnStyle = {
-  background: '#2980b9',
-  color: '#fff',
-  border: 'none',
-  borderRadius: '4px',
-  padding: '6px 12px',
-  cursor: 'pointer',
-  marginRight: '8px'
-};
-
-const imageStyle = {
-  width: '80px',
-  height: '80px',
-  objectFit: 'cover',
-  borderRadius: '6px',
-  marginRight: '16px'
-};
+import './AdminPanel.css';
 
 const AdminPanel = () => {
   const [title, setTitle] = useState('');
@@ -57,7 +19,6 @@ const AdminPanel = () => {
   }, []);
 
   useEffect(() => {
-    // Filter products by search (case-insensitive, on title)
     if (search.trim()) {
       setFiltered(
         products.filter(p =>
@@ -65,7 +26,6 @@ const AdminPanel = () => {
         )
       );
     } else {
-      // Show only latest 10 products if no search
       setFiltered([...products].slice(-10).reverse());
     }
   }, [products, search]);
@@ -76,41 +36,32 @@ const AdminPanel = () => {
       .catch((err) => console.error('Error fetching products:', err));
   };
 
-  // Add a new empty row
   const addSpecRow = () => setSpecs([...specs, { spec: '', value: '', extra: '' }]);
-
-  // Remove a row by index
   const removeSpecRow = (idx) => setSpecs(specs.filter((_, i) => i !== idx));
-
-  // Handle input change
   const handleSpecChange = (idx, col, value) => {
     setSpecs(prev => prev.map((row, i) =>
       i === idx ? { ...row, [col]: value } : row
     ));
   };
-
-  // Only send filled rows to backend
   const specsToArray = () => specs.filter(row => row.spec || row.value || row.extra);
-
-  // For editing, load existing specs and add an empty row at the end
   const backendSpecsToArray = (backendSpecs) => {
     const arr = (backendSpecs || []).map(row => ({
       spec: row.spec || '',
       value: row.value || '',
       extra: row.extra || ''
     }));
-    arr.push({ spec: '', value: '', extra: '' }); // Always one empty row
+    arr.push({ spec: '', value: '', extra: '' });
     return arr;
   };
 
   const handleAddProduct = () => {
-    if (!title || !description || !price || !image || !image2) return; // image2 now required
+    if (!title || !description || !price || !image || !image2) return;
     const newProduct = {
       title,
       description,
       price,
       image,
-      image2, // always included
+      image2,
       specs: specsToArray()
     };
     axios.post('http://localhost:5000/api/products', newProduct)
@@ -145,13 +96,13 @@ const AdminPanel = () => {
   };
 
   const handleUpdateProduct = () => {
-    if (!title || !description || !price || !image || !image2) return; // image2 now required
+    if (!title || !description || !price || !image || !image2) return;
     axios.put(`http://localhost:5000/api/products/${editId}`, {
       title,
       description,
       price,
       image,
-      image2, // always included
+      image2,
       specs: specsToArray()
     })
       .then(() => {
@@ -178,57 +129,82 @@ const AdminPanel = () => {
   };
 
   return (
-    <div>
-      <h2>Admin Panel - {editId ? 'Edit Product' : 'Add Product'}</h2>
-      <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} /><br />
-      <input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} /><br />
-      <input placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} /><br />
-      <input placeholder="Image URL" value={image} onChange={(e) => setImage(e.target.value)} /><br />
-      <input placeholder="Second Image URL" value={image2} onChange={(e) => setImage2(e.target.value)} /><br />
-      <div style={{ margin: '16px 0' }}>
+    <div className="admin-panel">
+      <h2 className="admin-title">Admin Panel - {editId ? 'Edit Product' : 'Add Product'}</h2>
+      <input
+        className="admin-input"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      /><br />
+      <input
+        className="admin-input"
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      /><br />
+      <input
+        className="admin-input"
+        placeholder="Price"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      /><br />
+      <input
+        className="admin-input"
+        placeholder="Image URL"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+      /><br />
+      <input
+        className="admin-input"
+        placeholder="Second Image URL"
+        value={image2}
+        onChange={(e) => setImage2(e.target.value)}
+      /><br />
+      <div className="admin-specs-section">
         <b>Product Specifications:</b>
-        <table style={{ borderCollapse: 'collapse', width: '100%', marginTop: '8px' }}>
+        <table className="admin-specs-table">
           <thead>
             <tr>
-              <th style={{ border: '1px solid #ccc', padding: '4px' }}>Specification</th>
-              <th style={{ border: '1px solid #ccc', padding: '4px' }}>Value</th>
-              <th style={{ border: '1px solid #ccc', padding: '4px' }}>Extra</th>
+              <th>Specification</th>
+              <th>Value</th>
+              <th>Extra</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {specs.map((row, idx) => (
               <tr key={idx}>
-                <td style={{ border: '1px solid #ccc', padding: '4px' }}>
+                <td>
                   <input
+                    className="admin-specs-input"
                     type="text"
                     value={row.spec}
                     onChange={e => handleSpecChange(idx, 'spec', e.target.value)}
-                    style={{ width: '95%' }}
                   />
                 </td>
-                <td style={{ border: '1px solid #ccc', padding: '4px' }}>
+                <td>
                   <input
+                    className="admin-specs-input"
                     type="text"
                     value={row.value}
                     onChange={e => handleSpecChange(idx, 'value', e.target.value)}
-                    style={{ width: '95%' }}
                   />
                 </td>
-                <td style={{ border: '1px solid #ccc', padding: '4px' }}>
+                <td>
                   <input
+                    className="admin-specs-input"
                     type="text"
                     value={row.extra}
                     onChange={e => handleSpecChange(idx, 'extra', e.target.value)}
-                    style={{ width: '95%' }}
                   />
                 </td>
                 <td>
                   {specs.length > 1 && idx !== specs.length - 1 && (
-                    <button type="button" onClick={() => removeSpecRow(idx)} style={{ color: 'red' }}>✕</button>
+                    <button type="button" className="admin-specs-remove-btn" onClick={() => removeSpecRow(idx)}>✕</button>
                   )}
                   {idx === specs.length - 1 && (
-                    <button type="button" onClick={addSpecRow} style={{ color: 'green' }}>＋</button>
+                    <button type="button" className="admin-specs-add-btn" onClick={addSpecRow}>＋</button>
                   )}
                 </td>
               </tr>
@@ -238,46 +214,39 @@ const AdminPanel = () => {
       </div>
       {editId ? (
         <>
-          <button onClick={handleUpdateProduct} style={editBtnStyle}>Update Product</button>
-          <button onClick={handleCancelEdit} style={btnStyle}>Cancel</button>
+          <button className="admin-btn admin-btn-edit" onClick={handleUpdateProduct}>Update Product</button>
+          <button className="admin-btn admin-btn-cancel" onClick={handleCancelEdit}>Cancel</button>
         </>
       ) : (
-        <button onClick={handleAddProduct}>Add Product</button>
+        <button className="admin-btn admin-btn-add" onClick={handleAddProduct}>Add Product</button>
       )}
       <input
         type="text"
+        className="admin-search"
         placeholder="Search by model name..."
         value={search}
         onChange={e => setSearch(e.target.value)}
-        style={{
-          margin: '18px 0 12px 0',
-          padding: '8px',
-          borderRadius: '4px',
-          border: '1px solid #ccc',
-          width: '100%',
-          maxWidth: 350
-        }}
       />
-      <h3>Product List {search ? '(Search Results)' : '(Latest 10)'}</h3>
+      <h3 className="admin-list-title">Product List {search ? '(Search Results)' : '(Latest 10)'}</h3>
       <div>
         {filtered.length === 0 ? (
-          <div style={{ color: '#e74c3c', margin: '12px 0' }}>No products found.</div>
+          <div className="admin-no-products">No products found.</div>
         ) : (
           filtered.map((product) => (
-            <div key={product._id} style={cardStyle}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div key={product._id} className="admin-card">
+              <div className="admin-card-info">
                 {product.image && (
-                  <img src={product.image} alt={product.title} style={imageStyle} />
+                  <img src={product.image} alt={product.title} className="admin-card-img" />
                 )}
                 <div>
                   <strong>{product.title}</strong><br />
                   <span>{product.description}</span><br />
-                  <span style={{ color: '#2ecc71' }}>${product.price}</span>
+                  <span className="admin-card-price">${product.price}</span>
                 </div>
               </div>
-              <div>
-                <button onClick={() => handleEditProduct(product)} style={editBtnStyle}>Edit</button>
-                <button onClick={() => handleDeleteProduct(product._id)} style={btnStyle}>Delete</button>
+              <div className="admin-card-actions">
+                <button className="admin-btn admin-btn-edit" onClick={() => handleEditProduct(product)}>Edit</button>
+                <button className="admin-btn admin-btn-delete" onClick={() => handleDeleteProduct(product._id)}>Delete</button>
               </div>
             </div>
           ))

@@ -3,6 +3,11 @@
   color: #e0e0e0;
   padding: 40px 20px 20px;
   margin-top: auto;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  left: 0;
+  bottom: 0;
 }
 
 .footer-content {
@@ -33,7 +38,7 @@
 .brand-name {
   font-size: 24px;
   font-weight: bold;
-  color:rgba(43, 42, 42, 0.73);
+  color: rgba(43, 42, 42, 0.73);
 }
 
 .highlight {
@@ -58,13 +63,13 @@
 }
 
 .links a {
-  color:rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .links a:hover {
-  color:rgb(155, 155, 155);
+  color: rgb(155, 155, 155);
 }
 
 .payments {
@@ -112,31 +117,73 @@
 }
 
 .social-link {
-  color:rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   font-size: 20px;
   transition: color 0.3s ease;
 }
 
 .social-link:hover {
-  color:rgb(226, 79, 74);
+  color: rgb(226, 79, 74);
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+  .footer-content {
+    gap: 24px;
+  }
 }
 
 @media (max-width: 768px) {
   .footer {
     padding: 30px 15px 15px;
   }
-  
   .footer-content {
     grid-template-columns: 1fr;
     gap: 30px;
   }
-  
   .footer-bottom {
     flex-direction: column;
     text-align: center;
+    gap: 10px;
   }
-  
   .payments {
     justify-content: center;
   }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 18px 5px 10px;
+  }
+  .brand-name {
+    font-size: 18px;
+  }
+  .section-title {
+    font-size: 15px;
+  }
+  .app-badge {
+    height: 32px;
+  }
+  .payment-img {
+    height: 22px;
+    padding: 3px;
+  }
+}
+
+/* Sticky footer for page with little content */
+html, body, #root {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+#root {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.footer {
+  flex-shrink: 0;
 }

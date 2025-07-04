@@ -26,11 +26,12 @@ const ComparePage = () => {
     <div className="compare-container">
       {[1, 2].map((col) => (
         <div key={col} className="compare-col">
-          <div style={{ marginBottom: 8, fontWeight: "bold" }}>
+          <div className="compare-title">
             COMPARE WITH
           </div>
           <input
             type="text"
+            className="compare-input"
             placeholder="Enter model name to compare"
             value={col === 1 ? query1 : query2}
             onChange={e => {
@@ -42,12 +43,11 @@ const ComparePage = () => {
                 handleSearch(e.target.value, setResults2);
               }
             }}
-            style={{ width: "100%", padding: 8, marginBottom: 4 }}
           />
           {(col === 1 ? query1 : query2) && (
             <div className="compare-suggestions">
               {(col === 1 ? results1 : results2).length === 0 ? (
-                <div style={{ padding: 8, color: "#888" }}>No results</div>
+                <div className="compare-suggestion-empty">No results</div>
               ) : (
                 (col === 1 ? results1 : results2).map(product => (
                   <div
@@ -68,59 +68,50 @@ const ComparePage = () => {
                     <img
                       src={product.image}
                       alt={product.title}
-                      style={{ width: 50, height: 50, objectFit: "contain", marginRight: 10 }}
+                      className="compare-suggestion-img"
                     />
-                    <span>{product.title}</span>
+                    <span className="compare-suggestion-title">{product.title}</span>
                   </div>
                 ))
               )}
             </div>
           )}
           {!((col === 1 ? selected1 : selected2)) && (
-            <div style={{
-              textAlign: "center",
-              color: "#888",
-              marginTop: 32,
-              fontSize: 16
-            }}>
+            <div className="compare-placeholder">
               <div>
-                <img src="/placeholder/compareplaceholder.png" alt="placeholder" style={{ width: 60, opacity: 0.3 }} />
+                <img src="/placeholder/compareplaceholder.png" alt="placeholder" className="compare-placeholder-img" />
               </div>
               Add a device to compare
             </div>
           )}
           {(col === 1 ? selected1 : selected2) && (
-            <div style={{
-              marginTop: 16,
-              border: "1px solid #ccc",
-              borderRadius: 8,
-              padding: 12,
-              background: "#fafafa"
-            }}>
-              <div style={{ textAlign: "center" }}>
+            <div className="compare-selected">
+              <div className="compare-selected-img-wrap">
                 <img
                   src={(col === 1 ? selected1 : selected2).image}
                   alt={(col === 1 ? selected1 : selected2).title}
-                  style={{ width: 100, height: 100, objectFit: "contain" }}
+                  className="compare-selected-img"
                 />
               </div>
-              <h3 style={{ fontSize: 18, margin: "8px 0", textAlign: "center" }}>
+              <h3 className="compare-selected-title">
                 {(col === 1 ? selected1 : selected2).title}
               </h3>
-              <p style={{ textAlign: "center", color: "#444" }}>
+              <p className="compare-selected-desc">
                 {(col === 1 ? selected1 : selected2).description}
               </p>
-              <table style={{ width: "100%", marginTop: 10, fontSize: 14 }}>
-                <tbody>
-                  {(col === 1 ? selected1 : selected2).specs?.map((row, idx) => (
-                    <tr key={idx}>
-                      <td style={{ fontWeight: "bold", padding: "2px 6px", border: "1px solid #eee" }}>{row.spec}</td>
-                      <td style={{ padding: "2px 6px", border: "1px solid #eee" }}>{row.value}</td>
-                      <td style={{ padding: "2px 6px", border: "1px solid #eee" }}>{row.extra}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="compare-table-wrap">
+                <table className="compare-table">
+                  <tbody>
+                    {(col === 1 ? selected1 : selected2).specs?.map((row, idx) => (
+                      <tr key={idx}>
+                        <td className="compare-table-spec">{row.spec}</td>
+                        <td className="compare-table-value">{row.value}</td>
+                        <td className="compare-table-extra">{row.extra}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>

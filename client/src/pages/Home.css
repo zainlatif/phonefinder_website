@@ -1,26 +1,58 @@
 /* General container padding */
 .responsive-container {
-  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
 }
 
 /* Responsive section layout */
 .responsive-section {
   margin-bottom: 32px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  padding: 18px 14px 14px 14px;
 }
 
 /* Section header layout */
 .responsive-section-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+/* Section title styling */
+.responsive-section-title {
+  color: #222;
+  margin-bottom: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* "More" link styling */
+.responsive-section-more {
+  color: #e74c3c;
+  background: none;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.2s;
+  padding: 0 8px;
+}
+.responsive-section-more:hover {
+  color: #b71c1c;
 }
 
 /* Default card grid layout */
 .responsive-card-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Center by default */
   gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 /* Default card styling */
@@ -68,34 +100,21 @@
 /* Adjustments for phone layout */
 @media (max-width: 600px) {
   .responsive-container {
-    padding: 6px;
+    padding: 0 2px;
   }
-  .responsive-section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+  .responsive-section {
+    padding: 6px 2px 4px 2px;
+    margin-bottom: 10px;
+  }
+  .responsive-section-title {
+    font-size: 0.95rem;
   }
   .responsive-card-grid {
-    flex-direction: row;
-    justify-content: center;
+    gap: 6px;
   }
 }
 
 .products-center-box {
-  max-width: 1000px;
   margin: 0 auto;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  padding: 16px 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-@media (max-width: 1050px) {
-  .products-center-box {
-    max-width: 98vw;
-    padding: 8px 2vw;
-  }
+  width: 100%;
 }

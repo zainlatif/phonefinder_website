@@ -9,18 +9,6 @@ import ProductDetails from "../components/ProductDetails";
 import BrandNav from "../components/BrandNav";
 import "./Home.css";
 
-const tableStyle = {
-  borderCollapse: "collapse",
-  width: "100%",
-  marginTop: "24px",
-};
-
-const thtdStyle = {
-  border: "1px solid #ccc",
-  padding: "8px",
-  textAlign: "left",
-};
-
 const getSectionProducts = (products, min, max = Infinity) =>
   products.filter((p) => p.price > min && p.price <= max);
 
@@ -109,13 +97,6 @@ const Home = () => {
     }
   };
 
-  const getSpecRows = (longDescription) => {
-    if (!longDescription) return [];
-    const specs = longDescription.split(",").map((s) => s.split(":"));
-    while (specs.length < 25) specs.push(["", ""]);
-    return specs.slice(0, 25);
-  };
-
   // Filter products by search term (case-insensitive, matches title or description)
   const filteredProducts = searchTerm
     ? products.filter(
@@ -124,9 +105,6 @@ const Home = () => {
           p.description?.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : products;
-
-  // Sort products by creation (assuming _id is incremental)
-  const sortedProducts = [...products].sort((a, b) => (a._id < b._id ? 1 : -1));
 
   // Filter by brand if selected
   const brandFilteredProducts = selectedBrand
@@ -148,16 +126,10 @@ const Home = () => {
   const renderSection = (title, prods, sectionKey) => (
     <div className="responsive-section">
       <div className="responsive-section-header">
-        <h3 style={{ color: "#222", marginBottom: 8 }}>{title}</h3>
+        <h3 className="responsive-section-title">{title}</h3>
         {prods.length > 7 && (
           <button
-            style={{
-              color: "red",
-              background: "none",
-              border: "none",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
+            className="responsive-section-more"
             onClick={() => navigate(`/section/${sectionKey}`)}
           >
             More&gt;&gt;

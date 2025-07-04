@@ -1,18 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-
-const tableStyle = {
-  borderCollapse: "collapse",
-  width: "100%",
-  marginTop: "24px",
-};
-
-const thtdStyle = {
-  border: "1px solid #ccc",
-  padding: "8px",
-  textAlign: "left",
-};
+import "./ProductDetails.css";
 
 const ProductDetails = ({ product, onBack }) => {
   const { user } = useAuth();
@@ -101,9 +90,9 @@ const ProductDetails = ({ product, onBack }) => {
 
   return (
     <div className="product-details-container">
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <div className="product-details-back-row">
         {onBack && (
-          <button onClick={onBack} style={{ marginBottom: "16px" }}>
+          <button onClick={onBack} className="product-details-back-btn">
             ← Back
           </button>
         )}
@@ -112,42 +101,23 @@ const ProductDetails = ({ product, onBack }) => {
       {/* Product Images */}
       <div className="product-details-images">
         {product.image && (
-          <img src={product.image} alt={product.title} />
+          <img src={product.image} alt={product.title} className="product-details-img" />
         )}
         {product.image2 && (
-          <img src={product.image2} alt={product.title + " 2"} />
+          <img src={product.image2} alt={product.title + " 2"} className="product-details-img" />
         )}
       </div>
 
       {/* Title and Description */}
-      <h2 style={{ margin: "0 0 8px 0", textAlign: "center" }}>
-        {product.title}
-      </h2>
-      <p
-        style={{
-          margin: "0 0 18px 0",
-          textAlign: "center",
-          color: "#444",
-        }}
-      >
-        {product.description}
-      </p>
+      <h2 className="product-details-title">{product.title}</h2>
+      <p className="product-details-desc">{product.description}</p>
 
       {/* Favorite Button */}
-      <div style={{ textAlign: "center", marginBottom: 24 }}>
+      <div className="product-details-fav-row">
         <button
           onClick={isFav ? handleRemoveFav : handleAddFav}
           disabled={favLoading}
-          style={{
-            padding: "10px 20px",
-            fontSize: "16px",
-            cursor: "pointer",
-            borderRadius: "4px",
-            border: "none",
-            backgroundColor: isFav ? "#d9534f" : "#5cb85c",
-            color: "white",
-            transition: "background-color 0.3s",
-          }}
+          className={`product-details-fav-btn${isFav ? " fav" : ""}`}
         >
           {favLoading
             ? "Loading..."
@@ -158,44 +128,46 @@ const ProductDetails = ({ product, onBack }) => {
       </div>
 
       {/* Specs Table */}
-      <table style={tableStyle}>
-        <thead>
-          <tr>
-            <th style={thtdStyle}>Specification</th>
-            <th style={thtdStyle}>Value</th>
-            <th style={thtdStyle}>Extra</th>
-          </tr>
-        </thead>
-        <tbody>
-          {product.specs &&
-            product.specs.map((row, idx) => (
-              <tr key={idx}>
-                <td style={thtdStyle}>{row.spec}</td>
-                <td style={thtdStyle}>{row.value}</td>
-                <td style={thtdStyle}>{row.extra}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div className="product-details-table-wrap">
+        <table className="product-details-table">
+          <thead>
+            <tr>
+              <th>Specification</th>
+              <th>Value</th>
+              <th>Extra</th>
+            </tr>
+          </thead>
+          <tbody>
+            {product.specs &&
+              product.specs.map((row, idx) => (
+                <tr key={idx}>
+                  <td>{row.spec}</td>
+                  <td>{row.value}</td>
+                  <td>{row.extra}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Comments Section */}
-      <div style={{ marginTop: 32 }}>
+      <div className="product-details-comments">
         <h3>Reviews & Comments</h3>
         {loadingComments ? (
           <p>Loading comments...</p>
         ) : comments.length === 0 ? (
           <p>No comments yet.</p>
         ) : (
-          <ul>
+          <ul className="product-details-comments-list">
             {comments.map((c, idx) => (
-              <li key={c._id || idx}>
+              <li key={c._id || idx} className="product-details-comment">
                 <b>{c.user}:</b> {c.text}
-                <span style={{ color: "#888", fontSize: "0.9em" }}>
+                <span className="product-details-comment-date">
                   {new Date(c.date).toLocaleString()}
                 </span>
                 {user?.role === "admin" && (
                   <button
-                    style={{ marginLeft: 10, color: "red" }}
+                    className="product-details-comment-delete"
                     onClick={async () => {
                       await axios.delete(
                         `http://localhost:5000/api/products/${product._id}/comments/${c._id}`
@@ -211,15 +183,18 @@ const ProductDetails = ({ product, onBack }) => {
           </ul>
         )}
         {user && (
-          <div style={{ marginTop: 12 }}>
+          <div className="product-details-add-comment">
             <textarea
               rows={2}
-              style={{ width: "100%" }}
+              className="product-details-comment-textarea"
               placeholder="Write a comment..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
             />
-            <button onClick={handleAddComment} style={{ marginTop: 4 }}>
+            <button
+              onClick={handleAddComment}
+              className="product-details-comment-add-btn"
+            >
               Add Comment
             </button>
           </div>

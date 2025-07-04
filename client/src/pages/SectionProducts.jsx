@@ -4,6 +4,7 @@ import Card from "../components/Card";
 import Banner from "../components/Banner";
 import axios from "axios";
 import ProductDetails from "../components/ProductDetails";
+import "./SectionProducts.css";
 
 const sectionConfig = {
   above70: {
@@ -46,15 +47,15 @@ const SectionProducts = () => {
   const filtered = products.filter(config.filter);
 
   return (
-    <div>
+    <div className="section-products-container">
       <Banner />
-      <h2>{config.title}</h2>
+      <h2 className="section-products-title">{config.title}</h2>
       {selected ? (
         <ProductDetails product={selected} onBack={() => setSelected(null)} />
       ) : (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+        <div className="section-products-list">
           {filtered.length === 0 ? (
-            <p>No products found.</p>
+            <p className="section-products-empty">No products found.</p>
           ) : (
             filtered.map((product) => (
               <Card
