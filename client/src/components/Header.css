@@ -24,6 +24,22 @@
 .logo-link {
   color: #fff;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-img {
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
+  margin-left: 4px;
+  display: inline-block;
+}
+.logo-text{
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 .desktop-nav {
   display: flex;
@@ -266,7 +282,20 @@
   overflow: scroll;
   
 }
-
+.signup-link{
+  padding: 2px 2px;
+  font-size: 10px;
+}
+.login-link {
+  font-size: 10px;
+  padding: 2px 2px;
+}
+.logo-text {
+  font-size: 14px;
+}
+.logo-img {
+  display: none;
+}
 .search-input {
   font-size: 0;
 }
@@ -355,4 +384,28 @@
   border-bottom: 1px solid #eee;
   transition: color 0.2s;
 }
-.mobile-nav
+.mobile-nav-link:hover {
+  color: #e74c3c;
+}
+.mobile-nav-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mobile-nav-footer a {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+.mobile-nav-footer a:hover {
+  color: #333;
+}
+.mobile-nav-overlay.show {
+  display: flex;
+}
+.mobile-nav.show {
+  left: 0;
+  transition: left 0.3s;
+}

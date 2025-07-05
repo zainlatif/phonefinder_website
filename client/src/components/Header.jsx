@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
 import { FaBars, FaTimes, FaSearch, FaUserCircle } from "react-icons/fa";
 import './Header.css';
+import logoImg from '../assets/logo64.png';
 
 const Header = ({ products = [] }) => {
   const { user, logout } = useAuth();
@@ -66,7 +67,11 @@ const Header = ({ products = [] }) => {
           {/* Logo/Brand */}
           <div className="logo">
             <Link to="/" className="logo-link">
-              <div>Phone </div> <div>Finder</div>
+              <div className='logo-text'>
+                <span>Phone</span>
+              <span>Finder</span>
+              </div>
+              <img src={logoImg} alt="Logo" className="logo-img" />
             </Link>
           </div>
 
