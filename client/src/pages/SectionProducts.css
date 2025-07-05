@@ -43,37 +43,42 @@
 /*  Pagination Styles */
 .pagination {
   display: flex;
-  gap: 8px;
   justify-content: center;
-  margin: 24px auto 40px;
   flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px auto 40px;
 }
 
-.pagination button {
+.pagination-btn {
+  all: unset; /* Reset all inherited styles (like global button styles) */
   padding: 8px 14px;
-  border: 1px solid #ccc;
-  background-color: white;
-  cursor: pointer;
-  border-radius: 5px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
   font-size: 14px;
-  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
 }
 
-.pagination button:hover {
-  background-color: #f2f2f2;
+.pagination-btn:hover {
+  background-color: #f5f5f5;
 }
 
-.pagination button.active {
+.pagination-btn.active {
   background-color: #e74c3c;
-  color: white;
-  font-weight: bold;
+  color: #fff;
   border-color: #e74c3c;
+  font-weight: bold;
 }
 
-.pagination button:disabled {
-  opacity: 0.5;
+.pagination-btn:disabled {
+  background-color: #f0f0f0;
+  color: #aaa;
   cursor: not-allowed;
 }
+
 
 /* 📱 Responsive Styles */
 @media (max-width: 900px) {

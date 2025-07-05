@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import Card from "../components/Card";
 import Banner from "../components/Banner";
-import axios from "axios";
 import ProductDetails from "../components/ProductDetails";
 import "./SectionProducts.css";
 
@@ -33,7 +33,7 @@ const SectionProducts = () => {
   const { sectionKey } = useParams();
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(null);
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const perPage = 32;
 
   const config = sectionConfig[sectionKey];
@@ -45,11 +45,18 @@ const SectionProducts = () => {
       .catch(() => setProducts([]));
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1); // reset to page 1 when section changes
+  }, [sectionKey]);
+
   if (!config) return <div>Invalid section.</div>;
 
   const filtered = products.filter(config.filter);
   const totalPages = Math.ceil(filtered.length / perPage);
-  const paginated = filtered.slice((page - 1) * perPage, page * perPage);
+  const paginated = filtered.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  );
 
   return (
     <div className="section-products-container1">
@@ -75,23 +82,29 @@ const SectionProducts = () => {
               )}
             </div>
 
-            {/* Pagination Buttons */}
+            {/* Pagination Controls */}
             {totalPages > 1 && (
-              <div className="pagination-container">
+              <div className="pagination">
                 <button
-                  disabled={page === 1}
-                  onClick={() => setPage(page - 1)}
-                  className="pagination-button"
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
                 >
-                  Previous
+                  Prev
                 </button>
-                <span className="pagination-info">
-                  Page {page} of {totalPages}
-                </span>
+
+                {[...Array(totalPages)].map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={currentPage === i + 1 ? "active" : ""}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+
                 <button
-                  disabled={page === totalPages}
-                  onClick={() => setPage(page + 1)}
-                  className="pagination-button"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
                 >
                   Next
                 </button>

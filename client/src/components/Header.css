@@ -2,7 +2,7 @@
   background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
   color: #fff;
   padding: 0 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -35,7 +35,7 @@
   margin-left: 4px;
   display: inline-block;
 }
-.logo-text{
+.logo-text {
   display: flex;
   flex-direction: column;
   font-size: 1.2rem;
@@ -67,7 +67,7 @@
   background: #fff;
   border-radius: 25px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 .search-input {
   flex: 1;
@@ -99,7 +99,7 @@
   right: 0;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   margin-top: 4px;
   z-index: 1000;
   overflow: hidden;
@@ -134,7 +134,7 @@
   transition: opacity 0.3s;
 }
 .signup-link {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   color: #fff;
   padding: 8px 16px;
   border-radius: 20px;
@@ -143,7 +143,7 @@
   transition: background 0.3s;
 }
 .signup-link:hover {
-  background: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.3);
 }
 .user-dropdown {
   position: relative;
@@ -162,7 +162,7 @@
 }
 .user-btn-hover,
 .user-btn:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 .user-name {
   font-weight: 500;
@@ -173,7 +173,7 @@
   top: 100%;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   min-width: 200px;
   margin-top: 8px;
   overflow: hidden;
@@ -232,21 +232,20 @@
   .user-section {
     gap: 10px;
   }
-   .header-main {
+  .header-main {
     padding: 0 0;
   }
   .search-form {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 25px;
-  overflow: scroll;
-  
-}
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 25px;
+    overflow: scroll;
+  }
 
-.search-input {
-  font-size: 0;
-}
+  .search-input {
+    font-size: 10px;
+  }
   .header-inner {
     height: 60px;
   }
@@ -259,13 +258,13 @@
     height: 40px;
   }
   .search-btn {
-  background: #e74c3c;
-  border: none;
-  color: #fff;
-  padding: 12px 2px;
-  cursor: pointer;
-  display: flex;
-}
+    background: #e74c3c;
+    border: none;
+    color: #fff;
+    padding: 12px 2px;
+    cursor: pointer;
+    display: flex;
+  }
   .user-name {
     display: none;
   }
@@ -275,30 +274,30 @@
     padding: 0 0;
   }
   .search-form {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 25px;
-  overflow: scroll;
-  
-}
-.signup-link{
-  padding: 2px 2px;
-  font-size: 10px;
-}
-.login-link {
-  font-size: 10px;
-  padding: 2px 2px;
-}
-.logo-text {
-  font-size: 14px;
-}
-.logo-img {
-  display: none;
-}
-.search-input {
-  font-size: 0;
-}
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 25px;
+    overflow: scroll;
+  }
+  .signup-link {
+    padding: 2px 2px;
+    font-size: 10px;
+  }
+  .login-link {
+    font-size: 10px;
+    padding: 2px 2px;
+  }
+  .logo-text {
+    font-size: 14px;
+  }
+  .logo-img {
+    display: none;
+  }
+  .search-input {
+    font-size: 10px;
+    width: 10 %;
+  }
   .header-inner {
     height: 60px;
   }
@@ -313,13 +312,13 @@
     height: 40px;
   }
   .search-btn {
-  background: #e74c3c;
-  border: none;
-  color: #fff;
-  padding: 12px 2px;
-  cursor: pointer;
-  display: flex;
-}
+    background: #e74c3c;
+    border: none;
+    color: #fff;
+    padding: 12px 2px;
+    cursor: pointer;
+    display: flex;
+  }
   .user-name {
     display: none;
   }
@@ -332,7 +331,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 2000;
   display: flex;
   justify-content: flex-start;
@@ -345,7 +344,7 @@
   height: 100vh;
   background: #fff;
   padding: 20px;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 20px;
