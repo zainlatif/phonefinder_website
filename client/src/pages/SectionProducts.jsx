@@ -12,7 +12,7 @@ const sectionConfig = {
     filter: (p) => p.price > 70000,
   },
   "50to70": {
-    title: "Mobile  Prices Between 50,000 - 70,000",
+    title: "Mobile Prices Between 50,000 - 70,000",
     filter: (p) => p.price > 50000 && p.price <= 70000,
   },
   "35to50": {
@@ -33,33 +33,39 @@ const SectionProducts = () => {
   const { sectionKey } = useParams();
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [page, setPage] = useState(1);
+  const perPage = 32;
+
   const config = sectionConfig[sectionKey];
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/products")
       .then((res) => setProducts(res.data))
-      .catch((err) => setProducts([]));
+      .catch(() => setProducts([]));
   }, []);
 
   if (!config) return <div>Invalid section.</div>;
 
   const filtered = products.filter(config.filter);
+  const totalPages = Math.ceil(filtered.length / perPage);
+  const paginated = filtered.slice((page - 1) * perPage, page * perPage);
 
   return (
     <div className="section-products-container1">
       <Banner />
       <div className="section-products-container2">
-        <div className="section-products-container2">
-          <h2 className="section-products-title">{config.title}</h2>
-          {selected ? (
-            <ProductDetails product={selected} onBack={() => setSelected(null)} />
-          ) : (
+        <h2 className="section-products-title">{config.title}</h2>
+
+        {selected ? (
+          <ProductDetails product={selected} onBack={() => setSelected(null)} />
+        ) : (
+          <>
             <div className="section-products-list">
-              {filtered.length === 0 ? (
+              {paginated.length === 0 ? (
                 <p className="section-products-empty">No products found.</p>
               ) : (
-                filtered.map((product) => (
+                paginated.map((product) => (
                   <Card
                     key={product._id}
                     product={product}
@@ -68,8 +74,31 @@ const SectionProducts = () => {
                 ))
               )}
             </div>
-          )}
-        </div>
+
+            {/* Pagination Buttons */}
+            {totalPages > 1 && (
+              <div className="pagination-container">
+                <button
+                  disabled={page === 1}
+                  onClick={() => setPage(page - 1)}
+                  className="pagination-button"
+                >
+                  Previous
+                </button>
+                <span className="pagination-info">
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  disabled={page === totalPages}
+                  onClick={() => setPage(page + 1)}
+                  className="pagination-button"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

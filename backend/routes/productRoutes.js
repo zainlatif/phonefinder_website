@@ -103,4 +103,32 @@ router.delete('/:productId/comments/:commentId', async (req, res) => {
   }
 });
 
+// Get products with pagination
+router.get('/', async (req, res) => {
+  try {
+    const search = req.query.search;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 32;
+
+    let query = {};
+    if (search) {
+      query = { title: { $regex: search, $options: 'i' } };
+    }
+
+    const total = await Product.countDocuments(query);
+    const products = await Product.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.json({
+      products,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router;

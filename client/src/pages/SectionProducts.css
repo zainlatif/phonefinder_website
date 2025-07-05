@@ -1,6 +1,7 @@
 .section-products-container1 {
   box-sizing: border-box;
 }
+
 .section-products-container2 {
   max-width: 1200px;
   display: flex;
@@ -9,12 +10,13 @@
   align-items: center;
   margin: 0 auto;
 }
+
 .section-products-container3 {
   margin: 0 0 50px 0;
 }
 
 .section-products-title {
-  margin: 18px 0 18px 0;
+  margin: 18px 0;
   font-size: 1.5rem;
   font-weight: 700;
   color: #e74c3c;
@@ -38,17 +40,63 @@
   text-align: center;
 }
 
-/* Responsive styles */
+/*  Pagination Styles */
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 24px auto 40px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.pagination button:hover {
+  background-color: #f2f2f2;
+}
+
+.pagination button.active {
+  background-color: #e74c3c;
+  color: white;
+  font-weight: bold;
+  border-color: #e74c3c;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 📱 Responsive Styles */
 @media (max-width: 900px) {
   .section-products-container {
     padding-left: 12px;
     padding-right: 12px;
   }
+
   .section-products-title {
     font-size: 1.15rem;
   }
+
   .section-products-list {
     gap: 10px;
+  }
+
+  .pagination {
+    gap: 6px;
+  }
+
+  .pagination button {
+    padding: 6px 10px;
+    font-size: 13px;
   }
 }
 
@@ -57,11 +105,28 @@
     padding-left: 4px;
     padding-right: 4px;
   }
+
   .section-products-title {
     font-size: 1rem;
-    margin: 10px 0 10px 0;
+    margin: 10px 0;
   }
+
   .section-products-list {
     gap: 6px;
+  }
+
+  .pagination {
+    gap: 4px;
+    padding: 10px;
+  }
+
+  .pagination button {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  .pagination-button button{
+    padding: 4px 6px;
+    font-size: 11px;
+    border: 1px solid #ccc;
   }
 }
