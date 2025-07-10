@@ -7,7 +7,8 @@ export default defineConfig({
     allowedHosts: [
       'localhost',
       '127.0.0.1',
-      'duplicate-about-senators-sql.trycloudflare.com', // ✅ Add your tunnel hostname here
+      'duplicate-about-senators-sql.trycloudflare.com',
+      'drilling-care-excuse-sent.trycloudflare.com', // ✅ New one added
     ],
   },
 })

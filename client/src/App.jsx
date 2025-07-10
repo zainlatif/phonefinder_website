@@ -12,6 +12,7 @@ import News from './pages/News';
 import Review from './pages/Review';
 import Footer from './components/Footer';
 import FavorateProduct from './pages/FavorateProduct';
+import FloatingChatbot from './components/FloatingChatbot'; // <-- Add this import
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/favourites" element={<FavorateProduct />} />
       </Routes>
       <Footer />
+      <FloatingChatbot /> {/* <-- Add this here, after Footer */}
     </Router>
   );
 }

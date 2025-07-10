@@ -296,7 +296,7 @@
   }
   .search-input {
     font-size: 10px;
-    width: 10 %;
+    width: 10%;
   }
   .header-inner {
     height: 60px;
@@ -340,7 +340,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 280px;
+  width: 200px;
   height: 100vh;
   background: #fff;
   padding: 20px;
