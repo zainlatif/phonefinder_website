@@ -1,5 +1,6 @@
 import './Footer.css';
 import { FaYoutube, FaFacebookF, FaInstagram, FaTiktok, FaLinkedinIn } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => (
   <footer className="footer">
@@ -10,11 +11,11 @@ const Footer = () => (
           <span className="brand-name">Phone<span className="highlight">Finder</span>.pk</span>
         </div>
         <ul className="links">
-          <li><a href="#">News</a></li>
-          <li><a href="#">Reviews</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="/news">News</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/aboutus">About Us</a></li>
+          <li><a href="/contactus">Contact Us</a></li>
+          <li><a href="/termcondition">Terms & Conditions</a></li>
         </ul>
       </div>
 
@@ -22,9 +23,10 @@ const Footer = () => (
         <h3 className="section-title">Customer Service</h3>
         <ul className="links">
           
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">E-Warranty Activation</a></li>
+          <li><a href="/privacypolicy">Privacy Policy</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/warrantycheck">E-Warranty Activation</a></li>
+          <li><Link to="/blockphone">Stolen Phone</Link></li>
           <li><a href="#">PTA Taxes</a></li>
         </ul>
       </div>

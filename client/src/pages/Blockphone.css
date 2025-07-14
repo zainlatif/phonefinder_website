@@ -1,0 +1,32 @@
+.blockphone-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  font-family: Arial, sans-serif;
+}
+
+.blockphone-container h1 {
+  color: #2d3e50;
+  margin-bottom: 18px;
+}
+
+.blockphone-container h2 {
+  color: #3a4a63;
+  margin-top: 28px;
+}
+
+.blockphone-container ol {
+  margin-left: 20px;
+  margin-bottom: 18px;
+}
+
+.blockphone-container ul {
+  margin-left: 20px;
+}
+
+.blockphone-container b {
+  color: #1a7b34;
+}
