@@ -17,9 +17,7 @@ import ContactUs from './pages/ContactUs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Careers from "./pages/Careers";
 import TermCondition from "./pages/TermCondition";
-import WarrantyCheck from './pages/WarrantyCheck'; // ✅ Fixed import path
-
-// Components
+import WarrantyCheck from './pages/WarrantyCheck';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FloatingChatbot from './components/FloatingChatbot';
