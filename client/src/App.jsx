@@ -12,6 +12,7 @@ import ComparePage from "./pages/ComparePage";
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import Review from './pages/Review';
+import ReviewDetail from './pages/ReviewDetail';
 import FavorateProduct from './pages/FavorateProduct';
 import Blockphone from './pages/Blockphone';
 import ContactUs from './pages/ContactUs';
@@ -39,6 +40,7 @@ function App() {
         <Route path="/news" element={<News />} />
         <Route path="/news/:id" element={<NewsDetail />} />
         <Route path="/reviews" element={<Review />} />
+        <Route path="/reviews/:id" element={<ReviewDetail />} />
         <Route path="/favourites" element={<FavorateProduct />} />
         <Route path="/blockphone" element={<Blockphone />} />
         <Route path="/contactus" element={<ContactUs />} />

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import ReviewCard from "../components/ReviewCard";
 import "../App.css";
 import "./Review.css";
 
@@ -8,6 +10,7 @@ const REVIEWS_PER_PAGE = 5;
 
 const Review = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
   const [title, setTitle] = useState("");
   const [paragraph, setParagraph] = useState("");
@@ -67,7 +70,7 @@ const Review = () => {
 
   return (
     <div className="review-container">
-      <h2 className="review-main-title">Admin Reviews</h2>
+      <h2 className="review-main-title">Latest Reviews</h2>
       {user?.role === "admin" && (
         <div className="review-admin-form">
           <h3>{editId ? "Edit Review" : "Add Review"}</h3>
@@ -114,26 +117,14 @@ const Review = () => {
           <p className="review-empty">No reviews yet.</p>
         ) : (
           paginatedReviews.map(item => (
-            <div key={item._id} className="review-card">
-              {item.image && (
-                <img src={item.image} alt={item.title} className="review-img" />
-              )}
-              <h3 className="review-title">{item.title}</h3>
-              <p className="review-paragraph">{item.paragraph}</p>
-              {item.link && (
-                <div className="review-link-wrap">
-                  <a href={item.link} target="_blank" rel="noopener noreferrer" className="review-link">
-                    Watch on YouTube
-                  </a>
-                </div>
-              )}
-              {user?.role === "admin" && (
-                <div className="review-actions">
-                  <button className="news-btn" onClick={() => handleEdit(item)}>Edit</button>
-                  <button className="news-btn news-btn-delete" onClick={() => handleDelete(item._id)}>Delete</button>
-                </div>
-              )}
-            </div>
+            <ReviewCard
+              key={item._id}
+              review={item}
+              onClick={() => navigate(`/reviews/${item._id}`)}
+              isAdmin={user?.role === "admin"}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
           ))
         )}
       </div>

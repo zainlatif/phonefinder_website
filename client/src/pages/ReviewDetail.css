@@ -1,0 +1,42 @@
+.review-detail-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  font-family: Arial, sans-serif;
+}
+.review-detail-title {
+  color: #e74c3c;
+  margin-bottom: 18px;
+}
+.review-detail-img {
+  width: 100%;
+  max-width: 400px;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 16px 0;
+  display: block;
+}
+.review-detail-paragraph {
+  color: #444;
+  font-size: 1.08rem;
+  margin-top: 18px;
+  line-height: 1.7;
+}
+.news-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 7px 18px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 18px;
+  transition: background 0.2s;
+}
+.news-btn:hover {
+  background: #c0392b;
+}
