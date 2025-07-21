@@ -88,6 +88,7 @@ const SectionProducts = () => {
                 <button
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
+                  className="review-page-btn"
                 >
                   Prev
                 </button>
@@ -96,7 +97,9 @@ const SectionProducts = () => {
                   <button
                     key={i}
                     onClick={() => setCurrentPage(i + 1)}
-                    className={currentPage === i + 1 ? "active" : ""}
+                    className={`review-page-btn${
+                      currentPage === i + 1 ? " active" : ""
+                    }`}
                   >
                     {i + 1}
                   </button>
@@ -105,6 +108,7 @@ const SectionProducts = () => {
                 <button
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
+                  className="review-page-btn"
                 >
                   Next
                 </button>

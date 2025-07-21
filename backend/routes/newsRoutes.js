@@ -4,6 +4,7 @@ const newsController = require('../controllers/newsController');
 
 // Public: get all news
 router.get('/', newsController.getAllNews);
+router.get('/:id', newsController.getNewsById);
 
 // Admin: add, update, delete news
 router.post('/', newsController.addNews);

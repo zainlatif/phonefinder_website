@@ -79,6 +79,28 @@
   cursor: not-allowed;
 }
 
+.review-page-btn {
+  background: #fff;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.review-page-btn.active,
+.review-page-btn:hover {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.review-page-btn:disabled {
+  background: #f0f0f0;
+  color: #aaa;
+  cursor: not-allowed;
+}
 
 /* 📱 Responsive Styles */
 @media (max-width: 900px) {

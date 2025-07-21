@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import NewsCard from "../components/NewsCard";
 import "../App.css";
-import "./Review.css";
+import "./News.css";
+
+const NEWS_PER_PAGE = 5;
 
 const News = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [news, setNews] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState("");
   const [editId, setEditId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchNews = async () => {
     const res = await axios.get("http://localhost:5000/api/news");
@@ -47,65 +53,86 @@ const News = () => {
     fetchNews();
   };
 
+  // Pagination logic
+  const totalPages = Math.ceil(news.length / NEWS_PER_PAGE);
+  const paginatedNews = news.slice(
+    (currentPage - 1) * NEWS_PER_PAGE,
+    currentPage * NEWS_PER_PAGE
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: 24 }}>
-      <h2>Latest News</h2>
+    <div className="news-container">
+      <h2 className="news-main-title">Latest News</h2>
       {user?.role === "admin" && (
-        <div style={{ marginBottom: 32, background: "#fafafa", padding: 16, borderRadius: 8 }}>
+        <div className="news-admin-form">
           <h3>{editId ? "Edit News" : "Add News"}</h3>
           <input
+            className="news-input"
             placeholder="Title"
             value={title}
             onChange={e => setTitle(e.target.value)}
-            style={{ width: "100%", marginBottom: 8 }}
           />
           <textarea
+            className="news-textarea"
             placeholder="Content"
             value={content}
             onChange={e => setContent(e.target.value)}
             rows={4}
-            style={{ width: "100%", marginBottom: 8 }}
           />
           <input
+            className="news-input"
             placeholder="Image URL (optional)"
             value={image}
             onChange={e => setImage(e.target.value)}
-            style={{ width: "100%", marginBottom: 8 }}
           />
-          <button onClick={handleAddOrUpdate} style={{ marginRight: 8 }}>
+          <button className="news-btn" onClick={handleAddOrUpdate}>
             {editId ? "Update" : "Add"}
           </button>
           {editId && (
-            <button onClick={() => { setEditId(null); setTitle(""); setContent(""); setImage(""); }}>
+            <button
+              className="news-btn news-btn-cancel"
+              onClick={() => { setEditId(null); setTitle(""); setContent(""); setImage(""); }}
+            >
               Cancel
             </button>
           )}
         </div>
       )}
       <div>
-        {news.length === 0 ? (
-          <p>No news yet.</p>
+        {paginatedNews.length === 0 ? (
+          <p className="news-empty">No news yet.</p>
         ) : (
-          news.map(item => (
-            <div key={item._id} style={{ border: "1px solid #ddd", borderRadius: 8, marginBottom: 24, padding: 16, background: "#fff" }}>
-              {item.image && (
-                <img src={item.image} alt={item.title} style={{ width: 220, maxHeight: 140, objectFit: "cover", borderRadius: 8, marginBottom: 8 }} />
-              )}
-              <h3 style={{ margin: "8px 0" }}>{item.title}</h3>
-              <p style={{ color: "#444" }}>{item.content}</p>
-              <div style={{ color: "#888", fontSize: 13, marginBottom: 8 }}>
-                {new Date(item.date).toLocaleDateString()}
-              </div>
-              {user?.role === "admin" && (
-                <div>
-                  <button onClick={() => handleEdit(item)} style={{ marginRight: 8 }}>Edit</button>
-                  <button onClick={() => handleDelete(item._id)} style={{ color: "red" }}>Delete</button>
-                </div>
-              )}
-            </div>
+          paginatedNews.map(item => (
+            <NewsCard
+              key={item._id}
+              news={item}
+              onClick={() => navigate(`/news/${item._id}`)}
+              isAdmin={user?.role === "admin"}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
           ))
         )}
       </div>
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="news-pagination">
+          {Array.from({ length: totalPages }, (_, idx) => (
+            <button
+              key={idx + 1}
+              className={`news-page-btn${currentPage === idx + 1 ? " active" : ""}`}
+              onClick={() => handlePageChange(idx + 1)}
+            >
+              {idx + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

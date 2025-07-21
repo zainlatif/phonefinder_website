@@ -16,7 +16,7 @@ router.put('/update/:email', userController.updateUser);
 
 // Delete user
 router.delete('/delete/:email', userController.deleteUser);
-//         POST /api/users/favorite/:email  { productId }
+//POST /api/users/favorite/:email  { productId }
 router.post('/favorite/:email', userController.addFavorite);
 router.post('/unfavorite/:email', userController.removeFavorite);
 

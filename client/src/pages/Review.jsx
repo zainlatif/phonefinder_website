@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import "../App.css";
 import "./Review.css";
 
+const REVIEWS_PER_PAGE = 5;
 
 const Review = () => {
   const { user } = useAuth();
@@ -13,6 +14,7 @@ const Review = () => {
   const [image, setImage] = useState("");
   const [link, setLink] = useState("");
   const [editId, setEditId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchReviews = async () => {
     const res = await axios.get("http://localhost:5000/api/reviews");
@@ -51,6 +53,18 @@ const Review = () => {
     fetchReviews();
   };
 
+  // Pagination logic
+  const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
+  const paginatedReviews = reviews.slice(
+    (currentPage - 1) * REVIEWS_PER_PAGE,
+    currentPage * REVIEWS_PER_PAGE
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="review-container">
       <h2 className="review-main-title">Admin Reviews</h2>
@@ -82,12 +96,12 @@ const Review = () => {
             value={link}
             onChange={e => setLink(e.target.value)}
           />
-          <button className="review-btn" onClick={handleAddOrUpdate}>
+          <button className="news-btn" onClick={handleAddOrUpdate}>
             {editId ? "Update" : "Add"}
           </button>
           {editId && (
             <button
-              className="review-btn review-btn-cancel"
+              className="news-btn news-btn-cancel"
               onClick={() => { setEditId(null); setTitle(""); setParagraph(""); setImage(""); setLink(""); }}
             >
               Cancel
@@ -96,10 +110,10 @@ const Review = () => {
         </div>
       )}
       <div>
-        {reviews.length === 0 ? (
+        {paginatedReviews.length === 0 ? (
           <p className="review-empty">No reviews yet.</p>
         ) : (
-          reviews.map(item => (
+          paginatedReviews.map(item => (
             <div key={item._id} className="review-card">
               {item.image && (
                 <img src={item.image} alt={item.title} className="review-img" />
@@ -115,14 +129,28 @@ const Review = () => {
               )}
               {user?.role === "admin" && (
                 <div className="review-actions">
-                  <button className="review-btn" onClick={() => handleEdit(item)}>Edit</button>
-                  <button className="review-btn review-btn-delete" onClick={() => handleDelete(item._id)}>Delete</button>
+                  <button className="news-btn" onClick={() => handleEdit(item)}>Edit</button>
+                  <button className="news-btn news-btn-delete" onClick={() => handleDelete(item._id)}>Delete</button>
                 </div>
               )}
             </div>
           ))
         )}
       </div>
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="news-pagination">
+          {Array.from({ length: totalPages }, (_, idx) => (
+            <button
+              key={idx + 1}
+              className={`news-page-btn${currentPage === idx + 1 ? " active" : ""}`}
+              onClick={() => handlePageChange(idx + 1)}
+            >
+              {idx + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

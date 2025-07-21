@@ -10,6 +10,7 @@ import AdminPanel from './pages/AdminPanel';
 import SectionProducts from "./pages/SectionProducts";
 import ComparePage from "./pages/ComparePage";
 import News from './pages/News';
+import NewsDetail from './pages/NewsDetail';
 import Review from './pages/Review';
 import FavorateProduct from './pages/FavorateProduct';
 import Blockphone from './pages/Blockphone';
@@ -36,6 +37,7 @@ function App() {
         <Route path="/section/:sectionKey" element={<SectionProducts />} />
         <Route path="/compare" element={<ComparePage />} />
         <Route path="/news" element={<News />} />
+        <Route path="/news/:id" element={<NewsDetail />} />
         <Route path="/reviews" element={<Review />} />
         <Route path="/favourites" element={<FavorateProduct />} />
         <Route path="/blockphone" element={<Blockphone />} />
