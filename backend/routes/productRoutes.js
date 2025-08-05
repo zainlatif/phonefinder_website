@@ -87,18 +87,31 @@ router.get('/:id/comments', async (req, res) => {
 });
 
 // Delete a comment from a product
-router.delete('/:productId/comments/:commentId', async (req, res) => {
+router.delete('/:productId/comments/:commentId', express.json(), async (req, res) => {
   try {
     const { productId, commentId } = req.params;
-    const product = await Product.findById(productId);
+    const { userEmail, isAdmin } = req.body;
+
+    // Find the product
+    const product = await require('../models/productModel').findById(productId);
     if (!product) return res.status(404).json({ message: 'Product not found' });
 
-    product.comments = product.comments.filter(
-      (c) => c._id.toString() !== commentId
-    );
+    // Find the comment
+    const comment = product.comments.id(commentId);
+    if (!comment) return res.status(404).json({ message: 'Comment not found' });
+
+    // Check permission: admin or comment owner
+    if (!isAdmin && comment.user !== userEmail) {
+      return res.status(403).json({ message: 'Not authorized to delete this comment' });
+    }
+
+    // Remove the comment using pull (more robust than remove)
+    product.comments.pull(commentId);
     await product.save();
+
     res.json(product.comments);
   } catch (err) {
+    console.error("Error deleting comment:", err);
     res.status(500).json({ message: 'Error deleting comment', error: err.message });
   }
 });

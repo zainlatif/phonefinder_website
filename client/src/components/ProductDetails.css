@@ -133,17 +133,27 @@
   font-size: 0.9em;
   margin-left: 8px;
 }
+.comment-delete-btn,
 .product-details-comment-delete {
-  margin-left: 10px;
-  color: #e74c3c;
-  background: none;
+  margin-left: 12px;
+  color: #fff;
+  background: #e74c3c;
   border: none;
   cursor: pointer;
-  font-size: 0.95em;
-  transition: color 0.2s;
+  font-size: 1.05em;
+  font-weight: 500;
+  padding: 6px 18px;
+  border-radius: 5px;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(231,76,60,0.08);
+  height: 38px; /* Make button a bit taller */
+  display: inline-block;
+  vertical-align: middle;
 }
+.comment-delete-btn:hover,
 .product-details-comment-delete:hover {
-  color: #b71c1c;
+  background: #b71c1c;
+  color: #fff;
 }
 
 .product-details-add-comment {
@@ -228,4 +238,7 @@
   .product-details-comment-textarea {
     font-size: 0.95rem;
   }
-  .product-details-table
+  .product-details-table {
+    min-width: 280px;
+  }
+}

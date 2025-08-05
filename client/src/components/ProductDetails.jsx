@@ -159,26 +159,32 @@ const ProductDetails = ({ product, onBack }) => {
           <p>No comments yet.</p>
         ) : (
           <ul className="product-details-comments-list">
-            {comments.map((c, idx) => (
-              <li key={c._id || idx} className="product-details-comment">
-                <b>{c.user}:</b> {c.text}
-                <span className="product-details-comment-date">
-                  {new Date(c.date).toLocaleString()}
+            {comments.map((c) => (
+              <div key={c._id} className="comment-item">
+                <span>
+                  {c.user}: {c.text}
                 </span>
-                {user?.role === "admin" && (
+                {(user?.email === c.user || user?.role === "admin") && (
                   <button
-                    className="product-details-comment-delete"
                     onClick={async () => {
                       await axios.delete(
-                        `http://localhost:5000/api/products/${product._id}/comments/${c._id}`
+                        `http://localhost:5000/api/products/${product._id}/comments/${c._id}`,
+                        {
+                          data: { userEmail: user.email, isAdmin: user.role === "admin" }
+                        }
                       );
-                      setComments(comments.filter((com) => com._id !== c._id));
+                      // Refresh comments after delete
+                      const res = await axios.get(
+                        `http://localhost:5000/api/products/${product._id}/comments`
+                      );
+                      setComments(res.data);
                     }}
+                    className="comment-delete-btn"
                   >
                     Delete
                   </button>
                 )}
-              </li>
+              </div>
             ))}
           </ul>
         )}
