@@ -1,103 +1,159 @@
-## 1. 📌 Project Overview
+# Phone Finder Website
 
-**Purpose:**  
-This MERN website is a comprehensive mobile phone information and comparison platform for users in Pakistan. It allows users to browse, compare, and review mobile phones, read news, manage favorites, and interact with the site through features like login/signup, admin panel, and chatbot.
+A comprehensive MERN stack mobile phone information and comparison platform tailored for users in Pakistan. This website integrates a machine learning model for enhanced phone recommendations and features.
 
-**Key Features & User-Facing Functionalities:**
-- User authentication (signup, login, Google login planned)
-- Browse phones by price sections
-- Product comparison
-- News/blog section with professional detail pages
-- Reviews section with professional detail pages
-- Favorites management
-- Admin panel for managing products, news, and reviews
-- Contact, About, Privacy Policy, Careers, Terms, Warranty Check, Block Stolen Phone, etc.
-- Floating chatbot for user assistance
+## 🚀 Features
 
----
+### User-Facing Functionalities
+- **User Authentication**: Signup, login, and Google login (planned)
+- **Phone Browsing**: Browse phones by price sections
+- **Product Comparison**: Compare multiple phones side-by-side
+- **News & Blog**: Professional news section with detailed pages
+- **Reviews**: User reviews with detailed review pages
+- **Favorites Management**: Save favorite products
+- **Admin Panel**: Manage products, news, and reviews
+- **Additional Pages**: Contact, About Us, Privacy Policy, Careers, Terms & Conditions, Warranty Check, Block Stolen Phone
+- **Floating Chatbot**: AI-powered assistance for users
+- **Machine Learning Integration**: AI model for personalized phone recommendations
 
-## 2. 📁 Folder Structure
+### Technical Features
+- Responsive design for mobile and desktop
+- Real-time data updates
+- Secure authentication and data handling
+- Admin controls for content management
 
-**Top-Level:**
+## 🛠️ Tech Stack
+
+### Frontend
+- **React** (functional components with hooks)
+- **React Router** for client-side routing
+- **Axios** for API communication
+- **Context API** for state management (authentication)
+- **CSS Modules** for styling
+- **Vite** for development and build
+
+### Backend
+- **Node.js** with Express.js
+- **MongoDB** with Mongoose for data modeling
+- **JWT** for authentication
+- **bcrypt** for password hashing
+
+### Machine Learning Model
+- **Python** with machine learning libraries
+- **Waitress** API server for model serving
+- Connected to MERN stack via REST API
+
+## 📁 Project Structure
+
 ```
-/client      # React frontend
-/backend     # Express/MongoDB backend
+phonefinder_website/
+├── client/                 # React frontend
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/          # Main page components
+│   │   ├── context/        # React Context (Auth)
+│   │   ├── assets/         # Static assets
+│   │   └── ...
+│   ├── public/             # Public static files
+│   └── package.json
+├── backend/                # Express backend
+│   ├── controllers/        # Route controllers
+│   ├── models/             # Mongoose models
+│   ├── routes/             # API routes
+│   ├── index.js            # Server entry point
+│   └── package.json
+└── README.md
+
+phonefinderai-v6/           # Machine Learning Model (separate repo)
+├── ...                     # Python ML code
+└── ...                     # Waitress API server
 ```
 
-**Frontend (client):**
-- `src/pages/` – All main page components (e.g., Home, Login, Signup, News, Review, etc.)
-- `src/components/` – Reusable UI components (e.g., Header, Footer, Card, Banner, FloatingChatbot, etc.)
-- `src/context/` – React Context for authentication (AuthContext.jsx)
-- `src/assets/` – Static assets (images, icons, etc.)
-- `public/` – Public static files
+## 🏗️ Setup Instructions
 
-**Backend (backend):**
-- `controllers/` – Express route controllers (news, review, user, product)
-- `models/` – Mongoose models (User, Product, News, Review)
-- `routes/` – Express route definitions (newsRoutes, reviewRoutes, userRoutes, etc.)
-- index.js – Main Express server entry point
+### Prerequisites
+- Node.js (v16 or higher)
+- MongoDB
+- Python (v3.8 or higher)
+- Git
+
+### Installation
+
+1. **Clone both repositories into the same parent folder:**
+   ```bash
+   mkdir phonefinder_project
+   cd phonefinder_project
+   git clone https://github.com/zainlatif/phonefinder_website.git
+   git clone https://github.com/zainlatif/phonefinderai-v6.git
+   ```
+
+2. **Setup Backend:**
+   ```bash
+   cd phonefinder_website/backend
+   npm install
+   # Configure MongoDB connection in index.js
+   npm start
+   ```
+
+3. **Setup Frontend:**
+   ```bash
+   cd ../client
+   npm install
+   npm run dev
+   ```
+
+4. **Setup Machine Learning Model:**
+   ```bash
+   cd ../../phonefinderai-v6
+   # Follow setup instructions in phonefinderai-v6 README
+   # Typically: pip install -r requirements.txt
+   # python app.py  # or however the waitress server is started
+   ```
+
+### Environment Variables
+Create `.env` files in backend and ML model directories as needed for database connections, API keys, etc.
+
+## 🔗 API Integration
+
+The MERN stack communicates with the machine learning model via REST API calls served by the Waitress server. The ML model provides personalized recommendations based on user preferences and phone data.
+
+### Key Endpoints
+- `/api/products` - Product management
+- `/api/news` - News CRUD
+- `/api/reviews` - Review management
+- `/api/users` - User authentication and profiles
+- `/api/recommendations` - ML-powered recommendations (from ML model)
+
+## 🚀 Usage
+
+1. Start the backend server
+2. Start the frontend development server
+3. Start the ML model API server
+4. Access the website at `http://localhost:5173` (default Vite port)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📞 Contact
+
+For questions or support, please contact the development team.
+
+**Developer:**
+- **GitHub:** [zainlatif](https://github.com/zainlatif)
+- **LinkedIn:** [zainlatif702](https://linkedin.com/in/zainlatif702)
 
 ---
 
-## 3. 📦 Frontend Stack
-
-- **React** (functional components, hooks)
-- **React Router** (`react-router-dom`) for client-side routing
-- **Axios** for HTTP requests to backend API
-- **Context API** (AuthContext.jsx) for authentication state
-- **CSS Modules/Files** for styling (e.g., `News.css`, `Review.css`)
-- **Vite** for fast development/build
-
-**Routing Setup:**
-- All routes defined in App.jsx using `<Routes>` and `<Route>`.
-- Dynamic routes for product sections, news details, review details, etc.
-
-**State Management:**
-- Mostly via `useState` and `useEffect`
-- Authentication state via React Context (`AuthContext`)
-
----
-
-## 4. 🔒 Authentication
-
-- **Login/Signup system:** Yes (email/password, with Google login planned)
-- **How handled:**  
-  - User data stored in MongoDB
-  - On login/signup, user info is stored in `localStorage` and React Context
-  - Auth state managed via AuthContext.jsx
-- **Protected pages:**  
-  - Admin-only actions (add/update/delete news/reviews/products) are protected on the frontend (based on user role) and should be protected on the backend as well.
-  - Account management, favorites, etc., require login.
-
----
-
-## 5. 📡 API Integration
-
-- **Backend endpoints:**  
-  - `/api/products` – Product data
-  - `/api/news` – News CRUD and detail
-  - `/api/reviews` – Review CRUD and detail
-  - `/api/users` – Signup, login, user info, favorites, etc.
-- **Data sent/received:**  
-  - JSON payloads for all requests/responses
-  - Error handling via try/catch and error messages in responses
-- **Error Handling:**  
-  - Errors are caught and returned as JSON with status codes
-  - Frontend displays error messages as needed
-
----
-
-## 6. 🧾 Pages and Components
-
-**Pages (`src/pages/`):**
-- **Home:** Landing page
-- **Login:** User login form
-- **Signup:** User registration form
-- **Account:** User profile and settings
-- **AdminPanel:** Admin dashboard for managing content
-- **SectionProducts:** Browse products by price section (dynamic route)
-- **ComparePage:** Compare selected products
-- **News:** Blog/news listing with pagination and admin controls
+**Note:** Keep both `phonefinder_website` and `phonefinderai-v6` repositories in the same parent folder for proper integration and API communication.
 - **NewsDetail:** Full news article view (dynamic route)
 - **Review:** Reviews listing with pagination and admin controls
 - **ReviewDetail:** Full review view (dynamic route)
