@@ -77,6 +77,26 @@ phonefinderai-v6/           # Machine Learning Model (separate repo)
 - Python (v3.8 or higher)
 - Git
 
+### 📊 Dataset
+
+This project uses mobile phone specifications and pricing data. You can download the dataset from Kaggle:
+
+**Kaggle Dataset:** [Mobile Phone Specifications Data](https://www.kaggle.com/datasets/zainlatif/mobile-phone-specifications-data)
+
+The dataset is provided in JSON format containing comprehensive phone specifications and prices.
+
+**To use the dataset:**
+
+1. Download the JSON file from the Kaggle dataset link above
+2. Create a MongoDB database for the project
+3. Import the JSON file into MongoDB using `mongoimport`:
+   ```bash
+   mongoimport --db phonefinder --collection products --file phones.json --jsonArray
+   ```
+   (Replace `phones.json` with the actual filename and adjust database/collection names as needed)
+
+4. Ensure your MongoDB URI in `.env` points to the correct database
+
 ### Installation
 
 1. **Clone both repositories into the same parent folder:**
