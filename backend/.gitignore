@@ -5,7 +5,7 @@ backend/node_modules/
 
 # Environment files
 .env
-
+atlas-credentials.env
 # Logs
 logs
 *.log
