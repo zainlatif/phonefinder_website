@@ -1,7 +1,25 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
+const fs = require("fs");
+const path = require("path");
+
+const envPath = path.join(__dirname, ".env");
+require("dotenv").config({ path: envPath });
+
+if (!process.env.MONGO_URI) {
+  const legacyUri = fs
+    .readFileSync(envPath, "utf8")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find((line) => line.startsWith("mongodb://") || line.startsWith("mongodb+srv://"));
+
+  if (legacyUri) process.env.MONGO_URI = legacyUri;
+}
+
+if (!process.env.MONGO_URI) {
+  throw new Error("MONGO_URI is missing from backend/.env");
+}
 
 const app = express();
 
