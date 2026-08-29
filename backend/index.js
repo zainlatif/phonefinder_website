@@ -7,15 +7,21 @@ const path = require("path");
 const envPath = path.join(__dirname, ".env");
 require("dotenv").config({ path: envPath });
 
-if (!process.env.MONGO_URI) {
-  const legacyUri = fs
-    .readFileSync(envPath, "utf8")
+const envFile = fs.existsSync(envPath) ? fs.readFileSync(envPath, "utf8") : "";
+const envValues = Object.fromEntries(
+  envFile
     .split(/\r?\n/)
     .map((line) => line.trim())
-    .find((line) => line.startsWith("mongodb://") || line.startsWith("mongodb+srv://"));
+    .filter(Boolean)
+    .map((line) => {
+      const match = line.match(/^([A-Z0-9_]+)\s*=\s*(.*)$/i);
+      if (!match) return null;
+      return [match[1], match[2].replace(/^['"]|['"]$/g, "")];
+    })
+    .filter(Boolean)
+);
 
-  if (legacyUri) process.env.MONGO_URI = legacyUri;
-}
+process.env.MONGO_URI ??= process.env.MONGODB_URI ?? envValues.MONGO_URI ?? envValues.MONGODB_URI;
 
 if (!process.env.MONGO_URI) {
   throw new Error("MONGO_URI is missing from backend/.env");
