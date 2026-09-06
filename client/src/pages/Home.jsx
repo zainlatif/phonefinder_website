@@ -11,7 +11,9 @@ import { API_BASE_URL, getArrayResponse } from "../config/api";
 import "./Home.css";
 
 const getSectionProducts = (products, min, max = Infinity) =>
-  products.filter((p) => p.price > min && p.price <= max);
+  (Array.isArray(products) ? products : []).filter(
+    (p) => p.price > min && p.price <= max
+  );
 
 const Home = () => {
   const { user } = useAuth();

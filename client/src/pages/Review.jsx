@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ReviewCard from "../components/ReviewCard";
-import { API_BASE_URL } from "../config/api";
+import { API_BASE_URL, getArrayResponse } from "../config/api";
 import "../App.css";
 import "./Review.css";
 
@@ -22,7 +22,7 @@ const Review = () => {
 
   const fetchReviews = async () => {
     const res = await axios.get(`${API_BASE_URL}/api/reviews`);
-    setReviews(res.data);
+    setReviews(getArrayResponse(res.data));
   };
 
   useEffect(() => {

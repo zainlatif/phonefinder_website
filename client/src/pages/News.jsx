@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import NewsCard from "../components/NewsCard";
-import { API_BASE_URL } from "../config/api";
+import { API_BASE_URL, getArrayResponse } from "../config/api";
 import "../App.css";
 import "./News.css";
 
@@ -21,7 +21,7 @@ const News = () => {
 
   const fetchNews = async () => {
     const res = await axios.get(`${API_BASE_URL}/api/news`);
-    setNews(res.data);
+    setNews(getArrayResponse(res.data));
   };
 
   useEffect(() => {
