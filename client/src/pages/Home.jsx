@@ -7,6 +7,7 @@ import Banner from "../components/Banner";
 import Card from "../components/Card";
 import ProductDetails from "../components/ProductDetails";
 import BrandNav from "../components/BrandNav";
+import { API_BASE_URL } from "../config/api";
 import "./Home.css";
 
 const getSectionProducts = (products, min, max = Infinity) =>
@@ -18,9 +19,6 @@ const Home = () => {
   const [selected, setSelected] = useState(null);
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState("");
-  const [loadingComments, setLoadingComments] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const navigate = useNavigate();
 
@@ -35,10 +33,10 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         const url = searchTerm
-          ? `http://localhost:5000/api/products?search=${encodeURIComponent(
+          ? `${API_BASE_URL}/api/products?search=${encodeURIComponent(
             searchTerm
           )}`
-          : "http://localhost:5000/api/products";
+          : `${API_BASE_URL}/api/products`;
         const res = await axios.get(url);
         setProducts(res.data);
       } catch (err) {
@@ -47,18 +45,6 @@ const Home = () => {
     };
     fetchProducts();
   }, [searchTerm]);
-
-  // Fetch comments when a product is selected
-  useEffect(() => {
-    if (selected) {
-      setLoadingComments(true);
-      axios
-        .get(`http://localhost:5000/api/products/${selected._id}/comments`)
-        .then((res) => setComments(res.data))
-        .catch(() => setComments([]))
-        .finally(() => setLoadingComments(false));
-    }
-  }, [selected]);
 
   const handleCardClick = (product) => setSelected(product);
   const handleBack = () => setSelected(null);
@@ -71,31 +57,13 @@ const Home = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/users/favorite/${user.email}`,
+        `${API_BASE_URL}/api/users/favorite/${user.email}`,
         { productId }
       );
       alert("Added to favourites 🎉");
     } catch (err) {
       console.error("Add-fav error:", err);
       alert("Could not add favourite");
-    }
-  };
-
-  const handleAddComment = async () => {
-    if (!user) {
-      alert("Please login to comment");
-      return;
-    }
-    if (!newComment.trim()) return;
-    try {
-      const res = await axios.post(
-        `http://localhost:5000/api/products/${selected._id}/comments`,
-        { user: user.email, text: newComment }
-      );
-      setComments(res.data);
-      setNewComment("");
-    } catch (err) {
-      alert("Error adding comment");
     }
   };
 
@@ -110,12 +78,12 @@ const Home = () => {
 
   // Filter by brand if selected
   const brandFilteredProducts = selectedBrand
-    ? products.filter(
+    ? filteredProducts.filter(
       (p) =>
         p.title &&
         p.title.toLowerCase().startsWith(selectedBrand.toLowerCase())
     )
-    : products;
+    : filteredProducts;
 
   // Section logic (use filteredProducts if you have search, else products)
   const above70 = getSectionProducts(brandFilteredProducts, 70000);

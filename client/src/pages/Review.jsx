@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ReviewCard from "../components/ReviewCard";
+import { API_BASE_URL } from "../config/api";
 import "../App.css";
 import "./Review.css";
 
@@ -20,7 +21,7 @@ const Review = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchReviews = async () => {
-    const res = await axios.get("http://localhost:5000/api/reviews");
+    const res = await axios.get(`${API_BASE_URL}/api/reviews`);
     setReviews(res.data);
   };
 
@@ -31,9 +32,9 @@ const Review = () => {
   const handleAddOrUpdate = async () => {
     if (!title || !paragraph) return;
     if (editId) {
-      await axios.put(`http://localhost:5000/api/reviews/${editId}`, { title, paragraph, image, link });
+      await axios.put(`${API_BASE_URL}/api/reviews/${editId}`, { title, paragraph, image, link });
     } else {
-      await axios.post("http://localhost:5000/api/reviews", { title, paragraph, image, link });
+      await axios.post(`${API_BASE_URL}/api/reviews`, { title, paragraph, image, link });
     }
     setTitle("");
     setParagraph("");
@@ -52,7 +53,7 @@ const Review = () => {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/reviews/${id}`);
+    await axios.delete(`${API_BASE_URL}/api/reviews/${id}`);
     fetchReviews();
   };
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 import "./ComparePage.css";
 
 const ComparePage = () => {
@@ -17,7 +18,7 @@ const ComparePage = () => {
       return;
     }
     const res = await axios.get(
-      `http://localhost:5000/api/products?search=${encodeURIComponent(query)}`
+      `${API_BASE_URL}/api/products?search=${encodeURIComponent(query)}`
     );
     setResults(res.data);
   };

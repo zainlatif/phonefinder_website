@@ -1,6 +1,11 @@
 # Node modules
 node_modules/
+backend/node_modules/
+**/node_modules/
 
+# Environment files
+.env
+atlas-credentials.env
 # Logs
 logs
 *.log

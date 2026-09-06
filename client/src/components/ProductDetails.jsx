@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { API_BASE_URL } from "../config/api";
 import "./ProductDetails.css";
 
 const ProductDetails = ({ product, onBack }) => {
@@ -15,7 +16,7 @@ const ProductDetails = ({ product, onBack }) => {
     if (product) {
       setLoadingComments(true);
       axios
-        .get(`http://localhost:5000/api/products/${product._id}/comments`)
+        .get(`${API_BASE_URL}/api/products/${product._id}/comments`)
         .then((res) => setComments(res.data))
         .catch(() => setComments([]))
         .finally(() => setLoadingComments(false));
@@ -23,7 +24,7 @@ const ProductDetails = ({ product, onBack }) => {
       // Check if product is in user's favorites
       if (user) {
         axios
-          .get(`http://localhost:5000/api/users/${user.email}`)
+          .get(`${API_BASE_URL}/api/users/${user.email}`)
           .then((res) => {
             setIsFav(res.data.favorites?.includes(product._id));
           })
@@ -42,12 +43,12 @@ const ProductDetails = ({ product, onBack }) => {
     if (!newComment.trim()) return;
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/products/${product._id}/comments`,
+        `${API_BASE_URL}/api/products/${product._id}/comments`,
         { user: user.email, text: newComment }
       );
       setComments(res.data);
       setNewComment("");
-    } catch (err) {
+    } catch {
       alert("Error adding comment");
     }
   };
@@ -60,11 +61,11 @@ const ProductDetails = ({ product, onBack }) => {
     setFavLoading(true);
     try {
       await axios.post(
-        `http://localhost:5000/api/users/favorite/${user.email}`,
+        `${API_BASE_URL}/api/users/favorite/${user.email}`,
         { productId: product._id }
       );
       setIsFav(true);
-    } catch (err) {
+    } catch {
       alert("Error updating favorite status");
     }
     setFavLoading(false);
@@ -78,11 +79,11 @@ const ProductDetails = ({ product, onBack }) => {
     setFavLoading(true);
     try {
       await axios.post(
-        `http://localhost:5000/api/users/unfavorite/${user.email}`,
+        `${API_BASE_URL}/api/users/unfavorite/${user.email}`,
         { productId: product._id }
       );
       setIsFav(false);
-    } catch (err) {
+    } catch {
       alert("Error updating favorite status");
     }
     setFavLoading(false);
@@ -168,14 +169,14 @@ const ProductDetails = ({ product, onBack }) => {
                   <button
                     onClick={async () => {
                       await axios.delete(
-                        `http://localhost:5000/api/products/${product._id}/comments/${c._id}`,
+                        `${API_BASE_URL}/api/products/${product._id}/comments/${c._id}`,
                         {
                           data: { userEmail: user.email, isAdmin: user.role === "admin" }
                         }
                       );
                       // Refresh comments after delete
                       const res = await axios.get(
-                        `http://localhost:5000/api/products/${product._id}/comments`
+                        `${API_BASE_URL}/api/products/${product._id}/comments`
                       );
                       setComments(res.data);
                     }}
