@@ -1,7 +1,7 @@
 // src/pages/Account.jsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
+import { getApiUrl } from '../config/api';
 import './Account.css';
 
 const Account = () => {
@@ -15,7 +15,7 @@ const Account = () => {
     if (stored) {
       const parsed = JSON.parse(stored);
       setUser(parsed);
-      axios.get(`${API_BASE_URL}/api/users/${parsed.email}`)
+      axios.get(getApiUrl(`/api/users/${parsed.email}`))
         .then((res) => {
           setName(res.data.name || '');
           setAddress(res.data.address || '');
@@ -27,7 +27,7 @@ const Account = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`${API_BASE_URL}/api/users/update/${user.email}`, {
+      await axios.put(getApiUrl(`/api/users/update/${user.email}`), {
         name,
         address,
         phone
@@ -42,7 +42,7 @@ const Account = () => {
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete your account?")) return;
     try {
-      await axios.delete(`${API_BASE_URL}/api/users/delete/${user.email}`);
+      await axios.delete(getApiUrl(`/api/users/delete/${user.email}`));
       localStorage.removeItem("user");
       alert("Account deleted.");
       window.location.href = "/signup";

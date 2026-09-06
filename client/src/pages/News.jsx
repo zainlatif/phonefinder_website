@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import NewsCard from "../components/NewsCard";
-import { API_BASE_URL, getArrayResponse } from "../config/api";
+import { getApiUrl, getArrayResponse } from "../config/api";
 import "../App.css";
 import "./News.css";
 
@@ -18,10 +18,18 @@ const News = () => {
   const [image, setImage] = useState("");
   const [editId, setEditId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState("");
 
   const fetchNews = async () => {
-    const res = await axios.get(`${API_BASE_URL}/api/news`);
-    setNews(getArrayResponse(res.data));
+    try {
+      const res = await axios.get(getApiUrl("/api/news"));
+      setNews(getArrayResponse(res.data, "/api/news"));
+      setError("");
+    } catch (err) {
+      setNews([]);
+      setError("News could not be loaded. Check the API configuration.");
+      console.error("Error fetching news:", err);
+    }
   };
 
   useEffect(() => {
@@ -31,9 +39,9 @@ const News = () => {
   const handleAddOrUpdate = async () => {
     if (!title || !content) return;
     if (editId) {
-      await axios.put(`${API_BASE_URL}/api/news/${editId}`, { title, content, image });
+      await axios.put(getApiUrl(`/api/news/${editId}`), { title, content, image });
     } else {
-      await axios.post(`${API_BASE_URL}/api/news`, { title, content, image });
+      await axios.post(getApiUrl('/api/news'), { title, content, image });
     }
     setTitle("");
     setContent("");
@@ -50,7 +58,7 @@ const News = () => {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`${API_BASE_URL}/api/news/${id}`);
+    await axios.delete(getApiUrl(`/api/news/${id}`));
     fetchNews();
   };
 
@@ -69,6 +77,7 @@ const News = () => {
   return (
     <div className="news-container">
       <h2 className="news-main-title">Latest News</h2>
+      {error && <p role="alert">{error}</p>}
       {user?.role === "admin" && (
         <div className="news-admin-form">
           <h3>{editId ? "Edit News" : "Add News"}</h3>

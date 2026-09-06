@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
+import { getApiUrl } from '../config/api';
 import './Login.css';
 
 function generateCaptcha() {
@@ -32,7 +32,7 @@ const Login = () => {
       return;
     }
     try {
-      const res = await axios.post(`${API_BASE_URL}/api/users/login`, {
+      const res = await axios.post(getApiUrl('/api/users/login'), {
         email,
         password
       });

@@ -4,7 +4,7 @@ import axios from "axios";
 import Card from "../components/Card";
 import Banner from "../components/Banner";
 import ProductDetails from "../components/ProductDetails";
-import { API_BASE_URL, getArrayResponse } from "../config/api";
+import { getApiUrl, getArrayResponse } from "../config/api";
 import "./SectionProducts.css";
 
 const sectionConfig = {
@@ -34,16 +34,26 @@ const SectionProducts = () => {
   const { sectionKey } = useParams();
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 32;
 
   const config = sectionConfig[sectionKey];
 
   useEffect(() => {
-    axios
-      .get(`${API_BASE_URL}/api/products`)
-      .then((res) => setProducts(getArrayResponse(res.data)))
-      .catch(() => setProducts([]));
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(getApiUrl("/api/products"));
+        setProducts(getArrayResponse(res.data, "/api/products"));
+        setError("");
+      } catch (err) {
+        setProducts([]);
+        setError("Products could not be loaded. Check the API configuration.");
+        console.error("Error fetching products:", err);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -64,6 +74,7 @@ const SectionProducts = () => {
       <Banner />
       <div className="section-products-container2">
         <h2 className="section-products-title">{config.title}</h2>
+        {error && <p role="alert">{error}</p>}
 
         {selected ? (
           <ProductDetails product={selected} onBack={() => setSelected(null)} />

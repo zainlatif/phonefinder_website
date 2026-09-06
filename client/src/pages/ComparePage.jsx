@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { API_BASE_URL, getArrayResponse } from "../config/api";
+import { getApiUrl, getArrayResponse } from "../config/api";
 import "./ComparePage.css";
 
 const ComparePage = () => {
@@ -17,10 +17,15 @@ const ComparePage = () => {
       setResults([]);
       return;
     }
-    const res = await axios.get(
-      `${API_BASE_URL}/api/products?search=${encodeURIComponent(query)}`
-    );
-    setResults(getArrayResponse(res.data));
+    try {
+      const res = await axios.get(
+        getApiUrl(`/api/products?search=${encodeURIComponent(query)}`)
+      );
+      setResults(getArrayResponse(res.data, "/api/products"));
+    } catch (err) {
+      setResults([]);
+      console.error("Error searching products:", err);
+    }
   };
 
   return (

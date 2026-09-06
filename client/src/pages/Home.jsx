@@ -7,7 +7,7 @@ import Banner from "../components/Banner";
 import Card from "../components/Card";
 import ProductDetails from "../components/ProductDetails";
 import BrandNav from "../components/BrandNav";
-import { API_BASE_URL, getArrayResponse } from "../config/api";
+import { getApiUrl, getArrayResponse } from "../config/api";
 import "./Home.css";
 
 const getSectionProducts = (products, min, max = Infinity) =>
@@ -22,6 +22,7 @@ const Home = () => {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBrand, setSelectedBrand] = useState(null);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   // Parse search query from URL
@@ -35,14 +36,16 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         const url = searchTerm
-          ? `${API_BASE_URL}/api/products?search=${encodeURIComponent(
+          ? getApiUrl(`/api/products?search=${encodeURIComponent(
             searchTerm
-          )}`
-          : `${API_BASE_URL}/api/products`;
+          )}`)
+          : getApiUrl("/api/products");
         const res = await axios.get(url);
-        setProducts(getArrayResponse(res.data));
+        setProducts(getArrayResponse(res.data, "/api/products"));
+        setError("");
       } catch (err) {
         setProducts([]);
+        setError("Products could not be loaded. Check the API configuration.");
         console.error("Error fetching products:", err);
       }
     };
@@ -60,7 +63,7 @@ const Home = () => {
 
     try {
       await axios.post(
-        `${API_BASE_URL}/api/users/favorite/${user.email}`,
+        getApiUrl(`/api/users/favorite/${user.email}`),
         { productId }
       );
       alert("Added to favourites 🎉");
@@ -141,6 +144,7 @@ const Home = () => {
       <div className="responsive-container2">
         {/* <h2>Products</h2> */}
         <div className="products-center-box">
+          {error && <p role="alert">{error}</p>}
           {selected ? (
             <ProductDetails product={selected} onBack={handleBack} />
           ) : (

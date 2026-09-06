@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
+import { getApiUrl } from '../config/api';
 import './Signup.css';
 
 const Signup = () => {
@@ -27,7 +27,7 @@ const Signup = () => {
       return;
     }
     try {
-      await axios.post(`${API_BASE_URL}/api/users/signup`, { email, password });
+      await axios.post(getApiUrl('/api/users/signup'), { email, password });
       navigate('/login');
     } catch {
       setError('Signup failed. Please try again.');
