@@ -7,7 +7,7 @@ import Banner from "../components/Banner";
 import Card from "../components/Card";
 import ProductDetails from "../components/ProductDetails";
 import BrandNav from "../components/BrandNav";
-import { API_BASE_URL } from "../config/api";
+import { API_BASE_URL, getArrayResponse } from "../config/api";
 import "./Home.css";
 
 const getSectionProducts = (products, min, max = Infinity) =>
@@ -38,8 +38,9 @@ const Home = () => {
           )}`
           : `${API_BASE_URL}/api/products`;
         const res = await axios.get(url);
-        setProducts(res.data);
+        setProducts(getArrayResponse(res.data));
       } catch (err) {
+        setProducts([]);
         console.error("Error fetching products:", err);
       }
     };
