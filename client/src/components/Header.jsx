@@ -30,8 +30,9 @@ const Header = ({ products = [] }) => {
   };
 
   useEffect(() => {
-    if (search.trim() && products.length > 0) {
-      const filtered = products
+    const productList = Array.isArray(products) ? products : [];
+    if (search.trim() && productList.length > 0) {
+      const filtered = productList
         .filter(p => p.title.toLowerCase().includes(search.toLowerCase()))
         .slice(0, 6)
         .map(p => p.title);

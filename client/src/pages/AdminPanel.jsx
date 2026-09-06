@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
+import { API_BASE_URL, getArrayResponse } from '../config/api';
 import './AdminPanel.css';
 
 const AdminPanel = () => {
@@ -33,7 +33,7 @@ const AdminPanel = () => {
 
   const fetchProducts = () => {
     axios.get(`${API_BASE_URL}/api/products`)
-      .then((res) => setProducts(res.data))
+      .then((res) => setProducts(getArrayResponse(res.data)))
       .catch((err) => console.error('Error fetching products:', err));
   };
 
