@@ -8,7 +8,7 @@ const Blockphone = () => (
     <ol>
       <li>
         <strong>Online:</strong> Submit a complaint at&nbsp;
-        <a href="http://www.cplc.org.pk" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.cplc.org.pk" target="_blank" rel="noopener noreferrer">
           CPLC Website
         </a>
       </li>

@@ -4,6 +4,7 @@ import axios from "axios";
 import Card from "../components/Card";
 import Banner from "../components/Banner";
 import ProductDetails from "../components/ProductDetails";
+import { API_BASE_URL } from "../config/api";
 import "./SectionProducts.css";
 
 const sectionConfig = {
@@ -40,7 +41,7 @@ const SectionProducts = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/products")
+      .get(`${API_BASE_URL}/api/products`)
       .then((res) => setProducts(res.data))
       .catch(() => setProducts([]));
   }, []);

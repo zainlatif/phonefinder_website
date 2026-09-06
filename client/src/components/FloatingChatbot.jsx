@@ -1,9 +1,7 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import { BOT_API_URL } from "../config/api";
 import "./FloatingChatbot.css";
-
-// Replace with your actual backend URL
-const BOT_API_URL = "http://localhost:8000/predict";
 
 const FloatingChatbot = () => {
   const [open, setOpen] = useState(false);
@@ -23,6 +21,7 @@ const FloatingChatbot = () => {
     setLoading(true);
 
     try {
+      if (!BOT_API_URL) throw new Error("Chatbot API is not configured");
       const res = await axios.post(BOT_API_URL, { query: input });
       const data = res.data;
 
@@ -41,7 +40,7 @@ const FloatingChatbot = () => {
       }
 
       setMessages((msgs) => [...msgs, { from: "bot", text: botReply }]);
-    } catch (err) {
+    } catch {
       setMessages((msgs) => [
         ...msgs,
         { from: "bot", text: "Error contacting the model API." }

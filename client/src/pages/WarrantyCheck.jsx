@@ -54,7 +54,7 @@ const WarrantyCheck = () => {
           <b>Sparx:</b> <a href="https://deploy.com.pk/warranty-check/index.html" target="_blank" rel="noreferrer">Sparx Warranty Check</a>
         </li>
         <li>
-          <b>VGO TEL:</b> Visit the nearest authorized service center. <a href="http://www.vgotel.com/contact/" target="_blank" rel="noreferrer">VGO Tel Contact</a>
+          <b>VGO TEL:</b> Visit the nearest authorized service center. <a href="https://www.vgotel.com/contact/" target="_blank" rel="noreferrer">VGO Tel Contact</a>
         </li>
       </ul>
 

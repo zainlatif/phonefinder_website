@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 import "./ReviewDetail.css";
 
 const ReviewDetail = () => {
@@ -9,7 +10,7 @@ const ReviewDetail = () => {
   const [review, setReview] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/reviews/${id}`)
+    axios.get(`${API_BASE_URL}/api/reviews/${id}`)
       .then(res => setReview(res.data))
       .catch(() => setReview(null));
   }, [id]);

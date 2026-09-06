@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import NewsCard from "../components/NewsCard";
+import { API_BASE_URL } from "../config/api";
 import "../App.css";
 import "./News.css";
 
@@ -19,7 +20,7 @@ const News = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchNews = async () => {
-    const res = await axios.get("http://localhost:5000/api/news");
+    const res = await axios.get(`${API_BASE_URL}/api/news`);
     setNews(res.data);
   };
 
@@ -30,9 +31,9 @@ const News = () => {
   const handleAddOrUpdate = async () => {
     if (!title || !content) return;
     if (editId) {
-      await axios.put(`http://localhost:5000/api/news/${editId}`, { title, content, image });
+      await axios.put(`${API_BASE_URL}/api/news/${editId}`, { title, content, image });
     } else {
-      await axios.post("http://localhost:5000/api/news", { title, content, image });
+      await axios.post(`${API_BASE_URL}/api/news`, { title, content, image });
     }
     setTitle("");
     setContent("");
@@ -49,7 +50,7 @@ const News = () => {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/news/${id}`);
+    await axios.delete(`${API_BASE_URL}/api/news/${id}`);
     fetchNews();
   };
 
