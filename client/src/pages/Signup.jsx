@@ -26,11 +26,18 @@ const Signup = () => {
       setError('Passwords do not match.');
       return;
     }
+    if (password.length < 12) {
+      setError('Password must be at least 12 characters long.');
+      return;
+    }
     try {
       await axios.post(getApiUrl('/api/users/signup'), { email, password });
       navigate('/login');
-    } catch {
-      setError('Signup failed. Please try again.');
+    } catch (requestError) {
+      setError(
+        requestError.response?.data?.message ||
+        'Signup failed. Please check your connection and try again.'
+      );
     }
   };
 
@@ -61,6 +68,7 @@ const Signup = () => {
             type={showPass ? "text" : "password"}
             placeholder="Enter new password"
             value={password}
+            minLength={12}
             autoComplete="new-password"
             onChange={e => setPassword(e.target.value)}
             className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 pr-11 text-sm text-slate-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
@@ -82,6 +90,7 @@ const Signup = () => {
             type={showConfirm ? "text" : "password"}
             placeholder="Confirm password"
             value={confirm}
+            minLength={12}
             autoComplete="new-password"
             onChange={e => setConfirm(e.target.value)}
             className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 pr-11 text-sm text-slate-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"

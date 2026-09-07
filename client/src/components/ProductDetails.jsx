@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { ArrowLeft, Heart, LoaderCircle, MessageCircle, Send, Trash2 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { getApiUrl } from "../config/api";
+import { getApiUrl, getAuthConfig } from "../config/api";
 
 const ProductDetails = ({ product, onBack }) => {
   const { user } = useAuth();
@@ -24,9 +24,9 @@ const ProductDetails = ({ product, onBack }) => {
       // Check if product is in user's favorites
       if (user) {
         axios
-          .get(getApiUrl(`/api/users/${user.email}`))
+          .get(getApiUrl(`/api/users/${user.email}`), getAuthConfig())
           .then((res) => {
-            setIsFav(res.data.favorites?.includes(product._id));
+            setIsFav(res.data.favorites?.some((favoriteId) => favoriteId.toString() === product._id));
           })
           .catch(() => setIsFav(false));
       } else {
@@ -62,7 +62,8 @@ const ProductDetails = ({ product, onBack }) => {
     try {
       await axios.post(
         getApiUrl(`/api/users/favorite/${user.email}`),
-        { productId: product._id }
+        { productId: product._id },
+        getAuthConfig()
       );
       setIsFav(true);
     } catch {
@@ -80,7 +81,8 @@ const ProductDetails = ({ product, onBack }) => {
     try {
       await axios.post(
         getApiUrl(`/api/users/unfavorite/${user.email}`),
-        { productId: product._id }
+        { productId: product._id },
+        getAuthConfig()
       );
       setIsFav(false);
     } catch {

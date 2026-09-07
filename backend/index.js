@@ -4,6 +4,8 @@ const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
 const dns = require("dns");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 const envPath = path.join(__dirname, ".env");
 require("dotenv").config({ path: envPath });
@@ -45,6 +47,10 @@ if (!/^mongodb(?:\+srv)?:\/\//i.test(process.env.MONGO_URI)) {
 
 const app = express();
 
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+  throw new Error("JWT_SECRET must be set in backend/.env and contain at least 32 characters");
+}
+
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
@@ -52,10 +58,18 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
-app.use(cors({
-  origin: allowedOrigins,
-}));
+app.disable("x-powered-by");
+app.use(helmet());
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: { message: "Too many authentication attempts. Try again later." },
+});
 
 // Import product routes
 const productRoutes = require("./routes/productRoutes");
@@ -63,6 +77,8 @@ app.use("/api/products", productRoutes);
 
 // Import user routes
 const userRoutes = require("./routes/userRoutes");
+app.use("/api/users/login", authLimiter);
+app.use("/api/users/signup", authLimiter);
 app.use("/api/users", userRoutes);
 
 // Import news routes

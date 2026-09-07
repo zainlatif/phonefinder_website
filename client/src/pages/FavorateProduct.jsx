@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Heart, LoaderCircle, PackageOpen } from 'lucide-react';
-import { getApiUrl } from '../config/api';
+import { getApiUrl, getAuthConfig } from '../config/api';
 import ProductDetails from '../components/ProductDetails';
 
 const FavorateProduct = () => {
@@ -19,7 +19,7 @@ const FavorateProduct = () => {
 
     const parsed = JSON.parse(stored);
     setUser(parsed);
-    axios.get(getApiUrl(`/api/users/${parsed.email}`))
+    axios.get(getApiUrl(`/api/users/${parsed.email}`), getAuthConfig())
       .then(async (res) => {
         const favoriteIds = res.data.favorites || [];
         const favProducts = await Promise.all(

@@ -12,6 +12,10 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "axios": "^1.9.0",
+    "bcryptjs": "^3.0.3",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.42.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

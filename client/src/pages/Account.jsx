@@ -1,7 +1,7 @@
 // src/pages/Account.jsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getApiUrl } from '../config/api';
+import { getApiUrl, getAuthConfig } from '../config/api';
 
 const Account = () => {
   const [user, setUser] = useState(null);
@@ -14,7 +14,7 @@ const Account = () => {
     if (stored) {
       const parsed = JSON.parse(stored);
       setUser(parsed);
-      axios.get(getApiUrl(`/api/users/${parsed.email}`))
+      axios.get(getApiUrl(`/api/users/${parsed.email}`), getAuthConfig())
         .then((res) => {
           setName(res.data.name || '');
           setAddress(res.data.address || '');
@@ -30,7 +30,7 @@ const Account = () => {
         name,
         address,
         phone
-      });
+      }, getAuthConfig());
       alert('Profile updated!');
     } catch (err) {
       console.error('Error updating profile:', err);
@@ -41,7 +41,7 @@ const Account = () => {
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete your account?")) return;
     try {
-      await axios.delete(getApiUrl(`/api/users/delete/${user.email}`));
+      await axios.delete(getApiUrl(`/api/users/delete/${user.email}`), getAuthConfig());
       localStorage.removeItem("user");
       alert("Account deleted.");
       window.location.href = "/signup";

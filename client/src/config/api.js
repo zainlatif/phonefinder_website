@@ -13,6 +13,11 @@ export const getApiUrl = (path) => {
 	return `${API_BASE_URL}${path}`;
 };
 
+export const getAuthConfig = () => {
+	const token = localStorage.getItem("accessToken");
+	return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+};
+
 export const getArrayResponse = (data, endpoint) => {
 	if (Array.isArray(data)) return data;
 
