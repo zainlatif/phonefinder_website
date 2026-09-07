@@ -5,7 +5,6 @@ import Card from "../components/Card";
 import Banner from "../components/Banner";
 import ProductDetails from "../components/ProductDetails";
 import { getApiUrl, getArrayResponse } from "../config/api";
-import "./SectionProducts.css";
 
 const sectionConfig = {
   above70: {
@@ -60,7 +59,7 @@ const SectionProducts = () => {
     setCurrentPage(1); // reset to page 1 when section changes
   }, [sectionKey]);
 
-  if (!config) return <div>Invalid section.</div>;
+  if (!config) return <main className="p-8 text-center text-slate-600">Invalid section.</main>;
 
   const filtered = products.filter(config.filter);
   const totalPages = Math.ceil(filtered.length / perPage);
@@ -70,19 +69,19 @@ const SectionProducts = () => {
   );
 
   return (
-    <div className="section-products-container1">
+    <main className="min-h-screen bg-slate-50/60">
       <Banner />
-      <div className="section-products-container2">
-        <h2 className="section-products-title">{config.title}</h2>
-        {error && <p role="alert">{error}</p>}
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <h1 className="mb-6 text-center text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{config.title}</h1>
+        {error && <p className="mb-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700" role="alert">{error}</p>}
 
         {selected ? (
           <ProductDetails product={selected} onBack={() => setSelected(null)} />
         ) : (
           <>
-            <div className="section-products-list">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {paginated.length === 0 ? (
-                <p className="section-products-empty">No products found.</p>
+                <p className="col-span-full rounded-xl bg-white px-4 py-10 text-center text-sm text-slate-500">No products found.</p>
               ) : (
                 paginated.map((product) => (
                   <Card
@@ -96,11 +95,11 @@ const SectionProducts = () => {
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
-              <div className="pagination">
+              <div className="mt-8 flex flex-wrap justify-center gap-2 pb-8">
                 <button
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="review-page-btn"
+                  className="rounded-lg border border-orange-200 bg-white px-3 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Prev
                 </button>
@@ -109,9 +108,7 @@ const SectionProducts = () => {
                   <button
                     key={i}
                     onClick={() => setCurrentPage(i + 1)}
-                    className={`review-page-btn${
-                      currentPage === i + 1 ? " active" : ""
-                    }`}
+                    className={`rounded-lg border px-3 py-2 text-sm font-semibold transition-colors ${currentPage === i + 1 ? "border-orange-600 bg-orange-600 text-white" : "border-orange-200 bg-white text-orange-600 hover:bg-orange-50"}`}
                   >
                     {i + 1}
                   </button>
@@ -120,7 +117,7 @@ const SectionProducts = () => {
                 <button
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="review-page-btn"
+                  className="rounded-lg border border-orange-200 bg-white px-3 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Next
                 </button>
@@ -129,7 +126,7 @@ const SectionProducts = () => {
           </>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

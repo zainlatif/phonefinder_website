@@ -1,9 +1,9 @@
 import React from "react";
-import "./Blockphone.css"; // Using consistent styling
 
 const AboutUs = () => {
   return (
-    <div className="blockphone-container">
+    <main className="mx-auto min-h-[60vh] max-w-4xl px-5 py-10 sm:px-6 lg:px-8">
+      <article className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-600 shadow-sm sm:p-10 [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:tracking-tight [&>h1]:text-slate-900 [&>h2]:mt-8 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-slate-900 [&>p]:mt-4 [&>p]:leading-7 [&>ul]:mt-4 [&>ul]:list-disc [&>ul]:space-y-2 [&>ul]:pl-6 [&>a]:font-semibold [&>a]:text-orange-600 [&_a]:font-semibold [&_a]:text-orange-600 [&_a:hover]:text-orange-700 [&_a:hover]:underline">
       <h1>About Us</h1>
       <p>
         Welcome to <b>Phone Finder AI</b> — your smart assistant for discovering
@@ -59,7 +59,8 @@ const AboutUs = () => {
         We're constantly evolving and building new features based on your
         feedback.
       </p>
-    </div>
+      </article>
+    </main>
   );
 };
 

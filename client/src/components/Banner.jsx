@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import banner1 from '../assets/banner/banner1.webp';
 import banner2 from '../assets/banner/banner2.webp';
-import './Banner.css';
 
 const images = [banner1, banner2];
 
@@ -16,11 +15,11 @@ const Banner = () => {
   }, []);
 
   return (
-    <div className="banner-container">
+    <div className="mb-5 w-full overflow-hidden px-3 sm:px-5 lg:px-8">
       <img
         src={images[index]}
         alt={`Banner ${index + 1}`}
-        className="banner-image"
+        className="mx-auto block h-32 w-full rounded-lg object-cover sm:h-52 sm:rounded-xl lg:h-72"
       />
     </div>
   );

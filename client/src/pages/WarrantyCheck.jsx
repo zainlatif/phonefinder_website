@@ -1,9 +1,9 @@
 import React from "react";
-import "./Blockphone.css"; // Uses your site's default styles
 
 const WarrantyCheck = () => {
   return (
-    <div className="blockphone-container">
+    <main className="mx-auto min-h-[60vh] max-w-4xl px-5 py-10 sm:px-6 lg:px-8">
+      <article className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-600 shadow-sm sm:p-10 [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:tracking-tight [&>h1]:text-slate-900 [&>h2]:mt-8 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-slate-900 [&>p]:mt-4 [&>p]:leading-7 [&>ul]:mt-4 [&>ul]:list-disc [&>ul]:space-y-2 [&>ul]:pl-6 [&_a]:font-semibold [&_a]:text-orange-600 [&_a:hover]:text-orange-700 [&_a:hover]:underline">
       <h1>E-Warranty Activation</h1>
 
       <h2>What is E-Warranty?</h2>
@@ -62,7 +62,8 @@ const WarrantyCheck = () => {
       <p>
         These are official brand-authorized methods for checking mobile phone warranties. Avoid using third-party websites not listed here, as they may provide inaccurate or misleading information.
       </p>
-    </div>
+      </article>
+    </main>
   );
 };
 
