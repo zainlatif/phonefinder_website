@@ -29,28 +29,29 @@ function App() {
   return (
     <Router>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/section/:sectionKey" element={<SectionProducts />} />
-        <Route path="/compare" element={<ComparePage />} />
-        <Route path="/news" element={<News />} />
-        <Route path="/news/:id" element={<NewsDetail />} />
-        <Route path="/reviews" element={<Review />} />
-        <Route path="/reviews/:id" element={<ReviewDetail />} />
-        <Route path="/favourites" element={<FavorateProduct />} />
-        <Route path="/blockphone" element={<Blockphone />} />
-        <Route path="/contactus" element={<ContactUs />} />
-        <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-        <Route path="/careers" element={<Careers />} />
-        <Route path="/termcondition" element={<TermCondition />} />
-        <Route path="/warrantycheck" element={<WarrantyCheck />} />
-        <Route path="/aboutus" element={<AboutUs />} />
-        
-      </Routes>
+      <div className="min-w-0 flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/section/:sectionKey" element={<SectionProducts />} />
+          <Route path="/compare" element={<ComparePage />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/news/:id" element={<NewsDetail />} />
+          <Route path="/reviews" element={<Review />} />
+          <Route path="/reviews/:id" element={<ReviewDetail />} />
+          <Route path="/favourites" element={<FavorateProduct />} />
+          <Route path="/blockphone" element={<Blockphone />} />
+          <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/termcondition" element={<TermCondition />} />
+          <Route path="/warrantycheck" element={<WarrantyCheck />} />
+          <Route path="/aboutus" element={<AboutUs />} />
+        </Routes>
+      </div>
       <Footer />
       <FloatingChatbot />
     </Router>
