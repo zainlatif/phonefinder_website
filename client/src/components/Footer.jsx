@@ -1,6 +1,6 @@
-import './Footer.css';
 import { FaYoutube, FaFacebookF, FaInstagram, FaTiktok, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import './Footer.css';
 
 const Footer = () => (
   <footer className="mt-auto w-full border-t border-orange-100 bg-white text-slate-600">

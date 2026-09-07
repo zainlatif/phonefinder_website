@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Plus, X } from "lucide-react";
 import ReviewCard from "../components/ReviewCard";
 import { getApiUrl, getArrayResponse } from "../config/api";
-import "../App.css";
-import "./Review.css";
 
 const REVIEWS_PER_PAGE = 5;
 
@@ -42,7 +41,7 @@ const Review = () => {
     if (editId) {
       await axios.put(getApiUrl(`/api/reviews/${editId}`), { title, paragraph, image, link });
     } else {
-      await axios.post(getApiUrl('/api/reviews'), { title, paragraph, image, link });
+      await axios.post(getApiUrl("/api/reviews"), { title, paragraph, image, link });
     }
     setTitle("");
     setParagraph("");
@@ -65,7 +64,6 @@ const Review = () => {
     fetchReviews();
   };
 
-  // Pagination logic
   const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
   const paginatedReviews = reviews.slice(
     (currentPage - 1) * REVIEWS_PER_PAGE,
@@ -78,53 +76,85 @@ const Review = () => {
   };
 
   return (
-    <div className="review-container">
-      <h2 className="review-main-title">Latest Reviews</h2>
-      {error && <p role="alert">{error}</p>}
-      {user?.role === "admin" && (
-        <div className="review-admin-form">
-          <h3>{editId ? "Edit Review" : "Add Review"}</h3>
-          <input
-            className="review-input"
-            placeholder="Title"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-          />
-          <textarea
-            className="review-textarea"
-            placeholder="Paragraph"
-            value={paragraph}
-            onChange={e => setParagraph(e.target.value)}
-            rows={4}
-          />
-          <input
-            className="review-input"
-            placeholder="Image URL (optional)"
-            value={image}
-            onChange={e => setImage(e.target.value)}
-          />
-          <input
-            className="review-input"
-            placeholder="YouTube Link (optional)"
-            value={link}
-            onChange={e => setLink(e.target.value)}
-          />
-          <button className="news-btn" onClick={handleAddOrUpdate}>
-            {editId ? "Update" : "Add"}
-          </button>
-          {editId && (
-            <button
-              className="news-btn news-btn-cancel"
-              onClick={() => { setEditId(null); setTitle(""); setParagraph(""); setImage(""); setLink(""); }}
-            >
-              Cancel
-            </button>
-          )}
+    <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mb-8 text-center">
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-600">PhoneFinder</p>
+        <h2 className="text-3xl font-black tracking-tight text-slate-900">Latest Reviews</h2>
+      </div>
+
+      {error && (
+        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700" role="alert">
+          {error}
         </div>
       )}
-      <div>
+
+      {user?.role === "admin" && (
+        <section className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-6">
+          <h3 className="mb-4 text-xl font-bold text-slate-900">
+            {editId ? "Edit Review" : "Add Review"}
+          </h3>
+
+          <div className="grid gap-4">
+            <input
+              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+              placeholder="Title"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+            />
+            <textarea
+              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+              placeholder="Paragraph"
+              value={paragraph}
+              onChange={e => setParagraph(e.target.value)}
+              rows={4}
+            />
+            <input
+              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+              placeholder="Image URL (optional)"
+              value={image}
+              onChange={e => setImage(e.target.value)}
+            />
+            <input
+              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+              placeholder="YouTube Link (optional)"
+              value={link}
+              onChange={e => setLink(e.target.value)}
+            />
+
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={handleAddOrUpdate}
+                className="inline-flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700"
+              >
+                <Plus size={16} />
+                {editId ? "Update" : "Add"}
+              </button>
+
+              {editId && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditId(null);
+                    setTitle("");
+                    setParagraph("");
+                    setImage("");
+                    setLink("");
+                  }}
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-100"
+                >
+                  <X size={16} />
+                  Cancel
+                </button>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <div className="space-y-6">
         {paginatedReviews.length === 0 ? (
-          <p className="review-empty">No reviews yet.</p>
+          <p className="py-12 text-center text-base text-slate-500">No reviews yet.</p>
         ) : (
           paginatedReviews.map(item => (
             <ReviewCard
@@ -138,13 +168,19 @@ const Review = () => {
           ))
         )}
       </div>
-      {/* Pagination Controls */}
+
       {totalPages > 1 && (
-        <div className="news-pagination">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
           {Array.from({ length: totalPages }, (_, idx) => (
             <button
               key={idx + 1}
-              className={`news-page-btn${currentPage === idx + 1 ? " active" : ""}`}
+              type="button"
+              className={[
+                "rounded-lg border px-3 py-2 text-sm font-semibold transition",
+                currentPage === idx + 1
+                  ? "border-orange-600 bg-orange-600 text-white shadow-sm"
+                  : "border-slate-300 bg-white text-slate-700 hover:border-orange-300 hover:text-orange-700",
+              ].join(" ")}
               onClick={() => handlePageChange(idx + 1)}
             >
               {idx + 1}
@@ -152,7 +188,7 @@ const Review = () => {
           ))}
         </div>
       )}
-    </div>
+    </main>
   );
 };
 
