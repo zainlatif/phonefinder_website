@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import { Bot, Loader2, MessageCircle, Send, X } from "lucide-react";
 import { BOT_API_URL } from "../config/api";
 import "./FloatingChatbot.css";
 
@@ -62,16 +63,22 @@ const FloatingChatbot = () => {
       {open ? (
         <div className="floating-chatbot-window">
           <div className="floating-chatbot-header">
-            Phone Finder AI
+            <div className="floating-chatbot-title">
+              <span className="floating-chatbot-title-icon" aria-hidden="true">
+                <Bot size={18} />
+              </span>
+              <span>Phone Finder AI</span>
+            </div>
             <button
+              type="button"
               className="floating-chatbot-close"
               onClick={() => setOpen(false)}
               aria-label="Close chatbot"
             >
-              ×
+              <X size={18} aria-hidden="true" />
             </button>
           </div>
-          <div className="floating-chatbot-messages">
+          <div className="floating-chatbot-messages" aria-live="polite" aria-label="Chat messages">
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -98,23 +105,27 @@ const FloatingChatbot = () => {
               placeholder="Ask about phones..."
               className="floating-chatbot-input"
               disabled={loading}
+              aria-label="Ask Phone Finder AI"
             />
             <button
+              type="button"
               className="floating-chatbot-send-btn"
               onClick={sendMessage}
               disabled={loading}
+              aria-label={loading ? "Sending message" : "Send message"}
             >
-              Send
+              {loading ? <Loader2 size={18} className="floating-chatbot-spinner" aria-hidden="true" /> : <Send size={18} aria-hidden="true" />}
             </button>
           </div>
         </div>
       ) : (
         <button
+          type="button"
           className="floating-chatbot-btn"
           onClick={() => setOpen(true)}
           aria-label="Open chatbot"
         >
-          💬
+          <MessageCircle size={25} strokeWidth={2} aria-hidden="true" />
         </button>
       )}
     </div>

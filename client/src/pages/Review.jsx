@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ReviewCard from "../components/ReviewCard";
-import { API_BASE_URL } from "../config/api";
+import { getApiUrl, getArrayResponse } from "../config/api";
 import "../App.css";
 import "./Review.css";
 
@@ -19,10 +19,18 @@ const Review = () => {
   const [link, setLink] = useState("");
   const [editId, setEditId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState("");
 
   const fetchReviews = async () => {
-    const res = await axios.get(`${API_BASE_URL}/api/reviews`);
-    setReviews(res.data);
+    try {
+      const res = await axios.get(getApiUrl("/api/reviews"));
+      setReviews(getArrayResponse(res.data, "/api/reviews"));
+      setError("");
+    } catch (err) {
+      setReviews([]);
+      setError("Reviews could not be loaded. Check the API configuration.");
+      console.error("Error fetching reviews:", err);
+    }
   };
 
   useEffect(() => {
@@ -32,9 +40,9 @@ const Review = () => {
   const handleAddOrUpdate = async () => {
     if (!title || !paragraph) return;
     if (editId) {
-      await axios.put(`${API_BASE_URL}/api/reviews/${editId}`, { title, paragraph, image, link });
+      await axios.put(getApiUrl(`/api/reviews/${editId}`), { title, paragraph, image, link });
     } else {
-      await axios.post(`${API_BASE_URL}/api/reviews`, { title, paragraph, image, link });
+      await axios.post(getApiUrl('/api/reviews'), { title, paragraph, image, link });
     }
     setTitle("");
     setParagraph("");
@@ -53,7 +61,7 @@ const Review = () => {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`${API_BASE_URL}/api/reviews/${id}`);
+    await axios.delete(getApiUrl(`/api/reviews/${id}`));
     fetchReviews();
   };
 
@@ -72,6 +80,7 @@ const Review = () => {
   return (
     <div className="review-container">
       <h2 className="review-main-title">Latest Reviews</h2>
+      {error && <p role="alert">{error}</p>}
       {user?.role === "admin" && (
         <div className="review-admin-form">
           <h3>{editId ? "Edit Review" : "Add Review"}</h3>

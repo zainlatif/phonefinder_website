@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL } from "../config/api";
+import { getApiUrl } from "../config/api";
 import "./NewsDetail.css";
 
 const NewsDetail = () => {
@@ -10,9 +10,17 @@ const NewsDetail = () => {
   const [news, setNews] = useState(null);
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/api/news/${id}`)
-      .then(res => setNews(res.data))
-      .catch(() => setNews(null));
+    const fetchNews = async () => {
+      try {
+        const res = await axios.get(getApiUrl(`/api/news/${id}`));
+        setNews(res.data);
+      } catch (err) {
+        setNews(null);
+        console.error("Error fetching news detail:", err);
+      }
+    };
+
+    fetchNews();
   }, [id]);
 
   if (!news) return <div className="news-detail-container">Loading...</div>;

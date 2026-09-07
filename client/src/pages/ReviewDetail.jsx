@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL } from "../config/api";
+import { getApiUrl } from "../config/api";
 import "./ReviewDetail.css";
 
 const ReviewDetail = () => {
@@ -10,9 +10,17 @@ const ReviewDetail = () => {
   const [review, setReview] = useState(null);
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/api/reviews/${id}`)
-      .then(res => setReview(res.data))
-      .catch(() => setReview(null));
+    const fetchReview = async () => {
+      try {
+        const res = await axios.get(getApiUrl(`/api/reviews/${id}`));
+        setReview(res.data);
+      } catch (err) {
+        setReview(null);
+        console.error("Error fetching review detail:", err);
+      }
+    };
+
+    fetchReview();
   }, [id]);
 
   if (!review) return <div className="review-detail-container">Loading...</div>;

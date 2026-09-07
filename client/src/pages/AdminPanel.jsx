@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
+import { getApiUrl, getArrayResponse } from '../config/api';
 import './AdminPanel.css';
 
 const AdminPanel = () => {
@@ -31,10 +31,13 @@ const AdminPanel = () => {
     }
   }, [products, search]);
 
-  const fetchProducts = () => {
-    axios.get(`${API_BASE_URL}/api/products`)
-      .then((res) => setProducts(res.data))
-      .catch((err) => console.error('Error fetching products:', err));
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(getApiUrl('/api/products'));
+      setProducts(getArrayResponse(res.data, '/api/products'));
+    } catch (err) {
+      console.error('Error fetching products:', err);
+    }
   };
 
   const addSpecRow = () => setSpecs([...specs, { spec: '', value: '', extra: '' }]);
@@ -65,7 +68,7 @@ const AdminPanel = () => {
       image2,
       specs: specsToArray()
     };
-    axios.post(`${API_BASE_URL}/api/products`, newProduct)
+    axios.post(getApiUrl('/api/products'), newProduct)
       .then(() => {
         setTitle('');
         setDescription('');
@@ -79,7 +82,7 @@ const AdminPanel = () => {
   };
 
   const handleDeleteProduct = (id) => {
-    axios.delete(`${API_BASE_URL}/api/products/${id}`)
+    axios.delete(getApiUrl(`/api/products/${id}`))
       .then(() => {
         setProducts(products.filter((product) => product._id !== id));
       })
@@ -98,7 +101,7 @@ const AdminPanel = () => {
 
   const handleUpdateProduct = () => {
     if (!title || !description || !price || !image || !image2) return;
-    axios.put(`${API_BASE_URL}/api/products/${editId}`, {
+    axios.put(getApiUrl(`/api/products/${editId}`), {
       title,
       description,
       price,

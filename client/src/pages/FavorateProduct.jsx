@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
+import { getApiUrl } from '../config/api';
 import Card from '../components/Card';
 import ProductDetails from '../components/ProductDetails';
 
@@ -14,12 +14,12 @@ const FavorateProduct = () => {
     if (stored) {
       const parsed = JSON.parse(stored);
       setUser(parsed);
-      axios.get(`${API_BASE_URL}/api/users/${parsed.email}`)
+      axios.get(getApiUrl(`/api/users/${parsed.email}`))
         .then(async (res) => {
           if (res.data.favorites && res.data.favorites.length > 0) {
             const favProducts = await Promise.all(
               res.data.favorites.map(id =>
-                axios.get(`${API_BASE_URL}/api/products/${id}`).then(r => r.data)
+                axios.get(getApiUrl(`/api/products/${id}`)).then(r => r.data)
               )
             );
             setFavorites(favProducts);
