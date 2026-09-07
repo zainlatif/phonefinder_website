@@ -1,14 +1,12 @@
 // Home.jsx
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
+import { ArrowRight, LoaderCircle, PackageOpen } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
-import Card from "../components/Card";
 import ProductDetails from "../components/ProductDetails";
 import BrandNav from "../components/BrandNav";
 import { getApiUrl, getArrayResponse } from "../config/api";
-import "./Home.css";
 
 const getSectionProducts = (products, min, max = Infinity) =>
   (Array.isArray(products) ? products : []).filter(
@@ -16,13 +14,13 @@ const getSectionProducts = (products, min, max = Infinity) =>
   );
 
 const Home = () => {
-  const { user } = useAuth();
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(null);
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Parse search query from URL
@@ -47,6 +45,8 @@ const Home = () => {
         setProducts([]);
         setError("Products could not be loaded. Check the API configuration.");
         console.error("Error fetching products:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
@@ -54,24 +54,6 @@ const Home = () => {
 
   const handleCardClick = (product) => setSelected(product);
   const handleBack = () => setSelected(null);
-
-  const addToFav = async (productId) => {
-    if (!user) {
-      alert("Please log in first");
-      return;
-    }
-
-    try {
-      await axios.post(
-        getApiUrl(`/api/users/favorite/${user.email}`),
-        { productId }
-      );
-      alert("Added to favourites 🎉");
-    } catch (err) {
-      console.error("Add-fav error:", err);
-      alert("Could not add favourite");
-    }
-  };
 
   // Filter products by search term (case-insensitive, matches title or description)
   const filteredProducts = searchTerm
@@ -112,40 +94,65 @@ const Home = () => {
 
   // Helper to render a section with "More" button
   const renderSection = (title, prods, sectionKey) => (
-    <div className="responsive-section">
-      <div className="responsive-section-header">
-        <h3 className="responsive-section-title">{title}</h3>
+    <section className="mb-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div className="mb-5 flex items-center justify-between gap-4">
+        <h2 className="text-lg font-bold tracking-tight text-slate-900 sm:text-xl">{title}</h2>
         {prods.length > 7 && (
           <button
-            className="responsive-section-more"
+            type="button"
+            className="inline-flex shrink-0 items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-orange-600 transition-colors hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
             onClick={() => navigate(`/section/${sectionKey}`)}
           >
-            More&gt;&gt;
+            View all
+            <ArrowRight className="size-4" />
           </button>
         )}
       </div>
-      <div className="responsive-card-grid">
+      {prods.length === 0 ? (
+        <div className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-6 text-sm text-slate-500">
+          <PackageOpen className="size-5 text-slate-400" />
+          No phones found in this price range.
+        </div>
+      ) : (
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {prods.slice(0, 9).map((product) => (
-          <Card
+          <button
             key={product._id}
-            product={product}
+            type="button"
             onClick={() => handleCardClick(product)}
-            onFav={addToFav}
-          />
+            className="group overflow-hidden rounded-xl border border-slate-200 bg-white text-left transition duration-200 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+          >
+            <div className="flex h-36 items-center justify-center bg-slate-50 p-3 sm:h-44 sm:p-5">
+              {product.image ? (
+                <img src={product.image} alt={product.title} className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105" />
+              ) : (
+                <PackageOpen className="size-9 text-slate-300" />
+              )}
+            </div>
+            <div className="p-3 sm:p-4">
+              <h3 className="line-clamp-2 min-h-10 text-sm font-semibold text-slate-900 sm:text-base">{product.title}</h3>
+              <p className="mt-1 line-clamp-2 min-h-8 text-xs leading-4 text-slate-500">{product.description || "View phone details"}</p>
+              <p className="mt-3 text-sm font-bold text-orange-600 sm:text-base">Rs. {product.price}</p>
+            </div>
+          </button>
         ))}
       </div>
-    </div>
+      )}
+    </section>
   );
 
   return (
-    <div className="responsive-container1">
+    <main className="min-h-screen bg-slate-50/60">
       <Banner />
       <BrandNav selectedBrand={selectedBrand} onSelect={setSelectedBrand} />
-      <div className="responsive-container2">
-        {/* <h2>Products</h2> */}
-        <div className="products-center-box">
-          {error && <p role="alert">{error}</p>}
-          {selected ? (
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        {error && <p className="mb-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700" role="alert">{error}</p>}
+        {loading ? (
+          <div className="flex min-h-64 items-center justify-center rounded-2xl border border-slate-200 bg-white">
+            <LoaderCircle className="size-8 animate-spin text-orange-500" aria-label="Loading products" />
+          </div>
+        ) : (
+          selected ? (
             <ProductDetails product={selected} onBack={handleBack} />
           ) : (
             <>
@@ -175,10 +182,10 @@ const Home = () => {
                 "below25"
               )}
             </>
-          )}
-        </div>
+          )
+        )}
       </div>
-    </div>
+    </main>
   );
 };
 
