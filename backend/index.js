@@ -27,6 +27,12 @@ if (!process.env.MONGO_URI) {
   throw new Error("MONGO_URI is missing from backend/.env");
 }
 
+if (!/^mongodb(?:\+srv)?:\/\//i.test(process.env.MONGO_URI)) {
+  throw new Error(
+    "MONGO_URI must start with mongodb:// or mongodb+srv://. Update backend/.env."
+  );
+}
+
 const app = express();
 
 const allowedOrigins = [
