@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
+const dns = require("dns");
 
 const envPath = path.join(__dirname, ".env");
 require("dotenv").config({ path: envPath });
@@ -22,6 +23,15 @@ const envValues = Object.fromEntries(
 );
 
 process.env.MONGO_URI ??= process.env.MONGODB_URI ?? envValues.MONGO_URI ?? envValues.MONGODB_URI;
+
+const dnsServers = (process.env.DNS_SERVERS ?? envValues.DNS_SERVERS ?? "")
+  .split(",")
+  .map((server) => server.trim())
+  .filter(Boolean);
+
+if (dnsServers.length > 0) {
+  dns.setServers(dnsServers);
+}
 
 if (!process.env.MONGO_URI) {
   throw new Error("MONGO_URI is missing from backend/.env");
